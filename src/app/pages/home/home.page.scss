@@ -1,0 +1,33 @@
+ion-icon {
+  font-size: 27px;
+}
+
+.small-icon{
+  font-size: 25px;
+}
+
+ion-input {
+  margin-left: 10px;
+}
+
+h1 {
+  font-weight: bolder;
+}
+
+/* Espacio entre el icono y el título */
+.info-text h6 {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  margin-top: 8px; /* Reduce el espacio superior del título */
+  margin-bottom: 4px; /* Reduce el espacio inferior del título */
+  color: black;
+}
+
+/* Espacio entre el título y el párrafo */
+.info-text p {
+  margin: 4px 0 8px; /* Reduce el espacio entre párrafos */
+  font-size: 15px;
+}
+
+
