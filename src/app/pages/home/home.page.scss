@@ -30,4 +30,41 @@ h1 {
   font-size: 15px;
 }
 
+.large-icon{
+  font-size: 60px;
+}
 
+.large-menu-button {
+  width: 60px; 
+  height: 60px; 
+}
+
+.thin-toolbar {
+  height: 60px;
+  min-height: 60px; 
+  --min-height: 60px; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.toolbar-buttons {
+  display: flex;
+  align-items: center;
+}
+.large-menu-button ion-icon {
+  font-size: 1.5em; 
+}
+
+.ion-text-center {
+  flex: 1;
+  text-align: center;
+}
+
+/* Custom styles for the menu */
+.custom-menu {
+  --height: 100vh;
+  top: 60px; /* Offset the menu to start below the header */
+  height: var(--height);
+  position: absolute; /* Ensure it doesn't cover the header */
+}
