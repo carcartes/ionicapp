@@ -30,7 +30,11 @@ const routes: Routes = [
   {
     path: 'publicar',
     loadChildren: () => import('./pages/publicar/publicar.module').then( m => m.PublicarPageModule)
+  },  {
+    path: 'perfil',
+    loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
   },
+
 ];
 
 @NgModule({

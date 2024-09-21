@@ -1,0 +1,66 @@
+<ion-header> 
+  <ion-toolbar class="thin-toolbar">
+    <ion-title class="ion-text-center"><a [routerLink]="['/home']" class="toolbar-title">
+      TellevoAPP
+    </a></ion-title>
+  
+    <ion-buttons slot="start" class="ion-padding toolbar-buttons">
+      <ion-menu-button class="large-menu-button">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-icon name="chevron-down-outline"></ion-icon>
+      </ion-menu-button>
+    </ion-buttons>
+    
+    <ion-buttons slot="end" class="ion-padding toolbar-buttons">
+      <ion-icon name="search-outline" class="ion-margin-end small-icon" [routerLink]="['/buscar']"></ion-icon>
+      <ion-icon name="add-circle-outline" [routerLink]="['/publicar']"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-card class="info-card">
+  <div class="profile-header">
+    <ion-avatar class="profile-avatar">
+      <img src="assets/imagen/perfil.webp" alt="Perfil">
+    </ion-avatar>
+    
+    <div class="profile-info">
+      <ion-card-title class="blue-title">Carlos</ion-card-title>
+      <p>30 años</p>
+      <ion-button fill="clear" [routerLink]="['/editar-perfil']">Editar Perfil</ion-button>
+    </div>
+  </div>
+</ion-card>
+
+  
+
+ 
+  <ion-card class="info-card">
+    <ion-card-header>
+      <ion-card-title class="blue-title">Acerca de</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Me encanta viajar y conocer.</p>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-card class="info-card">
+    <ion-card-header>
+      <ion-card-title class="blue-title">Viajes Recientes</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Destino:</strong> concepcion</p>
+      <p><strong>Fecha:</strong> Julio 2024</p>
+      <p><strong>Descripción:</strong> tu casa.</p>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-footer>
+    <ion-toolbar>
+      <ion-title class="ion-text-center">
+        &copy; 2024 TellevoAPP - Todos los derechos reservados
+      </ion-title>
+    </ion-toolbar>
+  </ion-footer>
