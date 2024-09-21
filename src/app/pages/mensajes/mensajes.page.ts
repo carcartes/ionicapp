@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  selector: 'app-mensajes',
+  templateUrl: './mensajes.page.html',
+  styleUrls: ['./mensajes.page.scss'],
 })
-export class HomePage implements OnInit {
+export class MensajesPage implements OnInit {
+
   isAuthenticated: boolean = false;
 
   constructor(public authService: AuthService) { }
@@ -22,4 +23,19 @@ export class HomePage implements OnInit {
     this.authService.logout();
     console.log('Sesión cerrada');
   }
+  messages = [
+    {
+      id: 1,
+      senderName: 'Juan Pérez',
+      lastMessage: '¿Donde vienes?',
+      timestamp: new Date()
+    },
+    {
+      id: 2,
+      senderName: 'Laura Martínez',
+      lastMessage: 'Salgo en 5 minutos.',
+      timestamp: new Date()
+    },
+    // Agrega más mensajes según sea necesario
+  ];
 }

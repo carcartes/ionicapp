@@ -54,53 +54,54 @@
 </ion-header>
 
 <ion-content id="main-content" class="ion-padding">
-  <ion-text color="primary" class="ion-text-center">
-    <h1>Para estudiantes de Duoc: Conecta, ahorra y llega más lejos juntos.</h1>
-  </ion-text>
+  
+  <!-- Información del perfil -->
+  <div class="profile-container ion-padding">
+    <ion-row>
+      <ion-col size="4">
+        <ion-img src="assets/pfp.png" alt="Profile Picture" class="profile-picture"></ion-img>
+      </ion-col>
+      <ion-col size="8">
+        <ion-text color="black">
+          <h2>Mario</h2>
+          <p>24 años</p>
+        </ion-text>
+        
+      </ion-col>
+    </ion-row>
 
-  <!-- Caja con borde redondeado y sombra -->
-  <ion-card>
-    <ion-card-content>
-      <ion-list>
-        <ion-item>
-          <ion-icon name="ellipse-outline"></ion-icon>
-          <ion-input placeholder="De"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="ellipse-outline"></ion-icon>
-          <ion-input placeholder="A"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="calendar-outline"></ion-icon>
-          <ion-input placeholder="Hoy"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-icon name="person-outline"></ion-icon>
-          <ion-input placeholder="1 Pasajero">
-          </ion-input>
-        </ion-item>
-      </ion-list>
-      <ion-button expand="block">
-        Buscar
-      </ion-button>
-    </ion-card-content>
-  </ion-card>
-
-  <!-- Información Adicional -->
-  <div class="ion-padding ion-margin-top">
-    <ion-text color="medium" class="info-text">
-      <ion-icon name="globe-outline"></ion-icon>
-      <h6 class="info-text">Encuentra los mejores viajes</h6>
-      <p class="info-text">Como estudiante de Duoc, tienes acceso a una red de compañeros en toda la ciudad. Encuentra el viaje perfecto con salida y llegada en los puntos más cercanos a tu sede.</p>
-
-      <ion-icon name="shield-checkmark-outline" class="ion-margin-top"></ion-icon>
-      <h6 class="info-text">Viaja seguro y tranquilo</h6>
-      <p class="info-text">Tu seguridad es nuestra prioridad. Conoce a tus compañeros de viaje a través de perfiles verificados y reseñas de estudiantes como tú. Viaja con confianza y tranquilidad.</p>
-
-      <ion-icon name="rocket-outline" class="ion-margin-top"></ion-icon>
-      <h6 class="info-text">¡Busca, elige y a viajar!</h6>
-      <p class="info-text">Reservar un viaje es fácil y rápido. Utiliza nuestra app para encontrar viajes cercanos y coordinar con otros estudiantes en minutos. ¡No pierdas tiempo y únete a la comunidad de Duoc que ya está viajando!</p>
-    </ion-text>
+    <ion-list>
+      <ion-item>
+        <ion-label>
+          <h6>Nombre</h6>
+          <p>Mario</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h6>Apellido</h6>
+          <p>Zapata</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h6>Número de celular</h6>
+          <p>+56 9 1234 5678</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h6>Correo electrónico</h6>
+          <p>testexample.com</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h6>Fecha de nacimiento</h6>
+          <p>01/01/2000</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>
 
@@ -112,3 +113,4 @@
     </ion-title>
   </ion-toolbar>
 </ion-footer>
+

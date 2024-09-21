@@ -42,53 +42,40 @@
       <h2>Registro de Usuario</h2>
     </ion-text>
 
-    <!-- Registration Form -->
     <ion-card>
       <ion-card-content>
-        <form>
-          <!-- Name Input -->
+        <form (ngSubmit)="register()">
           <ion-item>
             <ion-label position="floating">Nombre</ion-label>
-            <ion-input type="text" required></ion-input>
+            <ion-input [(ngModel)]="name" name="name" type="text" required></ion-input>
           </ion-item>
-
-          <!-- Surname Input -->
           <ion-item>
             <ion-label position="floating">Apellido</ion-label>
-            <ion-input type="text" required></ion-input>
+            <ion-input [(ngModel)]="surname" name="surname" type="text" required></ion-input>
           </ion-item>
-
-          <!-- Email Input -->
           <ion-item>
             <ion-label position="floating">Correo Electrónico</ion-label>
-            <ion-input type="email" required></ion-input>
+            <ion-input [(ngModel)]="email" name="email" type="email" required></ion-input>
           </ion-item>
-
-          <!-- Date of Birth Input -->
           <ion-item>
             <ion-label position="floating">Fecha de Nacimiento</ion-label>
-            <ion-input type="text" required></ion-input>
+            <ion-input [(ngModel)]="dob" name="dob" type="date" required></ion-input>
           </ion-item>
-
-          <!-- Password Input -->
           <ion-item>
             <ion-label position="floating">Contraseña</ion-label>
-            <ion-input type="password" required></ion-input>
+            <ion-input [(ngModel)]="password" name="password" type="password" required></ion-input>
           </ion-item>
-
-          <!-- Confirm Password Input -->
           <ion-item>
             <ion-label position="floating">Confirmar Contraseña</ion-label>
-            <ion-input type="password" required></ion-input>
+            <ion-input [(ngModel)]="confirmPassword" name="confirmPassword" type="password" required></ion-input>
           </ion-item>
-
-          <!-- Register Button -->
           <ion-button expand="full" class="ion-margin-top" type="submit">
             Registrarse
           </ion-button>
         </form>
       </ion-card-content>
     </ion-card>
+
 
     <ion-text color="medium" class="ion-text-center ion-margin-top">
       <p>¿Ya tienes una cuenta? <a href="#">Inicia sesión aquí</a></p>
