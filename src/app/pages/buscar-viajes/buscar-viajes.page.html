@@ -1,0 +1,108 @@
+<ion-menu side="start" content-id="main-content" class="custom-menu">
+  <ion-header>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item *ngIf="!isAuthenticated" [routerLink]="['/login']">
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        <ion-label>Iniciar sesión</ion-label>
+      </ion-item>
+      <ion-item *ngIf="!isAuthenticated" [routerLink]="['/register']">
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        <ion-label>Registrarse</ion-label>
+      </ion-item>
+      <ion-item *ngIf="isAuthenticated" [routerLink]="['/viajes']">
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        <ion-label>Tus Viajes</ion-label>
+      </ion-item>
+      <ion-item *ngIf="isAuthenticated" [routerLink]="['/mensajes']">
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        <ion-label>Mensajes</ion-label>
+      </ion-item>
+      <ion-item *ngIf="isAuthenticated" [routerLink]="['/perfil']">
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-item>
+      <ion-item *ngIf="isAuthenticated" (click)="logout()">
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        <ion-label>Cerrar sesión</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+
+<!-- Main Content -->
+<ion-header>
+  <ion-toolbar class="thin-toolbar">
+    <ion-title class="ion-text-center"><a [routerLink]="['/home']" class="toolbar-title">
+      TellevoAPP
+    </a></ion-title>
+  
+    <ion-buttons slot="start" class="ion-padding toolbar-buttons">
+      <ion-menu-button class="large-menu-button">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-icon name="chevron-down-outline"></ion-icon>
+      </ion-menu-button>
+    </ion-buttons>
+    
+    <ion-buttons slot="end" class="ion-padding toolbar-buttons">
+      <ion-icon name="search-outline" class="ion-margin-end small-icon" [routerLink]="['/buscar']"></ion-icon>
+      <ion-icon name="add-circle-outline" [routerLink]="['/publicar']"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="main-content" class="ion-padding">
+
+  <!-- Selector de origen con opciones predefinidas -->
+  <ion-item>
+    <ion-select [(ngModel)]="origen" placeholder="Selecciona un campus">
+      <ion-select-option value="Campus Alameda">Campus Alameda</ion-select-option>
+      <ion-select-option value="Campus Antonio Varas">Campus Antonio Varas</ion-select-option>
+      <ion-select-option value="Campus Educación Continua">Campus Educación Continua</ion-select-option>
+      <ion-select-option value="Campus Maipú">Campus Maipú</ion-select-option>
+      <ion-select-option value="Campus Melipilla">Campus Melipilla</ion-select-option>
+      <ion-select-option value="Campus Padre Alonso de Ovalle">Campus Padre Alonso de Ovalle</ion-select-option>
+      <ion-select-option value="Campus Plaza Norte">Campus Plaza Norte</ion-select-option>
+      <ion-select-option value="Campus Plaza Oeste">Campus Plaza Oeste</ion-select-option>
+      <ion-select-option value="Campus Plaza Vespucio">Campus Plaza Vespucio</ion-select-option>
+      <ion-select-option value="Campus Puente Alto">Campus Puente Alto</ion-select-option>
+      <ion-select-option value="Campus San Bernardo">Campus San Bernardo</ion-select-option>
+      <ion-select-option value="Campus San Carlos de Apoquindo">Campus San Carlos de Apoquindo</ion-select-option>
+      <ion-select-option value="Campus San Joaquín">Campus San Joaquín</ion-select-option>
+      <ion-select-option value="Campus Valparaíso">Campus Valparaíso</ion-select-option>
+      <ion-select-option value="Campus Viña del Mar">Campus Viña del Mar</ion-select-option>
+      <ion-select-option value="Campus San Andrés de Concepción">Campus San Andrés de Concepción</ion-select-option>
+      <ion-select-option value="Campus Arauco">Campus Arauco</ion-select-option>
+      <ion-select-option value="Campus Nacimiento">Campus Nacimiento</ion-select-option>
+      <ion-select-option value="	Campus Villarrica">	Campus Villarrica</ion-select-option>
+      <ion-select-option value="	Campus Puerto Montt">Campus Puerto Montt</ion-select-option>
+      <!-- Agrega más opciones según lo necesario -->
+    </ion-select>
+  </ion-item>
+
+  <!-- Input de destino -->
+  <ion-item>
+    <ion-label>A:</ion-label>
+    <ion-input placeholder="Ingrese hacia donde va" [(ngModel)]="destino"></ion-input>
+  </ion-item>
+
+  <ion-button expand="block" (click)="buscarViajes()">Buscar</ion-button>
+
+  <!-- Mostrar los viajes disponibles -->
+  <ion-card *ngFor="let viaje of viajesDisponibles">
+    <ion-card-header>
+      <ion-card-title>{{ viaje.origen }} ➡ {{ viaje.destino }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Hora de salida: {{ viaje.horaSalida }}</p>
+      <p>Hora de llegada: {{ viaje.horaLlegada }}</p>
+      <p>Precio: {{ viaje.precio | currency }}</p>
+      <p>Asientos disponibles: {{ viaje.asientosDisponibles }}</p>
+      <ion-button expand="full" color="primary" (click)="reservarViaje(viaje)">Reservar</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+ 

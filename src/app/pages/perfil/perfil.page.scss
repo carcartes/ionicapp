@@ -98,3 +98,9 @@ ion-col p{
   font-weight: bold;
   font-size: 15px;
 }
+
+.info-card {
+  margin-top: 16px;
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+}

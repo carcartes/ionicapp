@@ -63,8 +63,30 @@
     <ion-card-content>
       <ion-list>
         <ion-item>
-          <ion-icon name="ellipse-outline"></ion-icon>
-          <ion-input placeholder="De"></ion-input>
+          <ion-icon class="custom-icon"  name="ellipse-outline"></ion-icon>
+          <ion-select class="custom-margin"[(ngModel)]="origen" placeholder="De" required>
+            <ion-select-option value="Campus Alameda">Campus Alameda</ion-select-option>
+            <ion-select-option value="Campus Antonio Varas">Campus Antonio Varas</ion-select-option>
+            <ion-select-option value="Campus Educación Continua">Campus Educación Continua</ion-select-option>
+            <ion-select-option value="Campus Maipú">Campus Maipú</ion-select-option>
+            <ion-select-option value="Campus Melipilla">Campus Melipilla</ion-select-option>
+            <ion-select-option value="Campus Padre Alonso de Ovalle">Campus Padre Alonso de Ovalle</ion-select-option>
+            <ion-select-option value="Campus Plaza Norte">Campus Plaza Norte</ion-select-option>
+            <ion-select-option value="Campus Plaza Oeste">Campus Plaza Oeste</ion-select-option>
+            <ion-select-option value="Campus Plaza Vespucio">Campus Plaza Vespucio</ion-select-option>
+            <ion-select-option value="Campus Puente Alto">Campus Puente Alto</ion-select-option>
+            <ion-select-option value="Campus San Bernardo">Campus San Bernardo</ion-select-option>
+            <ion-select-option value="Campus San Carlos de Apoquindo">Campus San Carlos de Apoquindo</ion-select-option>
+            <ion-select-option value="Campus San Joaquín">Campus San Joaquín</ion-select-option>
+            <ion-select-option value="Campus Valparaíso">Campus Valparaíso</ion-select-option>
+            <ion-select-option value="Campus Viña del Mar">Campus Viña del Mar</ion-select-option>
+            <ion-select-option value="Campus San Andrés de Concepción">Campus San Andrés de Concepción</ion-select-option>
+            <ion-select-option value="Campus Arauco">Campus Arauco</ion-select-option>
+            <ion-select-option value="Campus Nacimiento">Campus Nacimiento</ion-select-option>
+            <ion-select-option value="Campus Villarrica">Campus Villarrica</ion-select-option>
+            <ion-select-option value="Campus Puerto Montt">Campus Puerto Montt</ion-select-option>
+            <!-- Agrega más opciones según lo necesario -->
+          </ion-select>
         </ion-item>
         <ion-item>
           <ion-icon name="ellipse-outline"></ion-icon>
@@ -75,12 +97,16 @@
           <ion-input placeholder="Hoy"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-icon name="person-outline"></ion-icon>
-          <ion-input placeholder="1 Pasajero">
-          </ion-input>
+          <ion-icon class="custom-icon" name="person-outline"></ion-icon>
+          <ion-select class="custom-margin" placeholder="1 Pasajero" required>
+            <ion-select-option value="1">1</ion-select-option>
+            <ion-select-option value="2">2</ion-select-option>
+            <ion-select-option value="3">3</ion-select-option>
+            <ion-select-option value="4">4</ion-select-option>
+          </ion-select>
         </ion-item>
       </ion-list>
-      <ion-button expand="block">
+      <ion-button expand="block" [routerLink]="['/buscar-viajes']" [queryParams]="{ origen: origen, destino: destino }">
         Buscar
       </ion-button>
     </ion-card-content>
