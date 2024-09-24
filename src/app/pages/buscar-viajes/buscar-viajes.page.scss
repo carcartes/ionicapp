@@ -86,3 +86,60 @@ h1 {
 ion-select {
   text-align: left; /* Alinea el texto dentro del ion-select a la izquierda */
 }
+.driver-info {
+  display: flex;
+  align-items: center;
+}
+
+.driver-picture {
+  width: 40px; // Adjust size as necessary
+  height: 40px; // Maintain aspect ratio
+  border-radius: 50%; // Circular image
+  margin-right: 8px; // Space between picture and text
+}
+
+.driver-details {
+  flex: 1; // Take up the remaining space
+}
+.custom-background {
+  background-color: #f9f9f9; /* Fondo suave para la página de búsqueda */
+}
+
+.custom-select, .custom-input {
+  margin-bottom: 1rem; /* Espacio debajo del selector y el input */
+}
+
+.search-button {
+  --background: #007bff; /* Color de fondo para el botón de búsqueda */
+  --color: white; /* Color del texto del botón de búsqueda */
+  margin-bottom: 1rem; /* Espacio debajo del botón de búsqueda */
+}
+
+.trip-card {
+  background-color: white; /* Fondo blanco para las tarjetas de viaje */
+  border-radius: 10px; /* Bordes redondeados */
+  margin-bottom: 0.5rem; /* Espacio entre tarjetas */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: transform 0.2s; /* Transición suave para efecto de hover */
+}
+
+.trip-card:hover {
+  transform: scale(1.02); /* Efecto de aumento al pasar el mouse */
+}
+
+.driver-info {
+  display: flex; /* Uso de flexbox para alinear imagen y detalles del conductor */
+  align-items: center; /* Alineación vertical central */
+}
+
+.driver-picture {
+  width: 50px; /* Ancho de la imagen del conductor */
+  height: 50px; /* Alto de la imagen del conductor */
+  border-radius: 50%; /* Imagen redondeada */
+  margin-right: 10px; /* Espacio a la derecha de la imagen */
+}
+
+.driver-details {
+  font-size: 1rem; /* Tamaño de fuente para los detalles del conductor */
+  color: #555; /* Color gris suave para el texto */
+}

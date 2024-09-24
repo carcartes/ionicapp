@@ -10,6 +10,7 @@ export const todosLosViajes: Viaje[] = [
     horaLlegada: '18:25',
     precio: 24.99,
     asientosDisponibles: 1
+    
   },
   {
     origen: 'Campus San Andrés de Concepción',

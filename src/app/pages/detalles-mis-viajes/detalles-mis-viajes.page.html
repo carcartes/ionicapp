@@ -53,23 +53,69 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="main-content" class="ion-padding custom-background">
-  <ion-text color="primary" class="ion-text-center">
-    <h2 class="page-title">Tus Viajes</h2>
-  </ion-text>
-  
-  <ion-list class="trip-list">
-    <ion-item *ngFor="let viaje of viajes; let i = index" class="trip-item">
-      <ion-label>
-        <h2 class="trip-route">{{ viaje.origen }} - {{ viaje.destino }}</h2>
-        <p class="trip-date">Fecha: {{ viaje.fecha }}</p>
-        <p class="trip-driver">Conductor: {{ viaje.conductor }}</p>
-        <p class="trip-seats">Asientos disponibles: {{ viaje.asientosDisponibles }}</p>
-      </ion-label>
-      <div class="button-group">
-        <ion-button fill="outline" (click)="confirmarCancelacion(i)" class="cancel-button">Cancelar</ion-button>
-        <ion-button fill="outline" [routerLink]="['/detalles-mis-viajes']" class="view-button">Ver</ion-button>
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-img src="assets/pfp.png" alt="Conductor" class="driver-picture"></ion-img>
+      <ion-card-title class="ion-text-center">Detalles del Viaje</ion-card-title>
+      <ion-card-subtitle class="ion-text-center">Conductor: Toreto</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-img src="assets/map.png"></ion-img>
+      <div class="trip-info">
+        <div class="info-item">
+          <ion-label>Origen:</ion-label>
+          <span>Concepcion</span>
+        </div>
+        <div class="info-item">
+          <ion-label>Destino:</ion-label>
+          <span>Penco</span>
+        </div>
+        <div class="info-item">
+          <ion-label>Hora de Salida:</ion-label>
+          <span>14:00</span>
+        </div>
+        <div class="info-item">
+          <ion-label>Hora de Llegada:</ion-label>
+          <span>16:00</span>
+        </div>
+        <div class="info-item">
+          <ion-label>Precio:</ion-label>
+          <span>CLP 5,000</span>
+        </div>
+        <div class="info-item">
+          <ion-label>Asientos Disponibles:</ion-label>
+          <span>2</span>
+        </div>
       </div>
-    </ion-item>
-  </ion-list>
+
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">Detalles del Auto</ion-card-title>
+      </ion-card-header>
+      <div class="car-info">
+        <div class="info-item">
+          <ion-label>Marca:</ion-label>
+          <span>Suzuki</span>
+        </div>
+        <div class="info-item">
+          <ion-label>Modelo:</ion-label>
+          <span>Alto</span>
+        </div>
+        <div class="info-item">
+          <ion-label>Color:</ion-label>
+          <span>Azul</span>
+        </div>
+        <div class="info-item">
+          <ion-label>Matrícula:</ion-label>
+          <span>ABC-123</span>
+        </div>
+      </div>
+
+      <!-- Replace "Confirmar Reserva" button with "Volver" button -->
+      <ion-button expand="block" color="primary" class="ion-margin-top" [routerLink]="['/viajes']">
+        Volver
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

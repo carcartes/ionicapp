@@ -6,11 +6,9 @@ ion-icon {
   font-size: 25px;
 }
 
-ion-input {
-  margin-left: 10px;
-}
 
-h1 {
+
+h1,h2 {
   font-weight: bolder;
 }
 
@@ -75,13 +73,4 @@ h1 {
   color: inherit; /* Asegura que el color herede del toolbar */
   font-weight: bold; /* Opcional: ajusta el peso de la fuente según sea necesario */
 }
-.custom-margin{
-  margin-left: 9px;
-}
-custom-margin-number{
-  margin-left: 5px;
-}
 
-.custom-icon {
-  font-size: 25px;
-}

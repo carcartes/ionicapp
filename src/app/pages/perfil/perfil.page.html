@@ -23,6 +23,10 @@
         <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         <ion-label>Perfil</ion-label>
       </ion-item>
+      <ion-item *ngIf="isAuthenticated" [routerLink]="['/perfil-editar']">
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        <ion-label>Editar Perfil</ion-label> <!-- New button -->
+      </ion-item>
       <ion-item *ngIf="isAuthenticated" (click)="logout()">
         <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         <ion-label>Cerrar sesión</ion-label>
@@ -30,7 +34,6 @@
     </ion-list>
   </ion-content>
 </ion-menu>
-
 
 <!-- Main Content -->
 <ion-header>
@@ -53,24 +56,22 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="main-content" class="ion-padding">
-  
+<ion-content id="main-content" class="ion-padding custom-background">
   <!-- Información del perfil -->
   <div class="profile-container ion-padding">
-    <ion-row>
+    <ion-row class="ion-align-items-center">
       <ion-col size="4">
         <ion-img src="assets/pfp.png" alt="Profile Picture" class="profile-picture"></ion-img>
       </ion-col>
       <ion-col size="8">
         <ion-text color="black">
-          <h2>Mario</h2>
-          <p>24 años</p>
+          <h2 class="profile-name">Mario</h2>
+          <p class="profile-age">24 años</p>
         </ion-text>
-        
       </ion-col>
     </ion-row>
 
-    <ion-list>
+    <ion-list class="profile-details-list">
       <ion-item>
         <ion-label>
           <h6>Nombre</h6>
@@ -102,6 +103,10 @@
         </ion-label>
       </ion-item>
     </ion-list>
+
+    <ion-button expand="full" routerLink="/perfil-editar" class="edit-button">
+      Editar Perfil
+    </ion-button>
   </div>
 </ion-content>
 
@@ -113,4 +118,5 @@
     </ion-title>
   </ion-toolbar>
 </ion-footer>
+
 

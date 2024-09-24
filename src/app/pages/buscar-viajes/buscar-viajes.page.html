@@ -31,7 +31,6 @@
   </ion-content>
 </ion-menu>
 
-
 <!-- Main Content -->
 <ion-header>
   <ion-toolbar class="thin-toolbar">
@@ -53,11 +52,11 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="main-content" class="ion-padding">
+<ion-content id="main-content" class="ion-padding custom-background">
 
   <!-- Selector de origen con opciones predefinidas -->
   <ion-item>
-    <ion-select [(ngModel)]="origen" placeholder="Selecciona un campus">
+    <ion-select [(ngModel)]="origen" placeholder="Selecciona un campus" class="custom-select">
       <ion-select-option value="Campus Alameda">Campus Alameda</ion-select-option>
       <ion-select-option value="Campus Antonio Varas">Campus Antonio Varas</ion-select-option>
       <ion-select-option value="Campus Educación Continua">Campus Educación Continua</ion-select-option>
@@ -76,8 +75,8 @@
       <ion-select-option value="Campus San Andrés de Concepción">Campus San Andrés de Concepción</ion-select-option>
       <ion-select-option value="Campus Arauco">Campus Arauco</ion-select-option>
       <ion-select-option value="Campus Nacimiento">Campus Nacimiento</ion-select-option>
-      <ion-select-option value="	Campus Villarrica">	Campus Villarrica</ion-select-option>
-      <ion-select-option value="	Campus Puerto Montt">Campus Puerto Montt</ion-select-option>
+      <ion-select-option value="Campus Villarrica">Campus Villarrica</ion-select-option>
+      <ion-select-option value="Campus Puerto Montt">Campus Puerto Montt</ion-select-option>
       <!-- Agrega más opciones según lo necesario -->
     </ion-select>
   </ion-item>
@@ -85,17 +84,24 @@
   <!-- Input de destino -->
   <ion-item>
     <ion-label>A:</ion-label>
-    <ion-input placeholder="Ingrese hacia donde va" [(ngModel)]="destino"></ion-input>
+    <ion-input placeholder="Ingrese hacia donde va" [(ngModel)]="destino" class="custom-input"></ion-input>
   </ion-item>
 
-  <ion-button expand="block" (click)="buscarViajes()">Buscar</ion-button>
+  <ion-button expand="block" (click)="buscarViajes()" class="search-button">Buscar</ion-button>
 
   <!-- Mostrar los viajes disponibles -->
-  <ion-card *ngFor="let viaje of viajesDisponibles">
+  <ion-card *ngFor="let viaje of viajesDisponibles" class="trip-card">
     <ion-card-header>
       <ion-card-title>{{ viaje.origen }} ➡ {{ viaje.destino }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
+      <div class="driver-info ion-padding">
+        <ion-img src="assets/pfp.png" alt="Driver Picture" class="driver-picture"></ion-img>
+        <div class="driver-details">
+          <p><strong>Toreto</strong></p>
+          <p>Conductor</p>
+        </div>
+      </div>
       <p>Hora de salida: {{ viaje.horaSalida }}</p>
       <p>Hora de llegada: {{ viaje.horaLlegada }}</p>
       <p>Precio: {{ viaje.precio | currency }}</p>
@@ -105,4 +111,4 @@
   </ion-card>
 
 </ion-content>
- 
+

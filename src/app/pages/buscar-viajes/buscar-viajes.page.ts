@@ -41,7 +41,13 @@ export class BuscarViajesPage implements OnInit {
   buscarViajes() {
     this.viajesDisponibles = this.todosLosViajes.filter(viaje => {
       const origenCoincide = viaje.origen === this.origen;
-      const destinoCoincide = this.destino ? viaje.destino.toLowerCase().includes(this.destino.toLowerCase()) : true;
+
+      // Función para normalizar y remover tildes
+      const normalizeText = (text: string): string => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+      const destinoCoincide = this.destino
+        ? normalizeText(viaje.destino.toLowerCase()).includes(normalizeText(this.destino.toLowerCase()))
+        : true;
 
       return origenCoincide && destinoCoincide;
     });
@@ -52,7 +58,19 @@ export class BuscarViajesPage implements OnInit {
       console.log('Usuario no autenticado. No se puede reservar el viaje.');
       return;
     }
+    
     console.log('Reservando viaje:', viaje);
+    // Navegar a la página de detalles del viaje
+    this.router.navigate(['/detalles-viaje'], {
+      queryParams: {
+        origen: viaje.origen,
+        destino: viaje.destino,
+        horaSalida: viaje.horaSalida,
+        horaLlegada: viaje.horaLlegada,
+        precio: viaje.precio,
+        asientosDisponibles: viaje.asientosDisponibles
+      }
+    });
   }
 
   logout() {

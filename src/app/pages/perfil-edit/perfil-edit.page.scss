@@ -26,7 +26,7 @@ h1 {
 
 /* Espacio entre el título y el párrafo */
 .info-text p {
-  margin: 4px 0 8px; /* Reduce el espacio entre párrafos */
+  margin: 4px 0 8px;
   font-size: 15px;
 }
 
@@ -61,27 +61,46 @@ h1 {
   text-align: center;
 }
 
-/* Custom styles for the menu */
 .custom-menu {
   --height: 100vh;
-  top: 60px; /* Offset the menu to start below the header */
+  top: 60px;
   height: var(--height);
-  position: absolute; /* Ensure it doesn't cover the header */
+  position: absolute; 
 }
 
-/* Estilo para quitar el subrayado del enlace dentro del ion-title */
 .toolbar-title {
-  text-decoration: none; /* Quita el subrayado del enlace */
-  color: inherit; /* Asegura que el color herede del toolbar */
-  font-weight: bold; /* Opcional: ajusta el peso de la fuente según sea necesario */
+  text-decoration: none; 
+  color: inherit; 
+  font-weight: bold; 
 }
-.custom-margin{
-  margin-left: 9px;
-}
-custom-margin-number{
-  margin-left: 5px;
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
 }
 
-.custom-icon {
-  font-size: 25px;
+.profile-picture {
+  width: 100%;
+  border-radius: 50%;
+  max-width: 120px; /* Ajusta el tamaño según tu preferencia */
+  margin-bottom: 15px;
+}
+.ion-text-center h2 {
+  font-weight: bolder;
+}
+ion-col h2{
+  font-weight: bold;
+}
+
+ion-col p{
+  margin-top: -10px;
+  color: grey;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.info-card {
+  margin-top: 16px;
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
 }

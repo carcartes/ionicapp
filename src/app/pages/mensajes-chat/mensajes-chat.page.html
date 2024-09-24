@@ -1,9 +1,10 @@
+<!-- Messages Chat Page -->
+
 <ion-menu side="start" content-id="main-content" class="custom-menu">
   <ion-header>
   </ion-header>
   <ion-content>
     <ion-list>
-      <!-- Authentication-related menu items -->
       <ion-item *ngIf="!isAuthenticated" [routerLink]="['/login']">
         <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         <ion-label>Iniciar sesión</ion-label>
@@ -55,21 +56,35 @@
 
 <ion-content id="main-content" class="ion-padding custom-background">
   <ion-text color="primary" class="ion-text-center">
-    <h2 class="page-title">Tus Viajes</h2>
+    <h2 class="page-title">Chat</h2>
   </ion-text>
-  
-  <ion-list class="trip-list">
-    <ion-item *ngFor="let viaje of viajes; let i = index" class="trip-item">
+
+  <ion-list class="chat-list">
+    <!-- Placeholder for chat messages -->
+    <ion-item *ngFor="let chat of chats" class="chat-item">
+      <ion-avatar slot="start">
+        <ion-img src="assets/pfp.png"></ion-img>
+      </ion-avatar>
       <ion-label>
-        <h2 class="trip-route">{{ viaje.origen }} - {{ viaje.destino }}</h2>
-        <p class="trip-date">Fecha: {{ viaje.fecha }}</p>
-        <p class="trip-driver">Conductor: {{ viaje.conductor }}</p>
-        <p class="trip-seats">Asientos disponibles: {{ viaje.asientosDisponibles }}</p>
+        <h2 class="sender-name">{{ chat.senderName }}</h2>
+        <p class="chat-message">{{ chat.message }}</p>
       </ion-label>
-      <div class="button-group">
-        <ion-button fill="outline" (click)="confirmarCancelacion(i)" class="cancel-button">Cancelar</ion-button>
-        <ion-button fill="outline" [routerLink]="['/detalles-mis-viajes']" class="view-button">Ver</ion-button>
-      </div>
+      <ion-text color="medium" slot="end" class="timestamp">{{ chat.timestamp | date: 'shortTime' }}</ion-text>
     </ion-item>
   </ion-list>
+
+  <ion-item class="input-container">
+    <ion-input placeholder="Escribe un mensaje..." [(ngModel)]="newMessage" class="message-input"></ion-input>
+    <ion-button (click)="sendMessage()" class="send-button">Enviar</ion-button>
+  </ion-item>
 </ion-content>
+
+
+<!-- Footer -->
+<ion-footer>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">
+      &copy; 2024 TellevoAPP - Todos los derechos reservados
+    </ion-title>
+  </ion-toolbar>
+</ion-footer>

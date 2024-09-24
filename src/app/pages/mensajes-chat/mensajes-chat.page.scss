@@ -90,7 +90,7 @@ h1 {
 }
 
 .custom-background {
-  background-color: #f9f9f9; /* Fondo suave para la página de viajes */
+  background-color: #f2f2f2; /* Fondo suave para el chat */
 }
 
 .page-title {
@@ -99,45 +99,48 @@ h1 {
   margin-bottom: 1rem; /* Espacio debajo del título */
 }
 
-.trip-list {
-  margin-top: 1rem; /* Espacio en la parte superior de la lista de viajes */
+.chat-list {
+  margin-top: 1rem; /* Espacio en la parte superior de la lista */
 }
 
-.trip-item {
-  background-color: white; /* Fondo blanco para los viajes */
+.chat-item {
+  background-color: white; /* Fondo blanco para los mensajes */
   border-radius: 10px; /* Bordes redondeados */
-  margin-bottom: 0.5rem; /* Espacio entre viajes */
+  margin-bottom: 0.5rem; /* Espacio entre mensajes */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
   transition: background-color 0.2s; /* Transición suave para efecto de hover */
 }
 
-.trip-item:hover {
+.chat-item:hover {
   background-color: #f1f1f1; /* Efecto de cambio de color al pasar el mouse */
 }
 
-.trip-route {
-  font-size: 1.4rem; /* Tamaño de fuente para la ruta del viaje */
-  font-weight: bold; /* Negrita para la ruta */
+.sender-name {
+  font-size: 1.2rem; /* Tamaño de fuente para el nombre del remitente */
+  font-weight: bold; /* Negrita para el nombre */
 }
 
-.trip-date, .trip-driver, .trip-seats {
-  font-size: 1rem; /* Tamaño de fuente para la información del viaje */
-  color: #555; /* Color gris suave para el texto */
-  margin: 2px 0; /* Espacio entre las líneas */
+.chat-message {
+  font-size: 1rem; /* Tamaño de fuente para el mensaje */
+  color: #555; /* Color gris suave para el mensaje */
 }
 
-.button-group {
-  display: flex; /* Uso de flexbox para alinear los botones */
-  flex-direction: row; /* Dirección horizontal para los botones */
-  gap: 8px; /* Espacio entre los botones */
+.timestamp {
+  font-size: 0.9rem; /* Tamaño de fuente para la marca de tiempo */
+  color: #999; /* Color gris más claro */
 }
 
-.cancel-button {
-  --background: #ff4d4d; /* Color de fondo del botón de cancelar */
-  --color: white; /* Color del texto del botón de cancelar */
+.input-container {
+  margin-top: 1rem; /* Espacio en la parte superior del contenedor de entrada */
 }
 
-.view-button {
-  --background: #007bff; /* Color de fondo del botón de ver */
-  --color: white; /* Color del texto del botón de ver */
+.message-input {
+  border-radius: 20px; /* Bordes redondeados para la entrada de mensaje */
+}
+
+.send-button {
+  margin-left: 8px; /* Espacio a la izquierda del botón */
+  border-radius: 20px; /* Bordes redondeados para el botón */
+  --background: #007bff; /* Color de fondo del botón */
+  --color: white; /* Color del texto del botón */
 }

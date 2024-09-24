@@ -30,7 +30,8 @@ const routes: Routes = [
   {
     path: 'publicar',
     loadChildren: () => import('./pages/publicar/publicar.module').then( m => m.PublicarPageModule)
-  },  {
+  },
+  {
     path: 'perfil',
     loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
   },
@@ -46,6 +47,26 @@ const routes: Routes = [
     path: 'buscar-viajes',
     loadChildren: () => import('./pages/buscar-viajes/buscar-viajes.module').then( m => m.BuscarViajesPageModule)
   },
+  {
+    path: 'publicar-viajes',
+    loadChildren: () => import('./pages/publicar-viajes/publicar-viajes.module').then( m => m.PublicarViajesPageModule)
+  },
+  {
+    path: 'mensajes-chat/:id',
+    loadChildren: () => import('./pages/mensajes-chat/mensajes-chat.module').then( m => m.MensajesChatPageModule)
+  },  {
+    path: 'perfil-edit',
+    loadChildren: () => import('./pages/perfil-edit/perfil-edit.module').then( m => m.PerfilEditPageModule)
+  },
+  {
+    path: 'detalles-viaje',
+    loadChildren: () => import('./pages/detalles-viaje/detalles-viaje.module').then( m => m.DetallesViajePageModule)
+  },
+  {
+    path: 'detalles-mis-viajes',
+    loadChildren: () => import('./pages/detalles-mis-viajes/detalles-mis-viajes.module').then( m => m.DetallesMisViajesPageModule)
+  },
+
 
 ];
 

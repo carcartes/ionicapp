@@ -75,6 +75,7 @@ h1 {
   color: inherit; /* Asegura que el color herede del toolbar */
   font-weight: bold; /* Opcional: ajusta el peso de la fuente según sea necesario */
 }
+
 .custom-margin{
   margin-left: 9px;
 }
@@ -84,4 +85,32 @@ custom-margin-number{
 
 .custom-icon {
   font-size: 25px;
+}
+
+.driver-picture {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: block;
+  border: 2px solid #3880ff; /* Borde azul */
+}
+
+.trip-info, .car-info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Espaciado entre items */
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  background-color: #f0f0f0; /* Fondo gris claro */
+  border-radius: 8px; /* Bordes redondeados */
+}
+
+ion-label {
+  font-weight: bold;
 }

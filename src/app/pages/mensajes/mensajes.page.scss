@@ -88,3 +88,48 @@ h1 {
 .ion-text-center h2 {
   font-weight: bolder;
 }
+
+.custom-background {
+  background-color: #f9f9f9; /* Fondo suave */
+}
+
+.page-title {
+  font-size: 1.8rem; /* Tamaño de fuente del título */
+  font-weight: bold; /* Negrita para el título */
+  margin-bottom: 1rem; /* Espacio debajo del título */
+}
+
+.message-list {
+  margin-top: 1rem; /* Espacio en la parte superior de la lista */
+}
+
+.message-item {
+  background-color: white; /* Fondo blanco para los elementos de la lista */
+  border-radius: 10px; /* Bordes redondeados */
+  margin-bottom: 0.5rem; /* Espacio entre elementos */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: transform 0.2s; /* Transición suave para efecto de hover */
+}
+
+.message-item:hover {
+  transform: scale(1.02); /* Efecto de aumento al pasar el mouse */
+}
+
+.sender-name {
+  font-size: 1.2rem; /* Tamaño de fuente para el nombre del remitente */
+  font-weight: bold; /* Negrita para el nombre */
+}
+
+.last-message {
+  font-size: 1rem; /* Tamaño de fuente para el último mensaje */
+  color: #555; /* Color gris suave */
+}
+
+.timestamp {
+  font-size: 0.9rem; /* Tamaño de fuente para la marca de tiempo */
+  color: #999; /* Color gris más claro */
+}
+
+.navigate-icon {
+  color: #007bff; /* Color del ícono de navegación */
+}

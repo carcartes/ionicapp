@@ -3,7 +3,6 @@
   </ion-header>
   <ion-content>
     <ion-list>
-      <!-- Authentication-related menu items -->
       <ion-item *ngIf="!isAuthenticated" [routerLink]="['/login']">
         <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         <ion-label>Iniciar sesión</ion-label>
@@ -23,6 +22,10 @@
       <ion-item *ngIf="isAuthenticated" [routerLink]="['/perfil']">
         <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         <ion-label>Perfil</ion-label>
+      </ion-item>
+      <ion-item *ngIf="isAuthenticated" [routerLink]="['/perfil-editar']">
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        <ion-label>Editar Perfil</ion-label> <!-- New button -->
       </ion-item>
       <ion-item *ngIf="isAuthenticated" (click)="logout()">
         <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
@@ -53,23 +56,33 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="main-content" class="ion-padding custom-background">
-  <ion-text color="primary" class="ion-text-center">
-    <h2 class="page-title">Tus Viajes</h2>
-  </ion-text>
-  
-  <ion-list class="trip-list">
-    <ion-item *ngFor="let viaje of viajes; let i = index" class="trip-item">
-      <ion-label>
-        <h2 class="trip-route">{{ viaje.origen }} - {{ viaje.destino }}</h2>
-        <p class="trip-date">Fecha: {{ viaje.fecha }}</p>
-        <p class="trip-driver">Conductor: {{ viaje.conductor }}</p>
-        <p class="trip-seats">Asientos disponibles: {{ viaje.asientosDisponibles }}</p>
-      </ion-label>
-      <div class="button-group">
-        <ion-button fill="outline" (click)="confirmarCancelacion(i)" class="cancel-button">Cancelar</ion-button>
-        <ion-button fill="outline" [routerLink]="['/detalles-mis-viajes']" class="view-button">Ver</ion-button>
-      </div>
+<ion-content class="ion-padding">
+  <form (ngSubmit)="onSubmit()" #editProfileForm="ngForm">
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input type="text" name="firstName" [(ngModel)]="profile.firstName" required></ion-input>
     </ion-item>
-  </ion-list>
+    
+    <ion-item>
+      <ion-label position="floating">Apellido</ion-label>
+      <ion-input type="text" name="lastName" [(ngModel)]="profile.lastName" required></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="floating">Número de celular</ion-label>
+      <ion-input type="tel" name="phone" [(ngModel)]="profile.phone" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Correo electrónico</ion-label>
+      <ion-input type="email" name="email" [(ngModel)]="profile.email" required></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label position="floating">Fecha de nacimiento</ion-label>
+      <ion-input type="date" name="birthDate" [(ngModel)]="profile.birthDate" required></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" type="submit">Guardar Cambios</ion-button>
+  </form>
 </ion-content>
