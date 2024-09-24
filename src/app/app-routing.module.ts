@@ -66,6 +66,10 @@ const routes: Routes = [
     path: 'detalles-mis-viajes',
     loadChildren: () => import('./pages/detalles-mis-viajes/detalles-mis-viajes.module').then( m => m.DetallesMisViajesPageModule)
   },
+  {
+    path: 'password',
+    loadChildren: () => import('./pages/password/password.module').then( m => m.PasswordPageModule)
+  },
 
 
 ];
