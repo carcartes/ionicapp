@@ -1,0 +1,34 @@
+<ion-content [fullscreen]="true">
+
+  <!-- Texto arriba de la barra de búsqueda -->
+  <ion-text class="heading" color="primary">
+    <h2>A donde vas?</h2>
+  </ion-text>
+
+  <!-- Barra de búsqueda que abrirá el ion-select y mostrará el campus seleccionado -->
+  <ion-searchbar 
+    placeholder="Selecciona tu destino" 
+    [(ngModel)]="selectedCampus" 
+    (ionFocus)="openSelect()">
+  </ion-searchbar>
+
+  <!-- Ion-select que estará oculto -->
+  <ion-item style="display: none;">
+    <ion-select #campusSelect (ionChange)="onCampusSelected($event)" interface="alert" placeholder="Selecciona un campus">
+      <ion-select-option value="Penco">Penco</ion-select-option>
+      <ion-select-option value="Talcahuano">Talcahuano</ion-select-option>
+      <ion-select-option value="Concepcion">Concepcion</ion-select-option>
+      <ion-select-option value="Hualpen">Hualpen</ion-select-option>
+      <ion-select-option value="Chiguayante">Chiguayante</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Imagen ajustada para que el botón siempre esté visible sin necesidad de hacer scroll -->
+  <div *ngIf="showMap" class="full-screen-image">
+    <img src="assets/destino.png" alt="Mapa del campus" class="map-image" />
+    <ion-button shape="round" size="large" class="arrow-button" (click)="goToNextPage()">
+      <ion-icon name="arrow-forward-outline" class="large-icon"></ion-icon>
+    </ion-button>
+  </div>
+
+</ion-content>

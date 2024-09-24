@@ -1,0 +1,25 @@
+<ion-content [fullscreen]="true">
+
+  <!-- Texto del título -->
+  <ion-text class="heading" color="primary">
+    <h2>¿Cuántos pasajeros puedes llevar en este viaje?</h2>
+  </ion-text>
+
+  <div class="passenger-counter">
+    <ion-button (click)="decreasePassengers()" fill="clear">
+      <ion-icon name="remove-circle-outline"></ion-icon>
+    </ion-button>
+
+    <h1>{{ passengerCount }}</h1>
+
+    <ion-button (click)="increasePassengers()" fill="clear">
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Botón para navegar a la siguiente página -->
+  <ion-button shape="round" size="large" class="arrow-button" (click)="goToNextPage()">
+    <ion-icon name="arrow-forward-outline" class="large-icon"></ion-icon>
+  </ion-button>
+
+</ion-content>

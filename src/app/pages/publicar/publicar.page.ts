@@ -33,12 +33,8 @@ export class PublicarPage implements OnInit {
 
   // Navigate to the publicar-viajes page with query parameters
   goToPublicarViajes() {
-    this.router.navigate(['/publicar-viajes'], {
-      queryParams: {
-        origen: this.origen,
-        destino: this.destino,
-        pasajeros: this.pasajeros
-      }
+    this.router.navigate(['/origen'], {
+      
     });
   }
 }

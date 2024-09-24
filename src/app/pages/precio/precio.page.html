@@ -1,0 +1,25 @@
+<ion-content [fullscreen]="true">
+
+  <!-- Texto del título -->
+  <ion-text class="heading" color="primary">
+    <h2>Fija el precio por asiento</h2>
+  </ion-text>
+
+  <div class="price-counter">
+    <ion-button (click)="decreasePrice()" fill="clear">
+      <ion-icon name="remove-circle-outline"></ion-icon>
+    </ion-button>
+
+    <h1>$ {{ price }}</h1>
+
+    <ion-button (click)="increasePrice()" fill="clear">
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Botón para navegar a la siguiente página -->
+  <ion-button shape="round" size="large" class="arrow-button" (click)="goToNextPage()">
+    <ion-icon name="arrow-forward-outline" class="large-icon"></ion-icon>
+  </ion-button>
+
+</ion-content>

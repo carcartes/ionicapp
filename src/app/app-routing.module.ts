@@ -54,7 +54,8 @@ const routes: Routes = [
   {
     path: 'mensajes-chat/:id',
     loadChildren: () => import('./pages/mensajes-chat/mensajes-chat.module').then( m => m.MensajesChatPageModule)
-  },  {
+  },
+  {
     path: 'perfil-edit',
     loadChildren: () => import('./pages/perfil-edit/perfil-edit.module').then( m => m.PerfilEditPageModule)
   },
@@ -69,6 +70,38 @@ const routes: Routes = [
   {
     path: 'password',
     loadChildren: () => import('./pages/password/password.module').then( m => m.PasswordPageModule)
+  },
+  {
+    path: 'destino',
+    loadChildren: () => import('./pages/destino/destino.module').then( m => m.DestinoPageModule)
+  },
+  {
+    path: 'origen',
+    loadChildren: () => import('./pages/origen/origen.module').then( m => m.OrigenPageModule)
+  },
+  {
+    path: 'ruta',
+    loadChildren: () => import('./pages/ruta/ruta.module').then( m => m.RutaPageModule)
+  },
+  {
+    path: 'fecha',
+    loadChildren: () => import('./pages/fecha/fecha.module').then( m => m.FechaPageModule)
+  },
+  {
+    path: 'pasajeros',
+    loadChildren: () => import('./pages/pasajeros/pasajeros.module').then( m => m.PasajerosPageModule)
+  },
+  {
+    path: 'precio',
+    loadChildren: () => import('./pages/precio/precio.module').then( m => m.PrecioPageModule)
+  },
+  {
+    path: 'descripcion',
+    loadChildren: () => import('./pages/descripcion/descripcion.module').then( m => m.DescripcionPageModule)
+  },
+  {
+    path: 'autos',
+    loadChildren: () => import('./pages/autos/autos.module').then( m => m.AutosPageModule)
   },
 
 
