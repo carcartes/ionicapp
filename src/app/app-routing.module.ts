@@ -30,7 +30,8 @@ const routes: Routes = [
   {
     path: 'publicar',
     loadChildren: () => import('./pages/publicar/publicar.module').then( m => m.PublicarPageModule)
-  },  {
+  },
+  {
     path: 'perfil',
     loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
   },
@@ -45,6 +46,10 @@ const routes: Routes = [
   {
     path: 'buscar-viajes',
     loadChildren: () => import('./pages/buscar-viajes/buscar-viajes.module').then( m => m.BuscarViajesPageModule)
+  },
+  {
+    path: 'password',
+    loadChildren: () => import('./pages/password/password.module').then( m => m.PasswordPageModule)
   },
 
 ];
