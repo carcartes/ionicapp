@@ -1,21 +1,20 @@
+html, body, ion-content {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  font-weight: bolder;
+}
+
 .heading {
   text-align: center;
   margin-top: 10px;
 }
 
-.full-screen-image {
-  position: relative;
-  width: 100%;
-  height: calc(100vh - 150px); /* Se resta el espacio de la barra de búsqueda y el texto */
-}
-
-.map-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ajusta la imagen para que se vea completa sin deformarse */
-}
-
-.arrow-button {
+/* Estilo para el botón que solo será visible al seleccionar una dirección */
+.go-to-destination-button {
   position: absolute;
   bottom: 20px;
   right: 20px;
@@ -29,9 +28,11 @@
   align-items: center;
 }
 
+/* Si deseas un estilo más destacado para el icono */
+.go-to-destination-button ion-icon {
+  font-size: 30px;
+}
+
 .large-icon {
   font-size: 36px; /* Icono de la flecha más grande */
-}
-h2{
-  font-weight: bolder;
 }

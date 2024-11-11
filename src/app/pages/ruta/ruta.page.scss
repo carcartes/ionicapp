@@ -1,21 +1,21 @@
+
+
+html, body, ion-content {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  font-weight: bolder;
+}
+
 .heading {
   text-align: center;
   margin-top: 10px;
 }
 
-.full-screen-image {
-  position: relative;
-  width: 100%;
-  height: calc(100vh - 150px); /* Se resta el espacio de la barra de búsqueda y el texto */
-}
-
-.map-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ajusta la imagen para que se vea completa sin deformarse */
-}
-
-.arrow-button {
+.go-to-pasajeros {
   position: absolute;
   bottom: 20px;
   right: 20px;
@@ -29,9 +29,40 @@
   align-items: center;
 }
 
+.rounded-button ion-icon {
+  font-size: 20px;
+}
+
+
 .large-icon {
   font-size: 36px; /* Icono de la flecha más grande */
 }
-h2{
-  font-weight: bolder;
+
+
+/* ruta.page.scss */
+.info-table {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 10;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  width: 80%; /* Puedes ajustar el ancho de la tabla */
+  font-size: 14px; /* Reducir tamaño de la fuente */
 }
+
+.info-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.info-table td {
+  padding: 6px;
+  text-align: left;
+  color: #333; /* Color oscuro para las letras */
+}
+
+

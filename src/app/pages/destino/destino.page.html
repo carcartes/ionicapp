@@ -1,34 +1,29 @@
 <ion-content [fullscreen]="true">
-
-  <!-- Texto arriba de la barra de búsqueda -->
   <ion-text class="heading" color="primary">
-    <h2>A donde vas?</h2>
+    <h2>¿A dónde vas?</h2>
   </ion-text>
 
-  <!-- Barra de búsqueda que abrirá el ion-select y mostrará el campus seleccionado -->
-  <ion-searchbar 
-    placeholder="Selecciona tu destino" 
-    [(ngModel)]="selectedCampus" 
-    (ionFocus)="openSelect()">
-  </ion-searchbar>
+  <!-- Barra de búsqueda para ingresar una dirección -->
+  <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="onSearch()" debounce="300" placeholder="Buscar destino..."></ion-searchbar>
 
-  <!-- Ion-select que estará oculto -->
-  <ion-item style="display: none;">
-    <ion-select #campusSelect (ionChange)="onCampusSelected($event)" interface="alert" placeholder="Selecciona un campus">
-      <ion-select-option value="Penco">Penco</ion-select-option>
-      <ion-select-option value="Talcahuano">Talcahuano</ion-select-option>
-      <ion-select-option value="Concepcion">Concepcion</ion-select-option>
-      <ion-select-option value="Hualpen">Hualpen</ion-select-option>
-      <ion-select-option value="Chiguayante">Chiguayante</ion-select-option>
-    </ion-select>
-  </ion-item>
+  <!-- Sugerencias de búsqueda -->
+  <ion-list *ngIf="suggestions.length > 0">
+    <ion-item *ngFor="let suggestion of suggestions" (click)="onSelectSuggestion(suggestion)">
+      <ion-label>{{ suggestion.place_name }}</ion-label>
+    </ion-item>
+  </ion-list>
 
-  <!-- Imagen ajustada para que el botón siempre esté visible sin necesidad de hacer scroll -->
-  <div *ngIf="showMap" class="full-screen-image">
-    <img src="assets/destino.png" alt="Mapa del campus" class="map-image" />
-    <ion-button shape="round" size="large" class="arrow-button" (click)="goToNextPage()">
-      <ion-icon name="arrow-forward-outline" class="large-icon"></ion-icon>
-    </ion-button>
-  </div>
+  <!-- Contenedor del mapa, ocupa toda la pantalla disponible -->
+  <div #mapContainer class="map-container"></div>
+
+  <!-- Botón para navegar a la siguiente página (ruta) -->
+  <ion-button 
+    *ngIf="showButton" 
+    shape="round" 
+    size="large"
+    (click)="goToRoutePage()" 
+    class="go-to-route-button">
+    <ion-icon name="arrow-forward-outline" class="large-icon"></ion-icon>
+  </ion-button>
 
 </ion-content>

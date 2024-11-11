@@ -28,10 +28,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/buscar/buscar.module').then( m => m.BuscarPageModule)
   },
   {
-    path: 'publicar',
-    loadChildren: () => import('./pages/publicar/publicar.module').then( m => m.PublicarPageModule)
-  },
-  {
     path: 'perfil',
     loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
   },
@@ -46,10 +42,6 @@ const routes: Routes = [
   {
     path: 'buscar-viajes',
     loadChildren: () => import('./pages/buscar-viajes/buscar-viajes.module').then( m => m.BuscarViajesPageModule)
-  },
-  {
-    path: 'publicar-viajes',
-    loadChildren: () => import('./pages/publicar-viajes/publicar-viajes.module').then( m => m.PublicarViajesPageModule)
   },
   {
     path: 'mensajes-chat/:id',
