@@ -1,5 +1,6 @@
 import { Component, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { ViajeService } from '../../services/viaje.service';
 import { ActivatedRoute, Params } from '@angular/router';  // Importación correcta de ActivatedRoute
 import * as mapboxgl from 'mapbox-gl';
 
@@ -19,7 +20,8 @@ export class DestinoPage implements AfterViewInit {
 
   constructor(
     private navCtrl: NavController,
-    private activatedRoute: ActivatedRoute  // Inyección de ActivatedRoute
+    private activatedRoute: ActivatedRoute, // Inyección de ActivatedRoute
+    private viajeService: ViajeService // Inyecta el servicio ViajeService
   ) {
     (mapboxgl as any).accessToken = 'pk.eyJ1IjoiY2FybG9za2NzIiwiYSI6ImNtMzF0eGliZTEyb2oybG9qM2phdGFxODYifQ.qbEM3FTUA_e68TWGAkDDlg';
   }
@@ -90,6 +92,9 @@ export class DestinoPage implements AfterViewInit {
       lat: this.map.getCenter().lat,
       lng: this.map.getCenter().lng
     };
+
+    // Guardar el destino usando el servicio ViajeService
+    this.viajeService.setDestino({ lat: destino.lat, lng: destino.lng });
     this.navCtrl.navigateForward(['/ruta'], {
       queryParams: {
         origen: JSON.stringify(this.origen),

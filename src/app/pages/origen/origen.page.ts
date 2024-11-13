@@ -1,5 +1,6 @@
 import { Component, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { ViajeService } from '../../services/viaje.service';
 import * as mapboxgl from 'mapbox-gl';
 
 @Component({
@@ -14,9 +15,13 @@ export class OrigenPage implements AfterViewInit {
   suggestions: any[] = []; // Almacena las sugerencias de búsqueda
   showButton: boolean = false; // Propiedad para controlar la visibilidad del botón
 
-  constructor(private navCtrl: NavController) {
+  constructor(
+    private navCtrl: NavController,
+    private viajeService: ViajeService // Inyecta el servicio ViajeService
+  ) {
     // Inicializa Mapbox con tu API Key
     (mapboxgl as any).accessToken = 'pk.eyJ1IjoiY2FybG9za2NzIiwiYSI6ImNtMzF0eGliZTEyb2oybG9qM2phdGFxODYifQ.qbEM3FTUA_e68TWGAkDDlg';
+    
   }
 
   ngAfterViewInit() {
@@ -81,6 +86,8 @@ export class OrigenPage implements AfterViewInit {
   // Navega a la siguiente página (destino) y pasa el origen
   goToNextPage() {
     const origen = this.map.getCenter(); // Obtener el origen del mapa
+    // Guardar el origen usando el servicio ViajeService
+    this.viajeService.setOrigen({ lat: origen.lat, lng: origen.lng });
     this.navCtrl.navigateForward('/destino', {
       queryParams: {
         origen: JSON.stringify({ lat: origen.lat, lng: origen.lng })

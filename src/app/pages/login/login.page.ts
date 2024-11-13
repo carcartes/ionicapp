@@ -13,11 +13,12 @@ export class LoginPage {
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  login() {
+  async login() {
     if (this.username && this.password) {
-      // Aquí deberías llamar a un servicio de backend real
-      if (this.authService.login(this.username, this.password)) {
-        this.router.navigate(['/home']);  // Redirecciona al home después del login
+      // Usa await para esperar la respuesta del login
+      const isAuthenticated = await this.authService.login(this.username, this.password);
+      if (isAuthenticated) {
+        this.router.navigate(['/home']);
       } else {
         alert('Credenciales incorrectas');
       }

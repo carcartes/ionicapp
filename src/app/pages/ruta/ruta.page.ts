@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef, HostListener } from '@
 import { ActivatedRoute, Router } from '@angular/router';
 import * as mapboxgl from 'mapbox-gl';
 import { GeoJSON } from 'geojson';
+import { ViajeService } from '../../services/viaje.service';  // Asegúrate de que la ruta al servicio sea correcta
 
 @Component({
   selector: 'app-ruta',
@@ -17,7 +18,11 @@ export class RutaPage implements AfterViewInit {
   origenDireccion: string = '';
   destinoDireccion: string = '';
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private viajeService: ViajeService  // Inyectamos el servicio
+  ) {
     (mapboxgl as any).accessToken = 'pk.eyJ1IjoiY2FybG9za2NzIiwiYSI6ImNtMzF0eGliZTEyb2oybG9qM2phdGFxODYifQ.qbEM3FTUA_e68TWGAkDDlg';
   }
 
@@ -26,6 +31,8 @@ export class RutaPage implements AfterViewInit {
       if (params['origen'] && params['destino']) {
         this.origen = JSON.parse(params['origen']);
         this.destino = JSON.parse(params['destino']);
+        this.viajeService.setOrigen(this.origen);  // Guardamos el origen en el servicio
+        this.viajeService.setDestino(this.destino);  // Guardamos el destino en el servicio
         this.getDireccion(this.origen, 'origen'); // Obtener dirección de origen
         this.getDireccion(this.destino, 'destino'); // Obtener dirección de destino
         this.initializeMap();
@@ -118,8 +125,8 @@ export class RutaPage implements AfterViewInit {
     }
   }
 
-  navigateToPassengers() {
-    this.router.navigate(['/pasajeros']);
+  navigateToFecha() {
+    this.router.navigate(['/fecha']);
   }
 
   @HostListener('window:resize', ['$event'])

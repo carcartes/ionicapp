@@ -1,6 +1,5 @@
 <ion-menu side="start" content-id="main-content" class="custom-menu">
-  <ion-header>
-  </ion-header>
+  <ion-header></ion-header>
   <ion-content>
     <ion-list>
       <ion-item>
@@ -18,17 +17,13 @@
 <!-- Main Content -->
 <ion-header>
   <ion-toolbar class="thin-toolbar">
-    <ion-title class="ion-text-center"><a [routerLink]="['/home']" class="toolbar-title">
-      TellevoAPP
-    </a></ion-title>
-  
+    <ion-title class="ion-text-center"><a [routerLink]="['/home']" class="toolbar-title">TellevoAPP</a></ion-title>
     <ion-buttons slot="start" class="ion-padding toolbar-buttons">
       <ion-menu-button class="large-menu-button">
         <ion-icon name="person-outline"></ion-icon>
         <ion-icon name="chevron-down-outline"></ion-icon>
       </ion-menu-button>
     </ion-buttons>
-    
     <ion-buttons slot="end" class="ion-padding toolbar-buttons">
       <ion-icon name="search-outline" class="ion-margin-end small-icon" [routerLink]="['/buscar']"></ion-icon>
       <ion-icon name="add-circle-outline" [routerLink]="['/publicar']"></ion-icon>
@@ -41,10 +36,9 @@
     <ion-text color="primary" class="ion-text-center">
       <h2>Registro de Usuario</h2>
     </ion-text>
-
     <ion-card>
       <ion-card-content>
-        <form (ngSubmit)="register()">
+        <form (ngSubmit)="onRegister()">
           <ion-item>
             <ion-label position="floating">Nombre</ion-label>
             <ion-input [(ngModel)]="name" name="name" type="text" required></ion-input>
@@ -76,14 +70,12 @@
       </ion-card-content>
     </ion-card>
 
-
     <ion-text color="medium" class="ion-text-center ion-margin-top">
       <p>¿Ya tienes una cuenta? <a href="#">Inicia sesión aquí</a></p>
     </ion-text>
   </div>
 </ion-content>
 
-<!-- Footer -->
 <ion-footer>
   <ion-toolbar>
     <ion-title class="ion-text-center">

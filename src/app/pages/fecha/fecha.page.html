@@ -1,5 +1,4 @@
 <ion-content [fullscreen]="true">
-
   <!-- Texto del título -->
   <ion-text class="heading" color="primary">
     <h2>¿Cuándo vas a viajar?</h2>
@@ -8,12 +7,11 @@
   <!-- Selector de fecha -->
   <ion-item>
     <ion-label>Fecha</ion-label>
-    <ion-datetime displayFormat="MM/DD/YYYY"></ion-datetime>
+    <ion-datetime [(ngModel)]="fecha" displayFormat="MM/DD/YYYY"></ion-datetime>
   </ion-item>
 
   <!-- Botón para navegar a la siguiente página -->
   <ion-button shape="round" size="large" class="arrow-button" (click)="goToNextPage()">
     <ion-icon name="arrow-forward-outline" class="large-icon"></ion-icon>
   </ion-button>
-
 </ion-content>
