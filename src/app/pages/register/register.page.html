@@ -25,8 +25,11 @@
       </ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="end" class="ion-padding toolbar-buttons">
-      <ion-icon name="search-outline" class="ion-margin-end small-icon" [routerLink]="['/buscar']"></ion-icon>
-      <ion-icon name="add-circle-outline" [routerLink]="['/publicar']"></ion-icon>
+      <!-- Mostrar icono de búsqueda solo si el usuario está autenticado -->
+      <ion-icon *ngIf="isAuthenticated" name="search-outline" class="ion-margin-end small-icon" [routerLink]="['/buscar']"></ion-icon>
+      <!-- Mostrar icono de publicar solo si el usuario está autenticado -->
+      <ion-icon *ngIf="isAuthenticated" name="add-circle-outline" [routerLink]="['/publicar']"></ion-icon>
+      <ion-button *ngIf="!isAuthenticated" class="empty-button"></ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -62,6 +65,10 @@
           <ion-item>
             <ion-label position="floating">Confirmar Contraseña</ion-label>
             <ion-input [(ngModel)]="confirmPassword" name="confirmPassword" type="password" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Número de Teléfono</ion-label>
+            <ion-input [(ngModel)]="phone" name="phone" type="tel" pattern="[0-9]{9}" required></ion-input>
           </ion-item>
           <ion-button expand="full" class="ion-margin-top" type="submit">
             Registrarse

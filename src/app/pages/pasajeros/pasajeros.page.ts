@@ -17,7 +17,7 @@ export class PasajerosPage {
 
   // Método para aumentar el contador de pasajeros
   increasePassengers() {
-    if (this.passengerCount < 5) { // Ajusta el máximo según tus necesidades
+    if (this.passengerCount < 4) { // Ajusta el máximo según tus necesidades
       this.passengerCount++;
     }
   }

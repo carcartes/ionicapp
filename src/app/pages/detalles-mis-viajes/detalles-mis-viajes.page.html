@@ -1,9 +1,8 @@
 <ion-menu side="start" content-id="main-content" class="custom-menu">
-  <ion-header>
-  </ion-header>
+  <ion-header></ion-header>
   <ion-content>
     <ion-list>
-      <!-- Authentication-related menu items -->
+      <!-- Menú de navegación -->
       <ion-item *ngIf="!isAuthenticated" [routerLink]="['/login']">
         <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         <ion-label>Iniciar sesión</ion-label>
@@ -35,87 +34,53 @@
 <!-- Main Content -->
 <ion-header>
   <ion-toolbar class="thin-toolbar">
-    <ion-title class="ion-text-center"><a [routerLink]="['/home']" class="toolbar-title">
-      TellevoAPP
-    </a></ion-title>
-  
+    <ion-title class="ion-text-center">
+      <a [routerLink]="['/home']" class="toolbar-title">TellevoAPP</a>
+    </ion-title>
     <ion-buttons slot="start" class="ion-padding toolbar-buttons">
       <ion-menu-button class="large-menu-button">
         <ion-icon name="person-outline"></ion-icon>
         <ion-icon name="chevron-down-outline"></ion-icon>
       </ion-menu-button>
     </ion-buttons>
-    
     <ion-buttons slot="end" class="ion-padding toolbar-buttons">
       <ion-icon name="search-outline" class="ion-margin-end small-icon" [routerLink]="['/buscar']"></ion-icon>
-      <ion-icon name="add-circle-outline" [routerLink]="['/publicar']"></ion-icon>
+      <ion-icon name="add-circle-outline" [routerLink]="['/origen']"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-card>
-    <ion-card-header>
-      <ion-img src="assets/pfp.png" alt="Conductor" class="driver-picture"></ion-img>
-      <ion-card-title class="ion-text-center">Detalles del Viaje</ion-card-title>
-      <ion-card-subtitle class="ion-text-center">Conductor: Toreto</ion-card-subtitle>
-    </ion-card-header>
-
-    <ion-card-content>
-      <ion-img src="assets/map.png"></ion-img>
-      <div class="trip-info">
-        <div class="info-item">
-          <ion-label>Origen:</ion-label>
-          <span>Concepcion</span>
-        </div>
-        <div class="info-item">
-          <ion-label>Destino:</ion-label>
-          <span>Penco</span>
-        </div>
-        <div class="info-item">
-          <ion-label>Hora de Salida:</ion-label>
-          <span>14:00</span>
-        </div>
-        <div class="info-item">
-          <ion-label>Hora de Llegada:</ion-label>
-          <span>16:00</span>
-        </div>
-        <div class="info-item">
-          <ion-label>Precio:</ion-label>
-          <span>CLP 5,000</span>
-        </div>
-        <div class="info-item">
-          <ion-label>Asientos Disponibles:</ion-label>
-          <span>2</span>
-        </div>
-      </div>
-
+  <div *ngIf="viaje && viaje.origen && viaje.destino">
+    <ion-card>
       <ion-card-header>
-        <ion-card-title class="ion-text-center">Detalles del Auto</ion-card-title>
+        <ion-card-title>{{ viaje.origen }} → {{ viaje.destino }}</ion-card-title>
+        <ion-card-subtitle>{{ viaje.fecha }}</ion-card-subtitle>
       </ion-card-header>
-      <div class="car-info">
-        <div class="info-item">
-          <ion-label>Marca:</ion-label>
-          <span>Suzuki</span>
-        </div>
-        <div class="info-item">
-          <ion-label>Modelo:</ion-label>
-          <span>Alto</span>
-        </div>
-        <div class="info-item">
-          <ion-label>Color:</ion-label>
-          <span>Azul</span>
-        </div>
-        <div class="info-item">
-          <ion-label>Matrícula:</ion-label>
-          <span>ABC-123</span>
-        </div>
-      </div>
+      <ion-card-content>
+        <p><strong>Conductor:</strong> {{ nombreConductor }}</p>
+        <p><strong>Auto:</strong> {{ viaje.auto }}</p>
+        <p><strong>Descripción:</strong> {{ viaje.descripcion }}</p>
+        <p><strong>Precio:</strong> ${{ viaje.precio }}</p>
+        <p><strong>Asientos disponibles:</strong> {{ viaje.pasajeros }}</p>
+      </ion-card-content>
 
-      <!-- Replace "Confirmar Reserva" button with "Volver" button -->
-      <ion-button expand="block" color="primary" class="ion-margin-top" [routerLink]="['/viajes']">
-        Volver
-      </ion-button>
-    </ion-card-content>
-  </ion-card>
+      <!-- Mapa con la ruta -->
+      <div id="map" style="height: 400px; margin-top: 20px;"></div>
+
+      <!-- Icono de mensaje (WhatsApp) en la esquina inferior derecha -->
+
+      <ion-icon
+      name="chatbubble-ellipses-outline"
+      class="whatsapp-icon"
+      (click)="abrirWhatsApp()"
+      [class.disabled]="!telefonoConductor">
+    </ion-icon>
+
+    </ion-card>
+  </div>
+
+  <div *ngIf="!viaje || !viaje.origen">
+    <p>No se encontraron detalles del viaje.</p>
+  </div>
 </ion-content>

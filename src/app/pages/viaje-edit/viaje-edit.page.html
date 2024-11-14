@@ -49,56 +49,64 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content id="main-content" class="ion-padding custom-background">
-  <!-- Información del perfil -->
-  <div class="profile-container ion-padding">
-    <ion-row class="ion-align-items-center">
-      <ion-col size="4">
-        <ion-img src="assets/pfp.png" alt="Profile Picture" class="profile-picture"></ion-img>
-      </ion-col>
-      <ion-col size="8">
-        <ion-text color="black">
-          <h2 class="profile-name">{{ userData.name || 'Nombre' }}</h2>
-          <p class="profile-age">{{ calculateAge(userData.dob) || 'Edad' }} años</p>
-        </ion-text>
-      </ion-col>
-    </ion-row>
 
-    <ion-list class="profile-details-list">
+<ion-content *ngIf="viaje">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Detalles del Viaje</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <!-- Origen (deshabilitado para edición) -->
       <ion-item>
-        <ion-label>
-          <h6>Nombre</h6>
-          <p>{{ userData.name || 'Sin nombre' }}</p>
-        </ion-label>
+        <ion-label>Origen</ion-label>
+        <ion-input [(ngModel)]="viaje.origen" [disabled]="true"></ion-input>
       </ion-item>
+
+      <!-- Destino (deshabilitado para edición) -->
       <ion-item>
-        <ion-label>
-          <h6>Apellido</h6>
-          <p>{{ userData.surname || 'Sin apellido' }}</p>
-        </ion-label>
+        <ion-label>Destino</ion-label>
+        <ion-input [(ngModel)]="viaje.destino" [disabled]="true"></ion-input>
       </ion-item>
+
+      <!-- Fecha editable -->
       <ion-item>
-        <ion-label>
-          <h6>Número de celular</h6>
-          <p>{{ userData.phone || 'Sin número' }}</p>
-        </ion-label>
+        <ion-label>Fecha</ion-label>
+        <ion-datetime [(ngModel)]="viaje.fecha" [min]="minDate" [max]="maxDate"></ion-datetime>
       </ion-item>
+
+      <!-- Precio (deshabilitado para edición) -->
       <ion-item>
-        <ion-label>
-          <h6>Correo electrónico</h6>
-          <p>{{ userData.email || 'Sin correo' }}</p>
-        </ion-label>
+        <ion-label>Precio</ion-label>
+        <ion-input type="number" [(ngModel)]="viaje.precio" [disabled]="true"></ion-input>
       </ion-item>
+
       <ion-item>
+        <ion-label>Asientos Disponibles</ion-label>
+        <ion-select [(ngModel)]="viaje.asientosDisponibles">
+          <ion-select-option *ngFor="let num of [1, 2, 3, 4]" [value]="num">
+            {{ num }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Botón para guardar cambios -->
+      <ion-button expand="block" (click)="guardarCambios()">Guardar Cambios</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Reservas</ion-card-title>
+    </ion-card-header>
+    <ion-list>
+      <ion-item *ngFor="let reserva of reservas; let i = index">
         <ion-label>
-          <h6>Fecha de nacimiento</h6>
-          <p>{{ userData.dob || 'Sin fecha de nacimiento' }}</p>
+          {{ reserva.viaje?.destino }} - {{ reserva.viaje?.origen }}
         </ion-label>
+        <ion-button color="danger" slot="end" (click)="eliminarReserva(i)">
+          Eliminar
+        </ion-button>
       </ion-item>
     </ion-list>
-
-    <ion-button expand="full" routerLink="/perfil-edit" class="edit-button">
-      Editar Perfil
-    </ion-button>
-  </div>
+  </ion-card>
 </ion-content>

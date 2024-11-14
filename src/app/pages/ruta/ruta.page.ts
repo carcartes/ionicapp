@@ -29,12 +29,10 @@ export class RutaPage implements AfterViewInit {
   ngAfterViewInit() {
     this.activatedRoute.queryParams.subscribe(params => {
       if (params['origen'] && params['destino']) {
-        this.origen = JSON.parse(params['origen']);
-        this.destino = JSON.parse(params['destino']);
-        this.viajeService.setOrigen(this.origen);  // Guardamos el origen en el servicio
-        this.viajeService.setDestino(this.destino);  // Guardamos el destino en el servicio
-        this.getDireccion(this.origen, 'origen'); // Obtener dirección de origen
-        this.getDireccion(this.destino, 'destino'); // Obtener dirección de destino
+        this.origen = params['origen'];  // Directamente usamos la dirección sin JSON.parse
+        this.destino = params['destino'];  // Directamente usamos la dirección sin JSON.parse
+        this.origenDireccion = this.origen; // Asignamos la dirección a la variable
+        this.destinoDireccion = this.destino; // Asignamos la dirección a la variable
         this.initializeMap();
         setTimeout(() => {
           if (this.map) {
@@ -45,32 +43,11 @@ export class RutaPage implements AfterViewInit {
     });
   }
 
-  async getDireccion(coordinates: { lat: number, lng: number }, tipo: string) {
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${coordinates.lng},${coordinates.lat}.json?access_token=${(mapboxgl as any).accessToken}`;
-    
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      
-      if (data.features && data.features.length > 0) {
-        const direccion = data.features[0].place_name;
-        
-        if (tipo === 'origen') {
-          this.origenDireccion = direccion;
-        } else if (tipo === 'destino') {
-          this.destinoDireccion = direccion;
-        }
-      }
-    } catch (error) {
-      console.error('Error al obtener la dirección:', error);
-    }
-  }
-
   initializeMap() {
     this.map = new mapboxgl.Map({
       container: this.mapContainer.nativeElement,
       style: 'mapbox://styles/mapbox/streets-v11',
-      center: [this.origen.lng, this.origen.lat],
+      center: [-70.6483, -33.4569],  // Centrado inicial (por ejemplo, Santiago, Chile)
       zoom: 10
     });
 
@@ -80,49 +57,86 @@ export class RutaPage implements AfterViewInit {
   }
 
   async drawRoute() {
-    const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${this.origen.lng},${this.origen.lat};${this.destino.lng},${this.destino.lat}?alternatives=false&geometries=geojson&steps=true&access_token=${(mapboxgl as any).accessToken}`;
+    // Convertir direcciones a coordenadas usando la API de Mapbox Geocoding
+    const origenCoordinates = await this.getCoordinates(this.origenDireccion);
+    const destinoCoordinates = await this.getCoordinates(this.destinoDireccion);
 
+    if (origenCoordinates && destinoCoordinates) {
+      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${origenCoordinates.lng},${origenCoordinates.lat};${destinoCoordinates.lng},${destinoCoordinates.lat}?alternatives=false&geometries=geojson&steps=true&access_token=${(mapboxgl as any).accessToken}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.routes && data.routes.length > 0) {
+          const route = data.routes[0];
+          const geojson: GeoJSON.FeatureCollection = {
+            type: 'FeatureCollection',
+            features: [
+              {
+                type: 'Feature',
+                geometry: route.geometry,
+                properties: {}
+              }
+            ]
+          };
+
+          // Acceder a la distancia de la ruta en metros y convertirla a kilómetros
+          this.distancia = route.distance / 1000; // Convertir a kilómetros
+
+          // Añadir la capa de la ruta al mapa
+          if (this.map) {
+            this.map.addLayer({
+              id: 'route',
+              type: 'line',
+              source: {
+                type: 'geojson',
+                data: geojson
+              },
+              paint: {
+                'line-color': '#0074cc',
+                'line-width': 5
+              }
+            });
+
+            // Ajustar la vista del mapa para mostrar toda la ruta
+            this.map.fitBounds([
+              [origenCoordinates.lng, origenCoordinates.lat], // Esquina suroeste
+              [destinoCoordinates.lng, destinoCoordinates.lat]  // Esquina noreste
+            ], { padding: 20 });
+          }
+        } else {
+          console.error('No se encontraron rutas en la respuesta de la API de Directions');
+        }
+      } catch (error) {
+        console.error('Error al obtener la ruta de la API de Directions:', error);
+      }
+    }
+  }
+
+  async getCoordinates(direccion: string): Promise<{ lat: number, lng: number } | null> {
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${direccion}.json?access_token=${(mapboxgl as any).accessToken}`;
+    
     try {
       const response = await fetch(url);
       const data = await response.json();
 
-      if (data.routes && data.routes.length > 0) {
-        const route = data.routes[0];
-        const geojson: GeoJSON.FeatureCollection = {
-          type: 'FeatureCollection',
-          features: [
-            {
-              type: 'Feature',
-              geometry: route.geometry,
-              properties: {}
-            }
-          ]
-        };
-
-        // Acceder a la distancia de la ruta en metros y convertirla a kilómetros
-        this.distancia = route.distance / 1000; // Convertir a kilómetros
-
-        // Añadir la capa de la ruta al mapa
-        if (this.map) {
-          this.map.addLayer({
-            id: 'route',
-            type: 'line',
-            source: {
-              type: 'geojson',
-              data: geojson
-            },
-            paint: {
-              'line-color': '#0074cc',
-              'line-width': 5
-            }
-          });
-        }
-      } else {
-        console.error('No se encontraron rutas en la respuesta de la API de Directions');
+      if (data.features && data.features.length > 0) {
+        const coordinates = data.features[0].geometry.coordinates;
+        return { lat: coordinates[1], lng: coordinates[0] };  // Retorna lat y lng
       }
     } catch (error) {
-      console.error('Error al obtener la ruta de la API de Directions:', error);
+      console.error('Error al obtener las coordenadas:', error);
     }
+
+    return null;  // En caso de error, retorna null
+  }
+
+  // Método para publicar el viaje, asegúrate de enviar los valores correctos
+  publicarViaje() {
+    this.viajeService.setOrigen(this.origenDireccion);  // Guardar la dirección correctamente
+    this.viajeService.setDestino(this.destinoDireccion);  // Guardar la dirección correctamente
+    // Otros detalles del viaje, como la fecha, precio, etc.
   }
 
   navigateToFecha() {

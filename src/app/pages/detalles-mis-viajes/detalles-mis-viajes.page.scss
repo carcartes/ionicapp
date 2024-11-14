@@ -114,3 +114,12 @@ custom-margin-number{
 ion-label {
   font-weight: bold;
 }
+
+.whatsapp-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 40px;
+  color: #25D366; /* Color de WhatsApp */
+  cursor: pointer;
+}

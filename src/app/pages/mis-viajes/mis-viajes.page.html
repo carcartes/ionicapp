@@ -49,56 +49,58 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content id="main-content" class="ion-padding custom-background">
-  <!-- Información del perfil -->
-  <div class="profile-container ion-padding">
-    <ion-row class="ion-align-items-center">
-      <ion-col size="4">
-        <ion-img src="assets/pfp.png" alt="Profile Picture" class="profile-picture"></ion-img>
-      </ion-col>
-      <ion-col size="8">
-        <ion-text color="black">
-          <h2 class="profile-name">{{ userData.name || 'Nombre' }}</h2>
-          <p class="profile-age">{{ calculateAge(userData.dob) || 'Edad' }} años</p>
-        </ion-text>
-      </ion-col>
-    </ion-row>
 
-    <ion-list class="profile-details-list">
-      <ion-item>
+<ion-content id="main-content">
+  <ion-segment [(ngModel)]="segmentModel" class="segment-tabs">
+    <ion-segment-button value="conductor">
+      <ion-label>Viajes como Conductor</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="mis-viajes">
+      <ion-label>Mis Viajes</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Viajes como Conductor -->
+  <ion-content *ngIf="segmentModel === 'conductor'">
+    <ion-list>
+      <ion-item *ngFor="let viaje of viajesComoConductor; let i = index" class="trip-item">
         <ion-label>
-          <h6>Nombre</h6>
-          <p>{{ userData.name || 'Sin nombre' }}</p>
+          <h2 class="trip-route">{{ viaje.origen }} - {{ viaje.destino }}</h2>
+          <p class="trip-date">Fecha: {{ viaje.fecha }}</p>
+          <p class="trip-seats">Asientos disponibles: {{ viaje.pasajeros }}</p>
         </ion-label>
+
+        <div class="button-group">
+          <ion-button fill="outline" (click)="editarViaje(i)" class="edit-button">Editar</ion-button>
+          <ion-button fill="outline" (click)="eliminarViaje(i)" class="delete-button">Eliminar</ion-button>
+        </div>
       </ion-item>
-      <ion-item>
+    </ion-list>
+    <!-- Mensaje cuando no hay viajes como conductor -->
+  <div *ngIf="viajesComoConductor.length === 0" class="no-trips-message">
+    <p>No tienes viajes como conductor.</p>
+  </div>
+  </ion-content>
+
+  <!-- Viajes Reservados -->
+  <ion-content *ngIf="segmentModel === 'mis-viajes'">
+    <ion-list>
+      <ion-item *ngFor="let viaje of misViajes; let i = index" class="trip-item">
         <ion-label>
-          <h6>Apellido</h6>
-          <p>{{ userData.surname || 'Sin apellido' }}</p>
+          <h2 class="trip-route">{{ viaje.viaje.origen }} - {{ viaje.viaje.destino }}</h2>
+          <p class="trip-date">Fecha: {{ viaje.viaje.fecha }}</p>
+          <p class="trip-seats">Asientos disponibles: {{ viaje.viaje.pasajeros }}</p>
         </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          <h6>Número de celular</h6>
-          <p>{{ userData.phone || 'Sin número' }}</p>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          <h6>Correo electrónico</h6>
-          <p>{{ userData.email || 'Sin correo' }}</p>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          <h6>Fecha de nacimiento</h6>
-          <p>{{ userData.dob || 'Sin fecha de nacimiento' }}</p>
-        </ion-label>
+
+        <div class="button-group">
+          <ion-button fill="outline" (click)="cancelarReserva(i)" class="cancel-button">Cancelar</ion-button>
+          <ion-button fill="outline" [routerLink]="['/detalles-mis-viajes', viaje.id]" class="view-button">Ver</ion-button>
+        </div>
       </ion-item>
     </ion-list>
 
-    <ion-button expand="full" routerLink="/perfil-edit" class="edit-button">
-      Editar Perfil
-    </ion-button>
-  </div>
+    <div *ngIf="misViajes.length === 0" class="no-trips-message">
+      <p>No tienes viajes reservados.</p>
+    </div>
+  </ion-content>
 </ion-content>

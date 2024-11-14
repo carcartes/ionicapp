@@ -1,8 +1,8 @@
 <ion-menu side="start" content-id="main-content" class="custom-menu">
-  <ion-header>
-  </ion-header>
+  <ion-header></ion-header>
   <ion-content>
     <ion-list>
+      <!-- Menú de navegación -->
       <ion-item *ngIf="!isAuthenticated" [routerLink]="['/login']">
         <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         <ion-label>Iniciar sesión</ion-label>
@@ -31,21 +31,18 @@
   </ion-content>
 </ion-menu>
 
-
 <!-- Main Content -->
 <ion-header>
   <ion-toolbar class="thin-toolbar">
-    <ion-title class="ion-text-center"><a [routerLink]="['/home']" class="toolbar-title">
-      TellevoAPP
-    </a></ion-title>
-  
+    <ion-title class="ion-text-center">
+      <a [routerLink]="['/home']" class="toolbar-title">TellevoAPP</a>
+    </ion-title>
     <ion-buttons slot="start" class="ion-padding toolbar-buttons">
       <ion-menu-button class="large-menu-button">
         <ion-icon name="person-outline"></ion-icon>
         <ion-icon name="chevron-down-outline"></ion-icon>
       </ion-menu-button>
     </ion-buttons>
-    
     <ion-buttons slot="end" class="ion-padding toolbar-buttons">
       <ion-icon name="search-outline" class="ion-margin-end small-icon" [routerLink]="['/buscar']"></ion-icon>
       <ion-icon name="add-circle-outline" [routerLink]="['/origen']"></ion-icon>
@@ -55,50 +52,53 @@
 
 <ion-content id="main-content" class="ion-padding">
   <ion-text color="primary" class="ion-text-center">
-    <h1>Para estudiantes de Duoc: Conecta, ahorra y llega más lejos juntos.</h1>
+    <h1>Conecta, ahorra y llega más lejos con TellevoAPP</h1>
   </ion-text>
 
   <!-- Caja con borde redondeado y sombra -->
   <ion-card>
     <ion-card-content>
       <ion-list>
+        <!-- Campo de origen -->
         <ion-item>
-          <ion-icon class="custom-icon"  name="ellipse-outline"></ion-icon>
-          <ion-select class="custom-margin"[(ngModel)]="origen" placeholder="De" required>
-            <ion-select-option value="Campus Alameda">Campus Alameda</ion-select-option>
-            <ion-select-option value="Campus Antonio Varas">Campus Antonio Varas</ion-select-option>
-            <ion-select-option value="Campus Educación Continua">Campus Educación Continua</ion-select-option>
-            <ion-select-option value="Campus Maipú">Campus Maipú</ion-select-option>
-            <ion-select-option value="Campus Melipilla">Campus Melipilla</ion-select-option>
-            <ion-select-option value="Campus Padre Alonso de Ovalle">Campus Padre Alonso de Ovalle</ion-select-option>
-            <ion-select-option value="Campus Plaza Norte">Campus Plaza Norte</ion-select-option>
-            <ion-select-option value="Campus Plaza Oeste">Campus Plaza Oeste</ion-select-option>
-            <ion-select-option value="Campus Plaza Vespucio">Campus Plaza Vespucio</ion-select-option>
-            <ion-select-option value="Campus Puente Alto">Campus Puente Alto</ion-select-option>
-            <ion-select-option value="Campus San Bernardo">Campus San Bernardo</ion-select-option>
-            <ion-select-option value="Campus San Carlos de Apoquindo">Campus San Carlos de Apoquindo</ion-select-option>
-            <ion-select-option value="Campus San Joaquín">Campus San Joaquín</ion-select-option>
-            <ion-select-option value="Campus Valparaíso">Campus Valparaíso</ion-select-option>
-            <ion-select-option value="Campus Viña del Mar">Campus Viña del Mar</ion-select-option>
-            <ion-select-option value="Campus San Andrés de Concepción">Campus San Andrés de Concepción</ion-select-option>
-            <ion-select-option value="Campus Arauco">Campus Arauco</ion-select-option>
-            <ion-select-option value="Campus Nacimiento">Campus Nacimiento</ion-select-option>
-            <ion-select-option value="Campus Villarrica">Campus Villarrica</ion-select-option>
-            <ion-select-option value="Campus Puerto Montt">Campus Puerto Montt</ion-select-option>
-            <!-- Agrega más opciones según lo necesario -->
-          </ion-select>
+          <ion-icon class="custom-icon" name="ellipse-outline"></ion-icon>
+          <ion-input 
+            [(ngModel)]="origenInput"
+            (ionInput)="buscarSugerencias('origen')" 
+            placeholder="De" 
+            required>
+          </ion-input>
         </ion-item>
+
+        <!-- Sugerencias de origen -->
+        <ion-list *ngIf="origenSugerencias.length > 0">
+          <ion-item *ngFor="let lugar of origenSugerencias" (click)="seleccionarLugar('origen', lugar)">
+            {{ lugar.place_name }}
+          </ion-item>
+        </ion-list>
+
+        <!-- Campo de destino -->
         <ion-item>
           <ion-icon name="ellipse-outline"></ion-icon>
-          <ion-input placeholder="A"></ion-input>
+          <ion-input 
+            [(ngModel)]="destinoInput"
+            (ionInput)="buscarSugerencias('destino')" 
+            placeholder="A" 
+            required>
+          </ion-input>
         </ion-item>
-        <ion-item>
-          <ion-icon name="calendar-outline"></ion-icon>
-          <ion-input placeholder="Hoy"></ion-input>
-        </ion-item>
+
+        <!-- Sugerencias de destino -->
+        <ion-list *ngIf="destinoSugerencias.length > 0">
+          <ion-item *ngFor="let lugar of destinoSugerencias" (click)="seleccionarLugar('destino', lugar)">
+            {{ lugar.place_name }}
+          </ion-item>
+        </ion-list>
+
+        <!-- Pasajeros -->
         <ion-item>
           <ion-icon class="custom-icon" name="person-outline"></ion-icon>
-          <ion-select class="custom-margin" placeholder="1 Pasajero" required>
+          <ion-select [(ngModel)]="pasajeros" placeholder="1 Pasajero" required>
             <ion-select-option value="1">1</ion-select-option>
             <ion-select-option value="2">2</ion-select-option>
             <ion-select-option value="3">3</ion-select-option>
@@ -106,28 +106,28 @@
           </ion-select>
         </ion-item>
       </ion-list>
-      <ion-button expand="block" [routerLink]="['/buscar-viajes']" [queryParams]="{ origen: origen, destino: destino }">
+      <ion-button expand="block" [routerLink]="['/buscar-viajes']" [queryParams]="{ origen: origenInput, destino: destinoInput }">
         Buscar
       </ion-button>
     </ion-card-content>
   </ion-card>
 
-  <!-- Información Adicional -->
-  <div class="ion-padding ion-margin-top">
-    <ion-text color="medium" class="info-text">
-      <ion-icon name="globe-outline"></ion-icon>
-      <h6 class="info-text">Encuentra los mejores viajes</h6>
-      <p class="info-text">Como estudiante de Duoc, tienes acceso a una red de compañeros en toda la ciudad. Encuentra el viaje perfecto con salida y llegada en los puntos más cercanos a tu sede.</p>
-
-      <ion-icon name="shield-checkmark-outline" class="ion-margin-top"></ion-icon>
-      <h6 class="info-text">Viaja seguro y tranquilo</h6>
-      <p class="info-text">Tu seguridad es nuestra prioridad. Conoce a tus compañeros de viaje a través de perfiles verificados y reseñas de estudiantes como tú. Viaja con confianza y tranquilidad.</p>
-
-      <ion-icon name="rocket-outline" class="ion-margin-top"></ion-icon>
-      <h6 class="info-text">¡Busca, elige y a viajar!</h6>
-      <p class="info-text">Reservar un viaje es fácil y rápido. Utiliza nuestra app para encontrar viajes cercanos y coordinar con otros estudiantes en minutos. ¡No pierdas tiempo y únete a la comunidad de Duoc que ya está viajando!</p>
-    </ion-text>
-  </div>
+    <!-- Información Adicional -->
+    <div class="ion-padding ion-margin-top">
+      <ion-text color="medium" class="info-text">
+        <ion-icon name="globe-outline"></ion-icon>
+        <h6 class="info-text">Encuentra los mejores viajes</h6>
+        <p class="info-text">Como estudiante de Duoc, tienes acceso a una red de compañeros en toda la ciudad. Encuentra el viaje perfecto con salida y llegada en los puntos más cercanos a tu sede.</p>
+  
+        <ion-icon name="shield-checkmark-outline" class="ion-margin-top"></ion-icon>
+        <h6 class="info-text">Viaja seguro y tranquilo</h6>
+        <p class="info-text">Tu seguridad es nuestra prioridad. Conoce a tus compañeros de viaje a través de perfiles verificados y reseñas de estudiantes como tú. Viaja con confianza y tranquilidad.</p>
+  
+        <ion-icon name="rocket-outline" class="ion-margin-top"></ion-icon>
+        <h6 class="info-text">¡Busca, elige y a viajar!</h6>
+        <p class="info-text">Reservar un viaje es fácil y rápido. Utiliza nuestra app para encontrar viajes cercanos y coordinar con otros estudiantes en minutos. ¡No pierdas tiempo y únete a la comunidad de Duoc que ya está viajando!</p>
+      </ion-text>
+    </div>
 </ion-content>
 
 <!-- Footer -->

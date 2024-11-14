@@ -1,15 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+
 @Component({
   selector: 'app-buscar',
   templateUrl: './buscar.page.html',
   styleUrls: ['./buscar.page.scss'],
 })
 export class BuscarPage implements OnInit {
-  origen: string = '';  // Variable para el origen
-  destino: string = ''; // Variable para el destino
+  origenInput: string = ''; // Entrada para el origen
+  destinoInput: string = ''; // Entrada para el destino
+  origenSugerencias: any[] = []; // Sugerencias para el origen
+  destinoSugerencias: any[] = []; // Sugerencias para el destino
+  fecha: string = ''; // Fecha seleccionada
+  pasajeros: number = 1; // Número de pasajeros seleccionado
   isAuthenticated: boolean = false;
-  constructor(public authService: AuthService) { }
+
+  constructor(private router: Router, public authService: AuthService) {}
 
   ngOnInit() {
     this.authService.authenticated$.subscribe(auth => {
@@ -17,9 +24,46 @@ export class BuscarPage implements OnInit {
       console.log(this.isAuthenticated ? 'Usuario autenticado' : 'Usuario no autenticado');
     });
   }
-
   logout() {
     this.authService.logout();
     console.log('Sesión cerrada');
+  }
+
+  
+
+  /**
+   * Busca sugerencias de lugares usando Mapbox
+   * @param tipo - 'origen' o 'destino'
+   */
+  buscarSugerencias(tipo: 'origen' | 'destino') {
+    const query = tipo === 'origen' ? this.origenInput : this.destinoInput;
+
+    if (query.length > 2) {
+      fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=pk.eyJ1IjoiY2FybG9za2NzIiwiYSI6ImNtMzF0eGliZTEyb2oybG9qM2phdGFxODYifQ.qbEM3FTUA_e68TWGAkDDlg`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (tipo === 'origen') {
+            this.origenSugerencias = data.features;
+          } else {
+            this.destinoSugerencias = data.features;
+          }
+        })
+        .catch((err) => console.error('Error fetching Mapbox data:', err));
+    }
+  }
+
+  /**
+   * Selecciona un lugar y guarda su dirección
+   * @param tipo - 'origen' o 'destino'
+   * @param lugar - Lugar seleccionado
+   */
+  seleccionarLugar(tipo: 'origen' | 'destino', lugar: any) {
+    if (tipo === 'origen') {
+      this.origenInput = lugar.place_name;
+      this.origenSugerencias = [];
+    } else {
+      this.destinoInput = lugar.place_name;
+      this.destinoSugerencias = [];
+    }
   }
 }

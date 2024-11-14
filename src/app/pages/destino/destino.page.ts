@@ -1,7 +1,7 @@
 import { Component, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { ViajeService } from '../../services/viaje.service';
 import { ActivatedRoute, Params } from '@angular/router';  // Importación correcta de ActivatedRoute
+import { ViajeService } from '../../services/viaje.service';
 import * as mapboxgl from 'mapbox-gl';
 
 @Component({
@@ -17,6 +17,7 @@ export class DestinoPage implements AfterViewInit {
   showMap: boolean = false;
   showButton: boolean = false;
   origen: any; // Guardar el origen recibido
+  destinoDireccion: string = ''; // Dirección del destino
 
   constructor(
     private navCtrl: NavController,
@@ -30,7 +31,7 @@ export class DestinoPage implements AfterViewInit {
     // Obtener parámetros de la URL
     this.activatedRoute.queryParams.subscribe((params: Params) => {  // Especificar tipo para params
       if (params['origen']) {
-        this.origen = JSON.parse(params['origen']);
+        this.origen = params['origen']; // Ahora recibimos la dirección, no coordenadas
         console.log('Origen recibido:', this.origen);
 
         // Inicializar el mapa en el origen
@@ -45,12 +46,12 @@ export class DestinoPage implements AfterViewInit {
   }
 
   initializeMap() {
+    // Centrar el mapa usando las coordenadas del origen
     this.map = new mapboxgl.Map({
       container: this.mapContainer.nativeElement,
       style: 'mapbox://styles/mapbox/streets-v11',
-      center: [this.origen.lng, this.origen.lat], // Usar las coordenadas del origen
-      zoom: 14,
-      interactive: true
+      center: [-70.6483, -33.4569], // Centrado inicial
+      zoom: 12
     });
   }
 
@@ -61,7 +62,6 @@ export class DestinoPage implements AfterViewInit {
       );
 
       const data = await response.json();
-
       if (data.features && data.features.length > 0) {
         this.suggestions = data.features;
         this.showMap = true; // Mostrar el mapa después de que se realice la búsqueda
@@ -70,9 +70,11 @@ export class DestinoPage implements AfterViewInit {
   }
 
   onSelectSuggestion(suggestion: any) {
-    const [lng, lat] = suggestion.geometry.coordinates;
+    // Obtener la dirección
+    this.destinoDireccion = suggestion.place_name;
 
     // Centrar el mapa en la dirección seleccionada
+    const [lng, lat] = suggestion.geometry.coordinates;
     if (this.map) {
       this.map.flyTo({
         center: [lng, lat],
@@ -88,17 +90,14 @@ export class DestinoPage implements AfterViewInit {
 
   goToRoutePage() {
     // Navegar a la página de ruta, pasando el origen y destino como parámetros
-    const destino = {
-      lat: this.map.getCenter().lat,
-      lng: this.map.getCenter().lng
-    };
+    const destino = this.destinoDireccion; // Usamos la dirección seleccionada
 
     // Guardar el destino usando el servicio ViajeService
-    this.viajeService.setDestino({ lat: destino.lat, lng: destino.lng });
+    this.viajeService.setDestino(this.destinoDireccion); // Guardamos solo la dirección
     this.navCtrl.navigateForward(['/ruta'], {
       queryParams: {
-        origen: JSON.stringify(this.origen),
-        destino: JSON.stringify(destino)
+        origen: this.origen, // Pasamos la dirección del origen
+        destino: this.destinoDireccion // Pasamos la dirección del destino
       }
     });
   }

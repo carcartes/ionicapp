@@ -1,8 +1,8 @@
 <ion-menu side="start" content-id="main-content" class="custom-menu">
-  <ion-header>
-  </ion-header>
+  <ion-header></ion-header>
   <ion-content>
     <ion-list>
+      <!-- Menú de navegación -->
       <ion-item *ngIf="!isAuthenticated" [routerLink]="['/login']">
         <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         <ion-label>Iniciar sesión</ion-label>
@@ -34,50 +34,35 @@
 <!-- Main Content -->
 <ion-header>
   <ion-toolbar class="thin-toolbar">
-    <ion-title class="ion-text-center"><a [routerLink]="['/home']" class="toolbar-title">
-      TellevoAPP
-    </a></ion-title>
-  
+    <ion-title class="ion-text-center">
+      <a [routerLink]="['/home']" class="toolbar-title">TellevoAPP</a>
+    </ion-title>
     <ion-buttons slot="start" class="ion-padding toolbar-buttons">
       <ion-menu-button class="large-menu-button">
         <ion-icon name="person-outline"></ion-icon>
         <ion-icon name="chevron-down-outline"></ion-icon>
       </ion-menu-button>
     </ion-buttons>
-    
     <ion-buttons slot="end" class="ion-padding toolbar-buttons">
       <ion-icon name="search-outline" class="ion-margin-end small-icon" [routerLink]="['/buscar']"></ion-icon>
-      <ion-icon name="add-circle-outline" [routerLink]="['/publicar']"></ion-icon>
+      <ion-icon name="add-circle-outline" [routerLink]="['/origen']"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="main-content" class="ion-padding custom-background">
-  <ion-text color="primary" class="ion-text-center">
-    <h2 class="page-title">Mensajes</h2>
-  </ion-text>
-  
-  <ion-list class="message-list">
-    <ion-item *ngFor="let message of messages" [routerLink]="['/mensajes-chat', message.id]" class="message-item">
-      <ion-avatar slot="start">
-        <ion-img src="assets/pfp.png"></ion-img>
-      </ion-avatar>
-      <ion-label>
-        <h2 class="sender-name">{{ message.senderName }}</h2>
-        <p class="last-message">{{ message.lastMessage }}</p>
-        <p class="timestamp">{{ message.timestamp | date: 'shortTime' }}</p>
-      </ion-label>
-      <ion-icon name="chevron-forward-outline" slot="end" class="navigate-icon"></ion-icon>
-    </ion-item>
-  </ion-list>
+<ion-content id="main-content" class="ion-padding"*ngIf="viaje && usuario">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ viaje.origen }} → {{ viaje.destino }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Fecha:</strong> {{ viaje.fecha }}</p>
+      <p><strong>Precio:</strong> ${{ viaje.precio }}</p>
+      <p><strong>Pasajeros Disponibles:</strong> {{ viaje.pasajeros }}</p>
+      <p><strong>Descripción:</strong> {{ viaje.descripcion }}</p>
+      <!-- Mostrar nombre y apellido del conductor -->
+      <p><strong>Conductor:</strong> {{ usuario.name }} {{ usuario.surname }}</p>
+    </ion-card-content>
+  </ion-card>
+  <ion-button expand="block" color="primary" (click)="reservarViaje()">Reservar</ion-button>
 </ion-content>
-
-
-<!-- Footer -->
-<ion-footer>
-  <ion-toolbar>
-    <ion-title class="ion-text-center">
-      &copy; 2024 TellevoAPP - Todos los derechos reservados
-    </ion-title>
-  </ion-toolbar>
-</ion-footer>

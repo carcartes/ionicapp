@@ -26,7 +26,7 @@ h1 {
 
 /* Espacio entre el título y el párrafo */
 .info-text p {
-  margin: 4px 0 8px; /* Reduce el espacio entre párrafos */
+  margin: 4px 0 8px;
   font-size: 15px;
 }
 
@@ -61,21 +61,19 @@ h1 {
   text-align: center;
 }
 
-/* Custom styles for the menu */
 .custom-menu {
   --height: 100vh;
-  top: 60px; /* Offset the menu to start below the header */
+  top: 60px;
   height: var(--height);
-  position: absolute; /* Ensure it doesn't cover the header */
+  position: absolute; 
 }
 
-/* Estilo para quitar el subrayado del enlace dentro del ion-title */
+
 .toolbar-title {
-  text-decoration: none; /* Quita el subrayado del enlace */
-  color: inherit; /* Asegura que el color herede del toolbar */
-  font-weight: bold; /* Opcional: ajusta el peso de la fuente según sea necesario */
+  text-decoration: none; 
+  color: inherit; 
+  font-weight: bold; 
 }
-
 .custom-margin{
   margin-left: 9px;
 }
@@ -85,32 +83,4 @@ custom-margin-number{
 
 .custom-icon {
   font-size: 25px;
-}
-
-.driver-picture {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  margin: 0 auto;
-  display: block;
-  border: 2px solid #3880ff; /* Borde azul */
-}
-
-.trip-info, .car-info {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px; /* Espaciado entre items */
-}
-
-.info-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px;
-  background-color: #f0f0f0; /* Fondo gris claro */
-  border-radius: 8px; /* Bordes redondeados */
-}
-
-ion-label {
-  font-weight: bold;
 }

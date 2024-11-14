@@ -10,16 +10,25 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginPage {
   username: string = '';
   password: string = '';
+  isAuthenticated: boolean = false;  // Inicialmente no autenticado
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {
+    // Nos suscribimos al estado de autenticación
+    this.authService.authenticated$.subscribe(auth => {
+      this.isAuthenticated = auth;  // Actualiza el estado de autenticación
+    });
+  }
 
   async login() {
     if (this.username && this.password) {
-      // Usa await para esperar la respuesta del login
-      const isAuthenticated = await this.authService.login(this.username, this.password);
-      if (isAuthenticated) {
-        this.router.navigate(['/home']);
-      } else {
+      try {
+        const isAuthenticated = await this.authService.login(this.username, this.password);
+        if (isAuthenticated) {
+          this.router.navigate(['/home']);
+        } else {
+          alert('Credenciales incorrectas');
+        }
+      } catch (error) {
         alert('Credenciales incorrectas');
       }
     } else {

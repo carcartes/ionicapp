@@ -8,12 +8,8 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full'
-  },
-  {
-    path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
   },
   {
     path: 'login',
@@ -32,10 +28,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
   },
   {
-    path: 'mensajes',
-    loadChildren: () => import('./pages/mensajes/mensajes.module').then( m => m.MensajesPageModule)
-  },
-  {
     path: 'viajes',
     loadChildren: () => import('./pages/viajes/viajes.module').then( m => m.ViajesPageModule)
   },
@@ -52,12 +44,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/perfil-edit/perfil-edit.module').then( m => m.PerfilEditPageModule)
   },
   {
-    path: 'detalles-viaje',
-    loadChildren: () => import('./pages/detalles-viaje/detalles-viaje.module').then( m => m.DetallesViajePageModule)
-  },
-  {
-    path: 'detalles-mis-viajes',
-    loadChildren: () => import('./pages/detalles-mis-viajes/detalles-mis-viajes.module').then( m => m.DetallesMisViajesPageModule)
+    path: 'detalles-mis-viajes/:id',
+    loadChildren: () => import('./pages/detalles-mis-viajes/detalles-mis-viajes.module').then(m => m.DetallesMisViajesPageModule)
   },
   {
     path: 'password',
@@ -95,6 +83,22 @@ const routes: Routes = [
     path: 'autos',
     loadChildren: () => import('./pages/autos/autos.module').then( m => m.AutosPageModule)
   },
+  {
+    path: 'detalle-viaje/:id',
+    loadChildren: () => import('./pages/detalle-viaje/detalle-viaje.module').then( m => m.DetalleViajePageModule)
+  },
+  {
+    path: 'mis-viajes',
+    loadChildren: () => import('./pages/mis-viajes/mis-viajes.module').then( m => m.MisViajesPageModule)
+  },
+  {
+    path: 'viaje-edit/:id',
+    loadChildren: () => import('./pages/viaje-edit/viaje-edit.module').then( m => m.ViajeEditPageModule)
+  },
+
+
+
+
 
 
 ];
