@@ -84,7 +84,9 @@ export class DestinoPage implements AfterViewInit {
 
       // Limpiar las sugerencias y mostrar el botón
       this.suggestions = [];
-      this.showButton = true;
+      setTimeout(() => {
+        this.showButton = true;  // Mostrar el botón después de 3 segundos
+      }, 4300); // 3000 ms = 3 segundos
     }
   }
 

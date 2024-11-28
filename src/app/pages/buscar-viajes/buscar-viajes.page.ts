@@ -18,6 +18,7 @@ export class BuscarViajesPage implements OnInit {
   viajes: any[] = [];  // Lista de viajes encontrados
   db: any;  // Referencia a Firestore
   isAuthenticated: boolean = false;
+  driverName: string = '';
 
   constructor(private route: ActivatedRoute, public authService: AuthService) {
     const app = initializeApp(environment.firebaseConfig);
@@ -59,33 +60,51 @@ export class BuscarViajesPage implements OnInit {
     // Usar los valores de origenInput y destinoInput
     const origenBusqueda = this.origenInput.trim();
     const destinoBusqueda = this.destinoInput.trim();
-
-    if (!origenBusqueda || !destinoBusqueda) {
-      console.error('Faltan datos para realizar la búsqueda.');
-      return;
-    }
-
+  
     const viajesRef = collection(this.db, 'viajes');
-
-    // Crear la consulta con el origen y destino
-    const q = query(
-      viajesRef,
-      where('origen', '==', origenBusqueda),
-      where('destino', '==', destinoBusqueda)
-    );
-
+  
+    let q;
+  
+    // Condiciones según los campos ingresados
+    if (origenBusqueda && destinoBusqueda) {
+      // Filtrar por origen y destino
+      q = query(viajesRef, where('origen', '==', origenBusqueda), where('destino', '==', destinoBusqueda));
+    } else if (origenBusqueda) {
+      // Filtrar solo por origen
+      q = query(viajesRef, where('origen', '==', origenBusqueda));
+    } else if (destinoBusqueda) {
+      // Filtrar solo por destino
+      q = query(viajesRef, where('destino', '==', destinoBusqueda));
+    } else {
+      // Sin filtros, obtener todos los viajes
+      q = query(viajesRef);
+    }
+  
     try {
       const querySnapshot = await getDocs(q);
-
+  
       if (querySnapshot.empty) {
         console.log('No se encontraron viajes que coincidan con los criterios.');
         this.viajes = [];
       } else {
+        // Obtener la fecha actual en formato UTC
+        const fechaActual = new Date();  // Esto obtiene la fecha actual en el horario local
+        const fechaActualUTC = new Date(Date.UTC(fechaActual.getUTCFullYear(), fechaActual.getUTCMonth(), fechaActual.getUTCDate()));
+  
         this.viajes = querySnapshot.docs.map((doc) => {
           const data = doc.data();
+          const viajeFecha = new Date(data['fecha']);  // Convertir la fecha del viaje a objeto Date
+  
           console.log('Viaje encontrado:', data);
-          return { id: doc.id, ...data };
-        });
+  
+          // Filtrar solo los viajes cuya fecha es posterior a la actual
+          // Comparar las fechas en UTC utilizando getTime() para obtener el valor en milisegundos
+          if (viajeFecha.getTime() > fechaActualUTC.getTime()) {
+            return { id: doc.id, ...data };
+          } else {
+            return null; // No mostrar el viaje si la fecha ya pasó
+          }
+        }).filter(viaje => viaje !== null);  // Eliminar los viajes con fecha pasada
       }
     } catch (error) {
       console.error('Error al buscar viajes:', error);

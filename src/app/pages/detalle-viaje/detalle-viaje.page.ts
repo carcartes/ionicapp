@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ViajeService } from '../../services/viaje.service';
-import { AuthService } from 'src/app/services/auth.service'; // Importar el AuthService para obtener datos del usuario autenticado
-import { Router } from '@angular/router';  // Importar Router
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';  // Importar AlertController
 
 @Component({
   selector: 'app-detalle-viaje',
@@ -16,34 +17,31 @@ export class DetalleViajePage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private viajeService: ViajeService, // Servicio para obtener detalles del viaje
-    private authService: AuthService,  // Servicio para obtener datos del usuario autenticado
-    private router: Router // Inyectar el servicio Router
+    private viajeService: ViajeService,
+    private authService: AuthService,
+    private router: Router,
+    private alertController: AlertController  // Inyectar AlertController
   ) {}
 
   ngOnInit() {
-    // Suscripción al estado de autenticación
     this.authService.authenticated$.subscribe(auth => {
       this.isAuthenticated = auth;
       console.log(this.isAuthenticated ? 'Usuario autenticado' : 'Usuario no autenticado');
     });
 
-    const viajeId = this.route.snapshot.paramMap.get('id');  // Obtener el ID del viaje
-
+    const viajeId = this.route.snapshot.paramMap.get('id');
     if (viajeId) {
-      // Obtener los datos del viaje como una Promesa
       this.viajeService.getViajeById(viajeId).then(
         (data) => {
-          this.viaje = data;  // Asignar los datos del viaje
-          console.log('Datos del viaje:', this.viaje);  // Verificar los datos del viaje
+          this.viaje = data;
+          console.log('Datos del viaje:', this.viaje);
 
           if (this.viaje && this.viaje.usuario_id) {
-            // Si existe usuario_id, obtener los datos del usuario
             this.authService.getUserData(this.viaje.usuario_id).then(
               (userData) => {
                 if (userData) {
-                  this.usuario = userData;  // Asignar los datos del usuario (conductor)
-                  console.log('Datos del usuario:', this.usuario);  // Verificar los datos del usuario
+                  this.usuario = userData;
+                  console.log('Datos del usuario:', this.usuario);
                 }
               },
               (error: any) => {
@@ -65,8 +63,8 @@ export class DetalleViajePage implements OnInit {
     if (this.viaje && this.isAuthenticated) {
       const usuarioId = await this.authService.getUsuarioId();  // Obtener el id del usuario autenticado
 
-      console.log('ID del usuario:', usuarioId);  // Verificar el usuarioId
-      console.log('ID del viaje creador:', this.viaje.usuario_id);  // Verificar el usuario_id del viaje
+      console.log('ID del usuario:', usuarioId);
+      console.log('ID del viaje creador:', this.viaje.usuario_id);
 
       // Verificar si el usuario que intenta reservar es el mismo que creó el viaje
       if (this.viaje.usuario_id === usuarioId) {
@@ -75,15 +73,16 @@ export class DetalleViajePage implements OnInit {
       }
 
       try {
-        // Verificar que los datos sean válidos
         if (!usuarioId || !this.viaje) {
           console.log('Datos inválidos para la reserva');
           return;  // Si los datos están incompletos o no se encuentran, salir
         }
 
-        // Llamar al método de reservarViaje del servicio
-        await this.viajeService.reservarViaje(usuarioId, this.viaje);
+        await this.viajeService.reservarViaje(usuarioId, this.viaje);  // Llamar al método de reserva
         console.log('Viaje reservado con éxito');
+
+        // Mostrar una alerta indicando que la reserva fue exitosa
+        this.presentAlert('Reserva exitosa', 'El viaje ha sido reservado con éxito.');
 
         // Redirigir al usuario a la página de "mis-viajes"
         this.router.navigate(['/mis-viajes']);
@@ -93,6 +92,17 @@ export class DetalleViajePage implements OnInit {
     } else {
       console.log('Faltan datos para reservar el viaje o el usuario no está autenticado');
     }
+  }
+
+  // Método para mostrar la alerta de reserva exitosa
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
   // Método para cerrar sesión

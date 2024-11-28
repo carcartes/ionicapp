@@ -1,3 +1,38 @@
+<ion-menu side="start" content-id="main-content" class="custom-menu">
+  <ion-header>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <!-- Menú de navegación -->
+      <ion-item *ngIf="!isAuthenticated" [routerLink]="['/login']">
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        <ion-label>Iniciar sesión</ion-label>
+      </ion-item>
+      <ion-item *ngIf="!isAuthenticated" [routerLink]="['/register']">
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        <ion-label>Registrarse</ion-label>
+      </ion-item>
+      <ion-item *ngIf="isAuthenticated" [routerLink]="['/viajes']">
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        <ion-label>Tus Viajes</ion-label>
+      </ion-item>
+      <ion-item *ngIf="isAuthenticated" [routerLink]="['/mensajes']">
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        <ion-label>Mensajes</ion-label>
+      </ion-item>
+      <ion-item *ngIf="isAuthenticated" [routerLink]="['/perfil']">
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-item>
+      <ion-item *ngIf="isAuthenticated" (click)="logout()">
+        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        <ion-label>Cerrar sesión</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<!-- Main Content -->
 <ion-header>
   <ion-toolbar class="thin-toolbar">
     <ion-title class="ion-text-center">
@@ -18,7 +53,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="custom-background">
   <ion-card *ngIf="viajes.length === 0">
     <ion-card-content class="ion-text-center">
       <ion-text color="medium">
@@ -28,20 +63,45 @@
   </ion-card>
 
   <!-- Listado de viajes -->
-  <ion-list *ngIf="viajes.length > 0">
-    <ion-item *ngFor="let viaje of viajes" [routerLink]="['/detalle-viaje', viaje.id]">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>{{ viaje.origen }} → {{ viaje.destino }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <p><strong>Fecha:</strong> {{ viaje.fecha }}</p>
-          <p><strong>Precio:</strong> ${{ viaje.precio }}</p>
-          <p><strong>Pasajeros Disponibles:</strong> {{ viaje.pasajeros }}</p>
-          <p><strong>Descripción:</strong> {{ viaje.descripcion }}</p>
-          <p><strong>Conductor:</strong> Usuario {{ viaje.usuario_id }}</p>
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
-  </ion-list>
+  <div *ngIf="viajes.length > 0">
+    <div *ngFor="let viaje of viajes" class="trip-card" [routerLink]="['/detalle-viaje', viaje.id]">
+      <div class="trip-container">
+        <!-- Precio en la esquina superior derecha -->
+        <div class="trip-price">
+          ${{ viaje.precio }}
+        </div>
+
+        <!-- Ruta con puntos y texto al lado -->
+        <div class="trip-route">
+          <div class="route-point">
+            <div class="point"></div>
+            <span class="route-text">{{ viaje.origen }}</span>
+          </div>
+          <div class="line"></div>
+          <div class="route-point">
+            <div class="point"></div>
+            <span class="route-text">{{ viaje.destino }}</span>
+          </div>
+        </div>
+
+        <!-- Fecha del viaje -->
+        <div class="trip-date">
+          <strong>Fecha:</strong> {{ viaje.fecha }}
+        </div>
+
+        <!-- Línea divisoria -->
+        <div class="divider"></div>
+
+        <!-- Información del conductor -->
+        <div class="driver-info">
+          <img src="assets/pfp.png" alt="Conductor" class="driver-picture" />
+          <div class="driver-details">
+            <p>{{ viaje.usuario_id }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>
+
+

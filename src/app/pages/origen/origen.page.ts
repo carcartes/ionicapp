@@ -74,7 +74,10 @@ export class OrigenPage implements AfterViewInit {
       });
 
       // Muestra el botón solo cuando se selecciona una dirección
-      this.showButton = true;
+      // Retrasar la aparición del botón
+    setTimeout(() => {
+      this.showButton = true;  // Mostrar el botón después de 3 segundos
+    }, 4300); // 3000 ms = 3 segundos
 
       // Limpiar las sugerencias después de seleccionar
       this.suggestions = [];

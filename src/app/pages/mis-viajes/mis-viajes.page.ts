@@ -83,38 +83,50 @@ export class MisViajesPage implements OnInit {
   }
 
   // Método para cancelar una reserva con confirmación
-  async cancelarReserva(index: number) {
-    const viajeId = this.misViajes[index].id;
 
-    const alert = await this.alertController.create({
-      header: 'Confirmar Cancelación',
-      message: '¿Estás seguro de que deseas cancelar esta reserva?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Cancelación de reserva cancelada');
-          }
-        },
-        {
-          text: 'Confirmar',
-          handler: async () => {
-            try {
-              await this.viajeService.cancelarReserva(viajeId);
-              this.misViajes.splice(index, 1);
-              console.log('Reserva cancelada con éxito');
-            } catch (error) {
-              console.error('Error al cancelar el viaje:', error);
+async cancelarReserva(index: number) {
+  const viajeId = this.misViajes[index].id;
+  const viaje = this.misViajes[index];  // Obtener el viaje de la lista de reservas
+
+  const alert = await this.alertController.create({
+    header: 'Confirmar Cancelación',
+    message: '¿Estás seguro de que deseas cancelar esta reserva?',
+    buttons: [
+      {
+        text: 'Cancelar',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: () => {
+          console.log('Cancelación de reserva cancelada');
+        }
+      },
+      {
+        text: 'Confirmar',
+        handler: async () => {
+          try {
+            // Llamar al servicio para cancelar la reserva
+            await this.viajeService.cancelarReserva(viajeId);
+            this.misViajes.splice(index, 1);  // Eliminar el viaje de la lista de viajes reservados
+
+            // Incrementar el número de pasajeros disponibles (sumar 1 asiento)
+            if (viaje.pasajeros !== undefined) {
+              viaje.pasajeros += 1;  // Sumar 1 asiento disponible
+              // Actualizar la base de datos con el nuevo número de pasajeros
+              await this.viajeService.actualizarViaje(viajeId, { pasajeros: viaje.pasajeros });
+              console.log('Reserva cancelada y asientos actualizados');
             }
+          } catch (error) {
+            console.error('Error al cancelar el viaje:', error);
           }
         }
-      ]
-    });
+      }
+    ]
+  });
 
-    await alert.present();
-  }
+  await alert.present();
+}
+
+
 
   // Método para editar un viaje
   editarViaje(index: number) {

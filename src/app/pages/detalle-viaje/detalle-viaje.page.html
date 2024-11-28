@@ -51,18 +51,35 @@
 </ion-header>
 
 <ion-content id="main-content" class="ion-padding"*ngIf="viaje && usuario">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>{{ viaje.origen }} → {{ viaje.destino }}</ion-card-title>
-    </ion-card-header>
+  <div class="trip-container">
+
+    <h2>{{ viaje.fecha }}</h2>
+    <!-- Ruta con puntos y texto al lado -->
+    <div class="trip-route">
+      <div class="route-point">
+        <div class="point"></div>
+        <span class="route-text">{{ viaje.origen }}</span>
+      </div>
+      <div class="line"></div>
+      <div class="route-point">
+        <div class="point"></div>
+        <span class="route-text">{{ viaje.destino }}</span>
+      </div>
+    </div>
+    <div class="divider"></div>
     <ion-card-content>
-      <p><strong>Fecha:</strong> {{ viaje.fecha }}</p>
       <p><strong>Precio:</strong> ${{ viaje.precio }}</p>
       <p><strong>Pasajeros Disponibles:</strong> {{ viaje.pasajeros }}</p>
       <p><strong>Descripción:</strong> {{ viaje.descripcion }}</p>
-      <!-- Mostrar nombre y apellido del conductor -->
-      <p><strong>Conductor:</strong> {{ usuario.name }} {{ usuario.surname }}</p>
+      <div class="divider"></div>
+       <!-- Información del conductor -->
+       <div class="driver-info">
+        <img src="assets/pfp.png" alt="Conductor" class="driver-picture" />
+        <div class="driver-details">
+          <p><strong> {{ usuario.name }} {{ usuario.surname }}</strong></p>
+        </div>
+      </div>
     </ion-card-content>
-  </ion-card>
+  </div>
   <ion-button expand="block" color="primary" (click)="reservarViaje()">Reservar</ion-button>
 </ion-content>

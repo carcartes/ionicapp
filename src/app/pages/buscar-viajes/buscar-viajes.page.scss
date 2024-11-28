@@ -1,12 +1,3 @@
-ion-card {
-  margin-bottom: 20px;
-}
-
-ion-footer {
-  text-align: center;
-  padding: 10px;
-}
-
 ion-icon {
   font-size: 27px;
 }
@@ -83,63 +74,122 @@ h1 {
   color: inherit; 
   font-weight: bold; 
 }
-ion-select {
-  text-align: left; /* Alinea el texto dentro del ion-select a la izquierda */
+.custom-margin{
+  margin-left: 9px;
 }
-.driver-info {
-  display: flex;
-  align-items: center;
-}
-
-.driver-picture {
-  width: 40px; // Adjust size as necessary
-  height: 40px; // Maintain aspect ratio
-  border-radius: 50%; // Circular image
-  margin-right: 8px; // Space between picture and text
+custom-margin-number{
+  margin-left: 5px;
 }
 
-.driver-details {
-  flex: 1; // Take up the remaining space
-}
-.custom-background {
-  background-color: #f9f9f9; /* Fondo suave para la página de búsqueda */
-}
-
-.custom-select, .custom-input {
-  margin-bottom: 1rem; /* Espacio debajo del selector y el input */
-}
-
-.search-button {
-  --background: #007bff; /* Color de fondo para el botón de búsqueda */
-  --color: white; /* Color del texto del botón de búsqueda */
-  margin-bottom: 1rem; /* Espacio debajo del botón de búsqueda */
+.custom-icon {
+  font-size: 25px;
 }
 
 .trip-card {
-  background-color: white; /* Fondo blanco para las tarjetas de viaje */
-  border-radius: 10px; /* Bordes redondeados */
-  margin-bottom: 0.5rem; /* Espacio entre tarjetas */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
-  transition: transform 0.2s; /* Transición suave para efecto de hover */
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 10px auto;
+  max-width: 320px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.2s ease-in-out;
 }
 
 .trip-card:hover {
-  transform: scale(1.02); /* Efecto de aumento al pasar el mouse */
+  transform: scale(1.02);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.trip-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.trip-price {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.trip-route {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.route-point {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  max-width: 90%; /* Limita el ancho de cada punto de ruta */
+}
+
+.point {
+  width: 8px;
+  height: 8px;
+  background-color: #007bff;
+  border-radius: 50%;
+  margin-right: 8px;
+  flex-shrink: 0; /* Evita que el punto se deforme */
+}
+
+.route-text {
+  font-size: 0.80rem;
+  color: #333;
+  white-space: nowrap; /* Evita que el texto pase a otra línea */
+  overflow: hidden; /* Oculta el texto que se desborda */
+  text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es muy largo */
+  font-weight: bold;
+}
+
+.line {
+  width: 2px;
+  height: 30px;
+  background-color: #007bff;
+  margin-left: 3px; /* Alinea la línea con los puntos */
+}
+
+.trip-date {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.divider {
+  height: 1px;
+  background-color: #ccc;
+  margin: 3px 0;
 }
 
 .driver-info {
-  display: flex; /* Uso de flexbox para alinear imagen y detalles del conductor */
-  align-items: center; /* Alineación vertical central */
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
 }
 
 .driver-picture {
-  width: 50px; /* Ancho de la imagen del conductor */
-  height: 50px; /* Alto de la imagen del conductor */
-  border-radius: 50%; /* Imagen redondeada */
-  margin-right: 10px; /* Espacio a la derecha de la imagen */
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
 }
 
 .driver-details {
-  font-size: 1rem; /* Tamaño de fuente para los detalles del conductor */
-  color: #555; /* Color gris suave para el texto */
+  font-size: 0.85rem;
+  color: #555;
 }
+
+/* Ajustamos el contenido para que tenga márgenes */
+.custom-background {
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+
+
