@@ -82,8 +82,7 @@ export class MisViajesPage implements OnInit {
     }
   }
 
-  // Método para cancelar una reserva con confirmación
-
+// Método para cancelar una reserva con confirmación
 async cancelarReserva(index: number) {
   const viajeId = this.misViajes[index].id;
   const viaje = this.misViajes[index];  // Obtener el viaje de la lista de reservas
@@ -110,9 +109,11 @@ async cancelarReserva(index: number) {
 
             // Incrementar el número de pasajeros disponibles (sumar 1 asiento)
             if (viaje.pasajeros !== undefined) {
-              viaje.pasajeros += 1;  // Sumar 1 asiento disponible
-              // Actualizar la base de datos con el nuevo número de pasajeros
-              await this.viajeService.actualizarViaje(viajeId, { pasajeros: viaje.pasajeros });
+              // Aumentar en 1 el número de pasajeros
+              viaje.pasajeros += 1;
+
+              // Llamar al servicio para actualizar el número de pasajeros en la base de datos
+              await this.viajeService.actualizarPasajeros(viaje.id, viaje.pasajeros);  // Actualiza el número de pasajeros
               console.log('Reserva cancelada y asientos actualizados');
             }
           } catch (error) {
@@ -174,6 +175,4 @@ async cancelarReserva(index: number) {
     console.log('Sesión cerrada');
     this.router.navigate(['/login']); // Redirigir al login después de cerrar sesión
   }
-  
-
 }

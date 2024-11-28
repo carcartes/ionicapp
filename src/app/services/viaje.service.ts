@@ -109,13 +109,13 @@ export class ViajeService {
     return this.viajeData;
   }
 
-// Método para obtener un viaje por ID desde Firestore
   async getViajeById(id: string): Promise<any> {
     const viajeRef = doc(this.db, 'viajes', id); // Obtener referencia al documento por ID
     try {
       const docSnap = await getDoc(viajeRef); // Obtener el documento
       if (docSnap.exists()) {
-        return docSnap.data(); // Si el documento existe, devolver los datos
+        // Devolver los datos del viaje junto con el ID del documento
+        return { id: docSnap.id, ...docSnap.data() }; 
       } else {
         console.log('No se encontró el viaje con el ID:', id);
         return null;
@@ -125,7 +125,7 @@ export class ViajeService {
       throw new Error('No se pudo obtener el viaje');
     }
   }
-
+  
   // Método para obtener un viaje reservado por ID desde la colección 'mis-viajes'
   async getViajeReservadoById(id: string): Promise<any> {
     const viajeRef = doc(this.db, 'mis-viajes', id); // Obtener referencia al documento en 'mis-viajes'
@@ -266,5 +266,23 @@ async actualizarViaje(viajeId: string, cambios: any): Promise<void> {
     throw new Error('No se pudo actualizar el viaje');
   }
 }
+async actualizarPasajeros(viajeId: string, nuevosPasajeros: number): Promise<void> {
+  if (!viajeId) {
+    console.error('Error: El ID del viaje no está definido');
+    return; // No continuar si no hay un ID de viaje válido
+  }
+
+  const viajeRef = doc(this.db, 'viajes', viajeId); // Referencia al documento del viaje
+
+  try {
+    // Actualizar el campo de pasajeros
+    await updateDoc(viajeRef, { pasajeros: nuevosPasajeros });
+    console.log('Número de pasajeros actualizado con éxito');
+  } catch (error) {
+    console.error('Error al actualizar el número de pasajeros:', error);
+    throw new Error('No se pudo actualizar el número de pasajeros');
+  }
+}
+
 
 }
