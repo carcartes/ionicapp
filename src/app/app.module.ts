@@ -6,15 +6,17 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-// Importa los módulos de Firebase y AngularFire
+// Importa el nuevo provideHttpClient
+import { provideHttpClient } from '@angular/common/http';
 
+// Importa los módulos de Firebase y AngularFire
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { environment } from '../environments/environment'; // Importa la configuración de Firebase desde environment
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,11 +24,14 @@ import { environment } from '../environments/environment'; // Importa la configu
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig), // Inicializa Firebase
-    AngularFireAuthModule, // Módulo de autenticación
-    AngularFirestoreModule // Módulo de Firestore
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    provideHttpClient(), // Nueva forma de configurar HttpClient
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -73,9 +73,10 @@
       <p><a routerLink="/password">Olvidaste tu Contraseña</a></p>
     </ion-text>
 
-      <ion-text color="medium" class="ion-text-center ion-margin-top">
-        <p>¿No tienes una cuenta? <a href="#">Regístrate aquí</a></p>
-      </ion-text>
+    <ion-text color="medium" class="ion-text-center ion-margin-top">
+      <p>¿No tienes una cuenta? <a (click)="goToRegister()">Regístrate aquí</a></p>
+    </ion-text>
+    
     
   </div>
 </ion-content>

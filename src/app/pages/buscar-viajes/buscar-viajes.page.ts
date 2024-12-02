@@ -1,7 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import { 
+  getFirestore, 
+  collection, 
+  query, 
+  where, 
+  getDocs, 
+  doc, 
+  getDoc 
+} from 'firebase/firestore';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -42,7 +50,7 @@ export class BuscarViajesPage implements OnInit {
       // Llamar a la búsqueda inicial
       this.buscarViajes();
     });
-    this.authService.authenticated$.subscribe(auth => {
+    this.authService.authenticated$.subscribe((auth) => {
       this.isAuthenticated = auth;
       console.log(this.isAuthenticated ? 'Usuario autenticado' : 'Usuario no autenticado');
     });
@@ -53,59 +61,82 @@ export class BuscarViajesPage implements OnInit {
     console.log('Sesión cerrada');
   }
 
-  /**
-   * Busca los viajes que coinciden con la dirección de origen y destino
-   */
   async buscarViajes() {
-    // Usar los valores de origenInput y destinoInput
     const origenBusqueda = this.origenInput.trim();
     const destinoBusqueda = this.destinoInput.trim();
-  
     const viajesRef = collection(this.db, 'viajes');
-  
+    
     let q;
   
-    // Condiciones según los campos ingresados
     if (origenBusqueda && destinoBusqueda) {
-      // Filtrar por origen y destino
-      q = query(viajesRef, where('origen', '==', origenBusqueda), where('destino', '==', destinoBusqueda));
+      q = query(
+        viajesRef, 
+        where('origen', '==', origenBusqueda), 
+        where('destino', '==', destinoBusqueda)
+      );
     } else if (origenBusqueda) {
-      // Filtrar solo por origen
       q = query(viajesRef, where('origen', '==', origenBusqueda));
     } else if (destinoBusqueda) {
-      // Filtrar solo por destino
       q = query(viajesRef, where('destino', '==', destinoBusqueda));
     } else {
-      // Sin filtros, obtener todos los viajes
       q = query(viajesRef);
     }
   
     try {
+      console.log('Ejecutando consulta con parámetros:', {
+        origen: origenBusqueda,
+        destino: destinoBusqueda,
+      });
+  
       const querySnapshot = await getDocs(q);
+      console.log('Documentos encontrados:', querySnapshot.size);
   
       if (querySnapshot.empty) {
         console.log('No se encontraron viajes que coincidan con los criterios.');
         this.viajes = [];
-      } else {
-        // Obtener la fecha actual en formato UTC
-        const fechaActual = new Date();  // Esto obtiene la fecha actual en el horario local
-        const fechaActualUTC = new Date(Date.UTC(fechaActual.getUTCFullYear(), fechaActual.getUTCMonth(), fechaActual.getUTCDate()));
-  
-        this.viajes = querySnapshot.docs.map((doc) => {
-          const data = doc.data();
-          const viajeFecha = new Date(data['fecha']);  // Convertir la fecha del viaje a objeto Date
-  
-          console.log('Viaje encontrado:', data);
-  
-          // Filtrar solo los viajes cuya fecha es posterior a la actual
-          // Comparar las fechas en UTC utilizando getTime() para obtener el valor en milisegundos
-          if (viajeFecha.getTime() > fechaActualUTC.getTime()) {
-            return { id: doc.id, ...data };
-          } else {
-            return null; // No mostrar el viaje si la fecha ya pasó
-          }
-        }).filter(viaje => viaje !== null);  // Eliminar los viajes con fecha pasada
+        return;
       }
+  
+      const viajesPromises = querySnapshot.docs.map(async (documento) => {
+        const data = documento.data();
+        console.log('Datos del viaje:', data);
+  
+        const viajeFecha = new Date(data['fecha']);
+        const fechaActualUTC = new Date(new Date().toISOString().split('T')[0]);
+  
+        console.log('Fecha del viaje:', viajeFecha, 'Fecha actual:', fechaActualUTC);
+  
+        if (viajeFecha.getTime() > fechaActualUTC.getTime()) {
+          console.log('El viaje es válido, buscando datos del conductor...');
+          const conductorRef = doc(this.db, 'users', data['usuario_id']);
+          const conductorDoc = await getDoc(conductorRef);
+          
+          if (conductorDoc.exists()) {
+            const conductorData = conductorDoc.data();
+            console.log('Datos del conductor:', conductorData);
+  
+            return { 
+              id: documento.id, 
+              ...data, 
+              conductor: {
+                name: conductorData['name'],
+                surname: conductorData['surname'],
+              },
+            };
+          } else {
+            console.warn('No se encontraron datos del conductor para el usuario_id:', data['usuario_id']);
+          }
+        } else {
+          console.log('El viaje está en el pasado y no se incluye.');
+        }
+        return null;
+      });
+  
+      const resolvedViajes = await Promise.all(viajesPromises);
+      this.viajes = resolvedViajes.filter((viaje) => viaje !== null);
+  
+      console.log('Viajes finales:', this.viajes);
+  
     } catch (error) {
       console.error('Error al buscar viajes:', error);
     }

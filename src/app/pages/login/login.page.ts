@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { AlertController } from '@ionic/angular'; // Importa AlertController
 
 @Component({
   selector: 'app-login',
@@ -12,13 +13,28 @@ export class LoginPage {
   password: string = '';
   isAuthenticated: boolean = false;  // Inicialmente no autenticado
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+    private alertController: AlertController // Inyecta AlertController
+  ) {
     // Nos suscribimos al estado de autenticación
     this.authService.authenticated$.subscribe(auth => {
       this.isAuthenticated = auth;  // Actualiza el estado de autenticación
     });
   }
 
+  // Método para mostrar alertas
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
+  // Función de inicio de sesión
   async login() {
     if (this.username && this.password) {
       try {
@@ -26,13 +42,18 @@ export class LoginPage {
         if (isAuthenticated) {
           this.router.navigate(['/home']);
         } else {
-          alert('Credenciales incorrectas');
+          await this.presentAlert('Error', 'Credenciales incorrectas');
         }
       } catch (error) {
-        alert('Credenciales incorrectas');
+        await this.presentAlert('Error', 'Credenciales incorrectas');
       }
     } else {
-      alert('Por favor ingresa tus credenciales');
+      await this.presentAlert('Error', 'Por favor ingresa tus credenciales');
     }
+  }
+
+  // Método para redirigir a la página de registro
+  goToRegister() {
+    this.router.navigate(['/register']);
   }
 }

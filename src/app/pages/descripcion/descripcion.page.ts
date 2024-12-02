@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class DescripcionPage {
   description: string = '';
+  isPublishing: boolean = false; // Variable para controlar el estado de publicación
 
   constructor(
     private navCtrl: NavController,
@@ -18,7 +19,7 @@ export class DescripcionPage {
     private authService: AuthService
   ) {}
 
-  async confirmPublish() {
+  async confirmPublicar() {
     const alert = await this.alertController.create({
       header: 'Confirmar Publicación',
       message: '¿Estás seguro de que deseas publicar el viaje?',
@@ -33,7 +34,7 @@ export class DescripcionPage {
         {
           text: 'Sí',
           handler: () => {
-            this.publishTrip();
+            this.handleDelayedPublish(); // Llamamos a la función con retraso
           },
         },
       ],
@@ -42,7 +43,19 @@ export class DescripcionPage {
     await alert.present();
   }
 
-  async publishTrip() {
+  async handleDelayedPublish() {
+    if (this.isPublishing) return; // Evitar publicaciones múltiples
+
+    this.isPublishing = true; // Deshabilitar el botón de publicación
+
+    // Esperar 3 segundos (3000 milisegundos) antes de publicar el viaje
+    setTimeout(async () => {
+      await this.PublicarViaje();
+      this.isPublishing = false; // Habilitar el botón de publicación nuevamente
+    }, 1000); // 3 segundos de retraso
+  }
+
+  async PublicarViaje() {
     try {
       // Obtener el usuarioId desde el servicio AuthService
       const usuarioId = await this.authService.getUsuarioId();

@@ -14,7 +14,8 @@
   <!-- Contenedor para centrar el botón -->
   <div class="button-container">
     <!-- Botón para publicar el viaje -->
-    <ion-button shape="round" size="small" (click)="confirmPublish()">
+    <ion-button shape="round" size="small" (click)="confirmPublicar()" 
+    [disabled]="isPublishing">
       Publicar Viaje
     </ion-button>
   </div>

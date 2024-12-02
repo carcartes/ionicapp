@@ -25,6 +25,7 @@ export class DetallesMisViajesPage implements OnInit, OnDestroy {
   telefonoConductor: string = ''; 
   
 
+
   constructor(
     private router: Router, // Inyectar el servicio Router
     private route: ActivatedRoute,
@@ -61,6 +62,7 @@ export class DetallesMisViajesPage implements OnInit, OnDestroy {
         }
 
         await this.obtenerNombreConductor(this.viaje.usuario_id);
+        await this.obtenerTelefonoConductor(this.viaje.usuario_id)
         
         // Convertir las direcciones de origen y destino a coordenadas
         this.origen = await this.convertirDireccionACoordenadas(this.viaje.origen);
@@ -80,6 +82,7 @@ export class DetallesMisViajesPage implements OnInit, OnDestroy {
       // Verificación explícita para asegurar que usuario es un objeto
       if (usuario && typeof usuario === 'object' && 'name' in usuario && 'surname' in usuario) {
         this.nombreConductor = `${usuario.name} ${usuario.surname}`;
+        console.log('Nombre del conductor: ', this.nombreConductor);
       } else {
         console.error('Usuario no encontrado o datos incompletos');
       }
@@ -87,40 +90,44 @@ export class DetallesMisViajesPage implements OnInit, OnDestroy {
       console.error('Error al obtener los datos del usuario:', error);
     }
   }
-  async obtenerTelefonoConductor(usuarioId: string) {
-    console.log('Obteniendo datos del usuario con ID:', usuarioId);
   
+  async obtenerTelefonoConductor(usuarioId: string) {
     try {
       const usuario = await this.authService.getUserData(usuarioId);
-      console.log('Datos del usuario:', usuario);
   
+      // Verificación explícita para asegurar que usuario es un objeto y tiene el campo 'phone'
       if (usuario && typeof usuario === 'object' && 'phone' in usuario) {
-        this.telefonoConductor = usuario.phone as string;
-        console.log('Número de teléfono del conductor:', this.telefonoConductor);
-      } else {
-        console.error('No se encontró el teléfono del conductor en los datos del usuario.');
-      }
+          this.telefonoConductor = `${usuario.phone}`;
+          console.log('Telefono del conductor:', this.telefonoConductor);
+        } else {
+          console.error('El usuario no tiene un teléfono válido o está vacío');
+        }
     } catch (error) {
       console.error('Error al obtener los datos del usuario:', error);
     }
   }
-  
-  
+
   abrirWhatsApp() {
-  if (!this.telefonoConductor) {
-    alert('El teléfono del conductor no está disponible aún.');
-    return;
-  }
-
-  const mensaje = `Hola, estoy interesado en el viaje de ${this.viaje.origen} a ${this.viaje.destino}.`;
-  const telefonoFormatoCorrecto = this.telefonoConductor.replace(/\D/g, '');
-  const url = `https://wa.me/${telefonoFormatoCorrecto}?text=${encodeURIComponent(mensaje)}`;
-
-  window.open(url, '_blank');
-}
+    // Verifica si el teléfono está disponible
+    if (!this.telefonoConductor) {
+      alert('El teléfono del conductor no está disponible aún.');
+      return;
+    }
   
-
-
+    // Agrega el prefijo +56 al número de teléfono
+    const telefonoConductorConCodigo = '+56' + this.telefonoConductor.replace(/\D/g, ''); // Elimina cualquier carácter no numérico
+  
+    // Prepara el mensaje a enviar
+    const mensaje = `Hola, estoy interesado en el viaje de ${this.viaje.origen} a ${this.viaje.destino}.`;
+  
+    // Construye la URL de WhatsApp con el número y el mensaje
+    const url = `https://wa.me/${telefonoConductorConCodigo}?text=${encodeURIComponent(mensaje)}`;
+  
+    // Abre WhatsApp con la URL generada
+    window.open(url, '_blank');
+  }
+  
+  
   // Método para convertir una dirección en coordenadas usando la API de geocodificación de Mapbox
   async convertirDireccionACoordenadas(direccion: string): Promise<[number, number]> {
     const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(direccion)}.json?access_token=${this.mapboxToken}`;

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router'; // Importar Router
 import { ViajeService } from 'src/app/services/viaje.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertController } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-viaje-edit',
@@ -16,13 +17,16 @@ export class ViajeEditPage implements OnInit {
   isAuthenticated: boolean = false;
   minDate: string = '';
   maxDate: string = '';
+  suggestionsOrigen: any[] = [];
+  suggestionsDestino: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router, // Inyectar Router
     private viajeService: ViajeService,
     private authService: AuthService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -78,6 +82,42 @@ export class ViajeEditPage implements OnInit {
     }
   }
 
+  obtenerSugerenciasOrigen(event: any) {
+    const query = event.target.value;
+    if (query && query.length > 2) {
+      this.http
+        .get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=pk.eyJ1IjoiY2FybG9za2NzIiwiYSI6ImNtMzF0eGliZTEyb2oybG9qM2phdGFxODYifQ.qbEM3FTUA_e68TWGAkDDlg&autocomplete=true&limit=5`)
+        .subscribe((response: any) => {
+          this.suggestionsOrigen = response.features || [];
+        });
+    } else {
+      this.suggestionsOrigen = [];
+    }
+  }
+
+  obtenerSugerenciasDestino(event: any) {
+    const query = event.target.value;
+    if (query && query.length > 2) {
+      this.http
+        .get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=pk.eyJ1IjoiY2FybG9za2NzIiwiYSI6ImNtMzF0eGliZTEyb2oybG9qM2phdGFxODYifQ.qbEM3FTUA_e68TWGAkDDlg&autocomplete=true&limit=5`)
+        .subscribe((response: any) => {
+          this.suggestionsDestino = response.features || [];
+        });
+    } else {
+      this.suggestionsDestino = [];
+    }
+  }
+
+  seleccionarOrigen(suggestion: any) {
+    this.viaje.origen = suggestion.place_name;
+    this.suggestionsOrigen = [];
+  }
+
+  seleccionarDestino(suggestion: any) {
+    this.viaje.destino = suggestion.place_name;
+    this.suggestionsDestino = [];
+  }
+
   async guardarCambios() {
     const alert = await this.alertController.create({
       header: 'Confirmar',
@@ -93,20 +133,26 @@ export class ViajeEditPage implements OnInit {
           handler: async () => {
             if (this.viajeId) {
               const cambios = {
+                origen: this.viaje.origen,
+                destino: this.viaje.destino,
                 fecha: this.viaje.fecha,
-                pasajeros: this.viaje.pasajeros,
-                asientosDisponibles: this.viaje.asientosDisponibles,
+                pasajeros: this.viaje.pasajeros, // Actualiza pasajeros
+                precio: this.viaje.precio,
+                descripcion: this.viaje.descripcion, // Incluye descripción
+                pasajeros2: this.viaje.pasajeros
               };
               try {
-                if (cambios.asientosDisponibles < 1 || cambios.asientosDisponibles > 4) {
-                  throw new Error('Asientos disponibles debe estar entre 1 y 4.');
+                // Validación adicional (opcional)
+                if (cambios.pasajeros < 1 || cambios.pasajeros > 4) {
+                  throw new Error('Los pasajeros deben estar entre 1 y 4.');
                 }
-
+                if (!cambios.origen || !cambios.destino) {
+                  throw new Error('Origen y destino no pueden estar vacíos.');
+                }
+  
                 await this.viajeService.actualizarViaje(this.viajeId, cambios);
                 console.log('Cambios guardados con éxito');
-
-                // Redirigir a la página "mis-viajes" después de guardar
-                this.router.navigate(['/mis-viajes']);
+                this.router.navigate(['/mis-viajes']); // Redirigir tras guardar
               } catch (error) {
                 console.error('Error al guardar cambios:', error);
               }
@@ -117,7 +163,7 @@ export class ViajeEditPage implements OnInit {
         },
       ],
     });
-
+  
     await alert.present();
   }
 

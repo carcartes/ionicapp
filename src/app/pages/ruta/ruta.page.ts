@@ -17,11 +17,12 @@ export class RutaPage implements AfterViewInit {
   distancia: number = 0;  // Variable para almacenar la distancia
   origenDireccion: string = '';
   destinoDireccion: string = '';
+  showButton = false; // Propiedad para controlar la visibilidad del botón
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private viajeService: ViajeService  // Inyectamos el servicio
+    private viajeService: ViajeService  
   ) {
     (mapboxgl as any).accessToken = 'pk.eyJ1IjoiY2FybG9za2NzIiwiYSI6ImNtMzF0eGliZTEyb2oybG9qM2phdGFxODYifQ.qbEM3FTUA_e68TWGAkDDlg';
   }
@@ -35,6 +36,9 @@ export class RutaPage implements AfterViewInit {
         this.destinoDireccion = this.destino; // Asignamos la dirección a la variable
         this.initializeMap();
         setTimeout(() => {
+          this.showButton = true;
+        }, 3500);
+        setTimeout(() => {
           if (this.map) {
             this.map.resize();
           }
@@ -42,6 +46,7 @@ export class RutaPage implements AfterViewInit {
       }
     });
   }
+
 
   initializeMap() {
     this.map = new mapboxgl.Map({
@@ -138,6 +143,7 @@ export class RutaPage implements AfterViewInit {
     this.viajeService.setDestino(this.destinoDireccion);  // Guardar la dirección correctamente
     // Otros detalles del viaje, como la fecha, precio, etc.
   }
+
 
   navigateToFecha() {
     this.router.navigate(['/fecha']);

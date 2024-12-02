@@ -22,8 +22,8 @@
     </table>
   </div>
 
-  <!-- Botón en la esquina inferior derecha para ir a Pasajeros -->
-  <ion-button shape="round" size="large" class="go-to-pasajeros" (click)="navigateToFecha()">
-    <ion-icon name="arrow-forward-outline" class="large-icon"></ion-icon>
-  </ion-button>
+ <!-- Botón en la esquina inferior derecha para ir a Pasajeros -->
+<ion-button *ngIf="showButton" shape="round" size="large" class="go-to-pasajeros" (click)="navigateToFecha()">
+  <ion-icon name="arrow-forward-outline" class="large-icon"></ion-icon>
+</ion-button>
 </ion-content>

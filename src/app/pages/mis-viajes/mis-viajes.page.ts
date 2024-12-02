@@ -82,42 +82,112 @@ export class MisViajesPage implements OnInit {
     }
   }
 
-// Método para cancelar una reserva con confirmación
-async cancelarReserva(index: number) {
-  const viajeId = this.misViajes[index].id;
-  const viaje = this.misViajes[index];  // Obtener el viaje de la lista de reservas
+  async cancelarReserva(index: number) {
+    const reserva = this.misViajes[index]; // Obtenemos la reserva
+    const viajeId = reserva.viaje?.id; // ID del viaje asociado a la reserva
+    const pasajerosActuales = reserva.viaje?.pasajeros; // Número actual de pasajeros
+  
+    if (!viajeId) {
+      console.error('No se encontró el ID del viaje asociado a la reserva.');
+      return;
+    }
+  
+    const alert = await this.alertController.create({
+      header: 'Confirmar Cancelación',
+      message: '¿Estás seguro de que deseas cancelar esta reserva?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Cancelación de reserva cancelada');
+          }
+        },
+        {
+          text: 'Confirmar',
+          handler: async () => {
+            try {
+              // Eliminar la reserva
+              await this.viajeService.cancelarReserva(reserva.id);
+              this.misViajes.splice(index, 1); // Remover de la lista local
+  
+              // Actualizar el número de pasajeros en el viaje
+              if (pasajerosActuales !== undefined) {
+                const nuevosPasajeros = pasajerosActuales; // Incrementar pasajeros disponibles
+                await this.viajeService.actualizarPasajeros(viajeId, nuevosPasajeros);
+                console.log(`Reserva cancelada y pasajeros actualizados a ${nuevosPasajeros}`);
+              } else {
+                console.warn('No se pudo actualizar el número de pasajeros: campo no definido.');
+              }
+            } catch (error) {
+              console.error('Error al cancelar la reserva o actualizar pasajeros:', error);
+            }
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+  
+
+
+
+  // Método para editar un viaje
+async editarViaje(index: number) {
+  const viaje = this.viajesComoConductor[index];
+  
+  if (viaje.pasajeros !== viaje.pasajeros2) {
+    const alert = await this.alertController.create({
+      header: 'Acción no permitida',
+      message: 'No puedes editar este viaje porque ya se ha reservado un asiento.',
+      buttons: ['OK']
+    });
+    await alert.present();
+    return;
+  }
+
+  const viajeId = viaje.id; // Obtener el ID del viaje
+  this.router.navigate(['/viaje-edit', viajeId]); // Redirigir con el ID del viaje
+}
+
+  // Método para eliminar un viaje con validación
+async eliminarViaje(index: number) {
+  const viaje = this.viajesComoConductor[index];
+
+  if (viaje.pasajeros !== viaje.pasajeros2) {
+    const alert = await this.alertController.create({
+      header: 'Acción no permitida',
+      message: 'No puedes eliminar este viaje porque ya se ha reservado un asiento.',
+      buttons: ['OK']
+    });
+    await alert.present();
+    return;
+  }
 
   const alert = await this.alertController.create({
-    header: 'Confirmar Cancelación',
-    message: '¿Estás seguro de que deseas cancelar esta reserva?',
+    header: 'Confirmar Eliminación',
+    message: '¿Estás seguro de que deseas eliminar este viaje?',
     buttons: [
       {
         text: 'Cancelar',
         role: 'cancel',
         cssClass: 'secondary',
         handler: () => {
-          console.log('Cancelación de reserva cancelada');
+          console.log('Eliminación de viaje cancelada');
         }
       },
       {
         text: 'Confirmar',
         handler: async () => {
           try {
-            // Llamar al servicio para cancelar la reserva
-            await this.viajeService.cancelarReserva(viajeId);
-            this.misViajes.splice(index, 1);  // Eliminar el viaje de la lista de viajes reservados
-
-            // Incrementar el número de pasajeros disponibles (sumar 1 asiento)
-            if (viaje.pasajeros !== undefined) {
-              // Aumentar en 1 el número de pasajeros
-              viaje.pasajeros += 1;
-
-              // Llamar al servicio para actualizar el número de pasajeros en la base de datos
-              await this.viajeService.actualizarPasajeros(viaje.id, viaje.pasajeros);  // Actualiza el número de pasajeros
-              console.log('Reserva cancelada y asientos actualizados');
-            }
+            const viajeId = viaje.id;
+            await this.viajeService.eliminarViaje(viajeId);
+            this.viajesComoConductor.splice(index, 1);
+            console.log(`Viaje con ID ${viajeId} eliminado con éxito`);
           } catch (error) {
-            console.error('Error al cancelar el viaje:', error);
+            console.error(`Error al eliminar el viaje con ID ${viaje.id}:`, error);
           }
         }
       }
@@ -126,48 +196,6 @@ async cancelarReserva(index: number) {
 
   await alert.present();
 }
-
-
-
-  // Método para editar un viaje
-  editarViaje(index: number) {
-    const viajeId = this.viajesComoConductor[index].id; // Obtener el ID del viaje
-    this.router.navigate(['/viaje-edit', viajeId]); // Redirigir con el ID del viaje
-  }
-
-  // Método para eliminar un viaje con confirmación
-  async eliminarViaje(index: number) {
-    const viajeId = this.viajesComoConductor[index].id;
-
-    const alert = await this.alertController.create({
-      header: 'Confirmar Eliminación',
-      message: '¿Estás seguro de que deseas eliminar este viaje?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Eliminación de viaje cancelada');
-          }
-        },
-        {
-          text: 'Confirmar',
-          handler: async () => {
-            try {
-              await this.viajeService.eliminarViaje(viajeId);
-              this.viajesComoConductor.splice(index, 1);
-              console.log(`Viaje con ID ${viajeId} eliminado con éxito`);
-            } catch (error) {
-              console.error(`Error al eliminar el viaje con ID ${viajeId}:`, error);
-            }
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-  }
 
   // Método para cerrar sesión
   logout() {

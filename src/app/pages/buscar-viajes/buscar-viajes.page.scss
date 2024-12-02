@@ -145,6 +145,7 @@ custom-margin-number{
   overflow: hidden; /* Oculta el texto que se desborda */
   text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es muy largo */
   font-weight: bold;
+  width: 200px; 
 }
 
 .line {

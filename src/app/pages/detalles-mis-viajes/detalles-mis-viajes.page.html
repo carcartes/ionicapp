@@ -15,10 +15,6 @@
         <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         <ion-label>Tus Viajes</ion-label>
       </ion-item>
-      <ion-item *ngIf="isAuthenticated" [routerLink]="['/mensajes']">
-        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
-        <ion-label>Mensajes</ion-label>
-      </ion-item>
       <ion-item *ngIf="isAuthenticated" [routerLink]="['/perfil']">
         <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         <ion-label>Perfil</ion-label>
@@ -50,12 +46,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <div *ngIf="viaje && viaje.origen && viaje.destino">
-    <ion-card>
+<ion-content>
+  
+  <div *ngIf="viaje && viaje.origen && viaje.destino" class="map-container">
+    <!-- Tarjeta con detalles del viaje -->
+    <ion-card class="details-card">
       <ion-card-header>
-        <ion-card-title>{{ viaje.origen }} → {{ viaje.destino }}</ion-card-title>
-        <ion-card-subtitle>{{ viaje.fecha }}</ion-card-subtitle>
+        <h6>{{ viaje.origen }} → {{ viaje.destino }}</h6>
+        <p>{{ viaje.fecha }}</p>
       </ion-card-header>
       <ion-card-content>
         <p><strong>Conductor:</strong> {{ nombreConductor }}</p>
@@ -63,20 +61,18 @@
         <p><strong>Descripción:</strong> {{ viaje.descripcion }}</p>
         <p><strong>Precio:</strong> ${{ viaje.precio }}</p>
       </ion-card-content>
+    </ion-card>
 
-      <!-- Mapa con la ruta -->
-      <div id="map" style="height: 400px; margin-top: 20px;"></div>
+    <!-- Mapa con la ruta -->
+    <div id="map" style="height: 100%;"></div>
 
-      <!-- Icono de mensaje (WhatsApp) en la esquina inferior derecha -->
-
-      <ion-icon
+    <!-- Icono de mensaje (WhatsApp) en la esquina inferior derecha -->
+    <ion-icon
       name="chatbubble-ellipses-outline"
       class="whatsapp-icon"
       (click)="abrirWhatsApp()"
       [class.disabled]="!telefonoConductor">
     </ion-icon>
-
-    </ion-card>
   </div>
 
   <div *ngIf="!viaje || !viaje.origen">

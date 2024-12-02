@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular'; // Importa AlertController
 
 @Component({
   selector: 'app-register',
@@ -17,7 +18,11 @@ export class RegisterPage {
   phone: string = '';
   isAuthenticated: boolean = false;  // Inicialmente no autenticado
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+    private alertController: AlertController // Inyecta AlertController
+  ) {
     // Suscribirse al estado de autenticación
     this.authService.authenticated$.subscribe(auth => {
       this.isAuthenticated = auth;  // Actualiza el estado de autenticación
@@ -25,42 +30,48 @@ export class RegisterPage {
   }
 
   // Función de validación de campos
-  validateFields(): boolean {
+  async validateFields(): Promise<boolean> {
     // Verificar si algún campo está vacío
     if (!this.name || !this.surname || !this.email || !this.dob || !this.password || !this.confirmPassword || !this.phone) {
-      alert('Todos los campos son obligatorios.');
+      await this.presentAlert('Error', 'Todos los campos son obligatorios.');
       return false;
     }
 
     // Validar que las contraseñas coincidan
     if (this.password !== this.confirmPassword) {
-      alert('Las contraseñas no coinciden');
+      await this.presentAlert('Error', 'Las contraseñas no coinciden');
+      return false;
+    }
+
+     // Validar que la contraseña tenga al menos 8 caracteres
+    if (this.password.length < 8) {
+      await this.presentAlert('Error', 'La contraseña debe tener al menos 8 caracteres');
       return false;
     }
 
     // Validar formato de correo electrónico
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zAZ]{2,6}$/;
     if (!emailRegex.test(this.email)) {
-      alert('Por favor ingresa un correo electrónico válido');
+      await this.presentAlert('Error', 'Por favor ingresa un correo electrónico válido');
       return false;
     }
 
     // Validar formato de teléfono
     const phoneRegex = /^9\d{8}$/; // El teléfono debe comenzar con 9 y tener 9 dígitos
     if (!phoneRegex.test(this.phone)) {
-      alert('El teléfono debe comenzar con 9 y tener 9 dígitos');
+      await this.presentAlert('Error', 'El teléfono debe comenzar con 9 y tener 9 dígitos');
       return false;
     }
 
     // Validar que los nombres y apellidos contengan solo letras
     const nameSurnameRegex = /^[A-Za-zÁáÉéÍíÓóÚúÑñ]+$/; // Solo letras y caracteres especiales del español
     if (!nameSurnameRegex.test(this.name)) {
-      alert('El nombre no puede contener números ni caracteres especiales.');
+      await this.presentAlert('Error', 'El nombre no puede contener números ni caracteres especiales.');
       return false;
     }
 
     if (!nameSurnameRegex.test(this.surname)) {
-      alert('El apellido no puede contener números ni caracteres especiales.');
+      await this.presentAlert('Error', 'El apellido no puede contener números ni caracteres especiales.');
       return false;
     }
 
@@ -69,27 +80,48 @@ export class RegisterPage {
     const birthDate = new Date(this.dob);
     const minYear = 1900;
 
-    // Verificar que la fecha de nacimiento no sea menor a 1900 y no sea en el futuro
+    // Verificar que la fecha de nacimiento no sea menor a 1900 ni superior a la fecha actual
     if (birthDate.getFullYear() < minYear || birthDate > currentDate) {
-      alert('La fecha de nacimiento no puede ser menor a 1900 ni superior a la fecha actual');
+      await this.presentAlert('Error', 'La fecha de nacimiento no puede ser menor a 1900 ni superior a la fecha actual');
+      return false;
+    }
+
+    // Calcular la edad
+    const age = currentDate.getFullYear() - birthDate.getFullYear();
+    const month = currentDate.getMonth();
+    const day = currentDate.getDate();
+
+    // Si la persona no ha cumplido 18 años, mostrar alerta
+    if (age < 18 || (age === 18 && (birthDate.getMonth() > month || (birthDate.getMonth() === month && birthDate.getDate() > day)))) {
+      await this.presentAlert('Error', 'Debe ser mayor de 18 años');
       return false;
     }
 
     return true;
   }
 
+  // Método para mostrar alertas
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
   // Función que se ejecuta al hacer click en el botón de registro
-  onRegister() {
+  async onRegister() {
     // Primero validamos todos los campos
-    if (this.validateFields()) {
+    if (await this.validateFields()) {
       // Lógica de registro, como llamar al servicio de registro
       this.authService.register(this.name, this.surname, this.email, this.dob, this.password, this.phone)
         .then(() => {
-          alert('Registro exitoso');
+          this.presentAlert('Éxito', 'Registro exitoso');
           this.router.navigate(['/home']);
         })
         .catch(error => {
-          alert('Error en el registro: ' + error.message);
+          this.presentAlert('Error', 'Error en el registro: ' + error.message);
         });
     }
   }

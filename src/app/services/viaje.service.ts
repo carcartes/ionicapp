@@ -57,9 +57,8 @@ export class ViajeService {
   // Método para publicar el viaje con los datos almacenados en Firestore
   async publicarViaje(usuarioId: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      // Verificar si faltan datos esenciales
       console.log('Verificando datos del viaje para publicar...');
-
+  
       // Mostrar los datos en la consola para verificar qué campos están definidos
       console.log('Origen:', this.viajeData.origen);
       console.log('Destino:', this.viajeData.destino);
@@ -67,7 +66,7 @@ export class ViajeService {
       console.log('Precio:', this.viajeData.precio);
       console.log('Auto:', this.viajeData.auto);
       console.log('Descripción:', this.viajeData.descripcion);
-
+  
       if (
         !this.viajeData.origen ||
         !this.viajeData.destino ||
@@ -80,20 +79,28 @@ export class ViajeService {
         reject('Faltan datos esenciales para publicar el viaje');
         return;
       }
-
+  
       // Establecer el usuario ID en los datos del viaje
       this.viajeData.usuario_id = usuarioId;
       console.log('Usuario ID añadido:', usuarioId);
-
+  
+      // Crear un nuevo campo pasajeros2 con el mismo valor que pasajeros
+      if (this.viajeData.pasajeros !== undefined) {
+        this.viajeData.pasajeros2 = this.viajeData.pasajeros;
+        console.log('Campo pasajeros2 añadido con el valor:', this.viajeData.pasajeros2);
+      } else {
+        console.warn('El campo pasajeros no está definido. pasajeros2 no se añadió.');
+      }
+  
       // Crear la referencia a la colección 'viajes' en Firestore
       const viajesCollection = collection(this.db, 'viajes');
       console.log('Referencia a la colección "viajes" creada');
-
+  
       try {
         // Agregar los datos del viaje a la colección
         const docRef = await addDoc(viajesCollection, this.viajeData);
         console.log('Viaje publicado con éxito con ID:', docRef.id);
-
+  
         // Resolver la promesa con los datos del viaje
         resolve(this.viajeData);
       } catch (error) {
@@ -102,6 +109,7 @@ export class ViajeService {
       }
     });
   }
+  
 
   // Obtener los datos del viaje
   getViajeData() {
@@ -268,21 +276,21 @@ async actualizarViaje(viajeId: string, cambios: any): Promise<void> {
 }
 async actualizarPasajeros(viajeId: string, nuevosPasajeros: number): Promise<void> {
   if (!viajeId) {
-    console.error('Error: El ID del viaje no está definido');
-    return; // No continuar si no hay un ID de viaje válido
+    console.error('Error: El ID del viaje no está definido.');
+    throw new Error('ID del viaje inválido');
   }
 
-  const viajeRef = doc(this.db, 'viajes', viajeId); // Referencia al documento del viaje
+  const viajeRef = doc(this.db, 'viajes', viajeId);
 
   try {
-    // Actualizar el campo de pasajeros
     await updateDoc(viajeRef, { pasajeros: nuevosPasajeros });
-    console.log('Número de pasajeros actualizado con éxito');
+    console.log(`Número de pasajeros actualizado a ${nuevosPasajeros} para el viaje con ID ${viajeId}`);
   } catch (error) {
-    console.error('Error al actualizar el número de pasajeros:', error);
+    console.error(`Error al actualizar los pasajeros del viaje con ID ${viajeId}:`, error);
     throw new Error('No se pudo actualizar el número de pasajeros');
   }
 }
+
 
 
 }

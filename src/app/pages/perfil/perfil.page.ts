@@ -14,13 +14,20 @@ export class PerfilPage implements OnInit {
 
   constructor(public authService: AuthService, private afAuth: AngularFireAuth) { }
 
-  async ngOnInit() {
+  ngOnInit() {
     // Suscripción al estado de autenticación
     this.authService.authenticated$.subscribe(auth => {
       this.isAuthenticated = auth;
       console.log(this.isAuthenticated ? 'Usuario autenticado' : 'Usuario no autenticado');
       if (this.isAuthenticated) {
         this.loadUserData();  // Llamar para cargar los datos del usuario cuando está autenticado
+      }
+    });
+
+    // Suscripción a los cambios de datos del usuario
+    this.authService.userData$.subscribe(data => {
+      if (data) {
+        this.userData = data;  // Actualizar los datos cuando cambian
       }
     });
   }

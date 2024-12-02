@@ -65,7 +65,14 @@ export class DetalleViajePage implements OnInit {
       // Verificar si el usuario que intenta reservar es el mismo que creó el viaje
       if (this.viaje.usuario_id === usuarioId) {
         console.log('No puedes reservar tu propio viaje');
-        return; // Si el usuario intenta reservar su propio viaje, no hacer nada
+        const alert = await this.alertController.create({
+          header: 'Acción no permitida',
+          message: 'No puedes reservar tu propio viaje.',
+          buttons: ['OK']
+        });
+    
+        await alert.present();
+        return; // Salir de la función si es el mismo usuario
       }
   
       // Verificar si el viaje y su ID son válidos

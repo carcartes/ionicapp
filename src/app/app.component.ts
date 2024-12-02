@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
-import { Router } from '@angular/router'; // Asegúrate de importar Router
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular'; 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -16,7 +17,7 @@ export class AppComponent implements OnInit {
   confirmPassword: string = '';
   phone: string = ''; // Agregamos el campo para el teléfono
 
-  constructor(private authService: AuthService, private router: Router,) {}
+  constructor(private authService: AuthService, private router: Router, private alertController: AlertController) {}
 
   ngOnInit() {
     this.authService.authenticated$.subscribe(auth => {
@@ -24,11 +25,21 @@ export class AppComponent implements OnInit {
     });
   }
 
-  logout() {
-    this.authService.logout();
+  // Función para cerrar sesión
+  async logout() {
+    await this.authService.logout();  // Llama al servicio para cerrar sesión
     this.router.navigate(['/login']);
     console.log('Sesión cerrada');
+
+    // Muestra una alerta de confirmación
+    const alert = await this.alertController.create({
+      header: 'Éxito',
+      message: 'Has cerrado sesión correctamente',
+      buttons: ['OK']
+    });
+    await alert.present();
   }
+
   onRegister() {
     if (this.password === this.confirmPassword) {
       // Lógica de registro, como llamar al servicio de registro

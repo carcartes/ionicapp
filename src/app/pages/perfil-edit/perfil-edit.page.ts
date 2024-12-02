@@ -34,9 +34,9 @@ export class PerfilEditPage implements OnInit {
         // Actualizar los datos del usuario en Firestore
         await this.authService.updateUserData(user.uid, this.userData);
         console.log('Perfil actualizado');
-        
-        // Redirigir al perfil y recargar los datos
-        this.router.navigate(['/perfil']);  // Navegar directamente a la página de perfil para recargar
+
+        // Redirigir al perfil
+        this.router.navigate(['/perfil']);  // Navegar directamente a la página de perfil
       } catch (error) {
         console.error('Error al actualizar el perfil:', error);
       }

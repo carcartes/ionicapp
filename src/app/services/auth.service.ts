@@ -10,6 +10,8 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 export class AuthService {
   private authenticatedSubject = new BehaviorSubject<boolean>(false);
   authenticated$ = this.authenticatedSubject.asObservable();
+  private userDataSubject = new BehaviorSubject<any>(null);  // Nuevo Subject para los datos del usuario
+  userData$ = this.userDataSubject.asObservable();  // Observable para escuchar los cambios
 
   constructor(private afAuth: AngularFireAuth, private firestore: AngularFirestore) {}
 
@@ -83,10 +85,12 @@ export class AuthService {
     const user = await this.afAuth.currentUser;
     return user ? user.uid : null;
   }
+  // Método para actualizar los datos del usuario en Firestore
   async updateUserData(uid: string, userData: any) {
     try {
       await this.firestore.collection('users').doc(uid).update(userData);
       console.log('Datos del usuario actualizados en Firestore');
+      this.userDataSubject.next(userData);  // Emitir los nuevos datos a través del Subject
     } catch (error) {
       console.error('Error al actualizar datos del usuario:', error);
     }
