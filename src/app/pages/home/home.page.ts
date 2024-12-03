@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { Router } from '@angular/router'; // Asegúrate de importar Router
+import { Router } from '@angular/router'; 
+import { ModalController } from '@ionic/angular';
+import { OrigenModalComponent } from '../../modales/origen-modal/origen-modal.component';
+import { DestinoModalComponent } from '../../modales/destino-modal/destino-modal.component';
+import { PasajerosModalComponent } from '../../modales/pasajeros-modal/pasajeros-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +20,7 @@ export class HomePage implements OnInit {
   pasajeros: number = 1; // Número de pasajeros seleccionado
   isAuthenticated: boolean = false;
 
-  constructor(public authService: AuthService, private router: Router,) {}
+  constructor(public authService: AuthService, private router: Router, private modalController: ModalController) {}
 
   ngOnInit() {
     this.authService.authenticated$.subscribe(auth => {
@@ -65,5 +69,44 @@ export class HomePage implements OnInit {
       this.destinoInput = lugar.place_name;
       this.destinoSugerencias = [];
     }
+  }
+
+  async abrirOrigenModal() {
+    const modal = await this.modalController.create({
+      component: OrigenModalComponent,
+      componentProps: { origenActual: this.origenInput },
+    });
+
+    modal.onDidDismiss().then((data) => {
+      if (data.data) this.origenInput = data.data;
+    });
+
+    return await modal.present();
+  }
+
+  async abrirDestinoModal() {
+    const modal = await this.modalController.create({
+      component: DestinoModalComponent,
+      componentProps: { destinoActual: this.destinoInput },
+    });
+
+    modal.onDidDismiss().then((data) => {
+      if (data.data) this.destinoInput = data.data;
+    });
+
+    return await modal.present();
+  }
+
+  async abrirPasajerosModal() {
+    const modal = await this.modalController.create({
+      component: PasajerosModalComponent,
+      componentProps: { pasajerosActual: this.pasajeros },
+    });
+
+    modal.onDidDismiss().then((data) => {
+      if (data.data) this.pasajeros = data.data;
+    });
+
+    return await modal.present();
   }
 }

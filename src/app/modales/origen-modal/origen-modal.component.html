@@ -1,0 +1,25 @@
+<ion-content class="ion-padding">
+  <!-- Barra de búsqueda personalizada -->
+  <ion-toolbar>
+    <ion-item lines="none">
+      <!-- Barra de búsqueda con icono dentro -->
+      <ion-input 
+        [(ngModel)]="origenInput" 
+        (ionInput)="buscarSugerencias()" 
+        placeholder="De" 
+        debounce="500"
+        clearInput="true">
+        
+        <!-- Icono de cerrar (flecha) dentro de la barra de búsqueda -->
+        <ion-icon name="chevron-forward-outline" slot="start" (click)="cerrarModal()"></ion-icon>
+      </ion-input>
+    </ion-item>
+  </ion-toolbar>
+
+  <!-- Sugerencias de origen -->
+  <ion-list *ngIf="origenSugerencias.length > 0">
+    <ion-item *ngFor="let lugar of origenSugerencias" (click)="seleccionarLugar(lugar)">
+      {{ lugar.place_name }}
+    </ion-item>
+  </ion-list>
+</ion-content>

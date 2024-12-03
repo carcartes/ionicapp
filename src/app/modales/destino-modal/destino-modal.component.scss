@@ -1,0 +1,26 @@
+/* Personalización de la barra de búsqueda */
+ion-item {
+  --background: transparent; /* Hace el fondo transparente */
+  --padding-start: 0; /* Elimina el padding en el inicio */
+  --padding-end: 0; /* Elimina el padding al final */
+}
+
+ion-input {
+  --padding-start: 10px; /* Espacio en la izquierda */
+  --padding-end: 10px; /* Espacio en la derecha */
+  --background: transparent; /* Hace el fondo transparente */
+  --color: #333; /* Color del texto */
+  --placeholder-color: #aaa; /* Color del placeholder */
+  font-size: 16px; /* Tamaño de la fuente */
+  border: 2px solid #007bff; /* Borde azul */
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 8px; /* Espaciado dentro del campo de texto */
+}
+
+ion-toolbar {
+  --background: #fff; /* Fondo blanco para la barra */
+}
+
+ion-icon {
+  color: #000; /* Color del icono (puedes cambiarlo) */
+}

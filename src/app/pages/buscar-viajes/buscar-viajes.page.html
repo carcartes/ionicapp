@@ -54,6 +54,22 @@
 </ion-header>
 
 <ion-content class="custom-background">
+
+  <!-- Card de origen y destino -->
+  <ion-card>
+    <ion-card-content class="ion-text-center">
+      <ion-text color="medium">
+        <h3>Origen: {{ origen || 'Vacio' }}</h3>
+        <h3>Destino: {{ destino || 'Vacio' }}</h3>
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Botón para mostrar todos los viajes -->
+  <ion-button *ngIf="origen || destino" (click)="mostrarTodosLosViajes()" expand="full">
+    Mostrar todos los viajes
+  </ion-button>
+
   <ion-card *ngIf="viajes.length === 0">
     <ion-card-content class="ion-text-center">
       <ion-text color="medium">

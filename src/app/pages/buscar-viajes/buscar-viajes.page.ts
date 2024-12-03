@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';  // Asegúrate de importar Router para navegar sin parámetros
 import { initializeApp } from 'firebase/app';
 import { 
   getFirestore, 
@@ -28,7 +28,11 @@ export class BuscarViajesPage implements OnInit {
   isAuthenticated: boolean = false;
   driverName: string = '';
 
-  constructor(private route: ActivatedRoute, public authService: AuthService) {
+  constructor(
+    private route: ActivatedRoute, 
+    public authService: AuthService, 
+    private router: Router  // Agregamos Router
+  ) {
     const app = initializeApp(environment.firebaseConfig);
     this.db = getFirestore(app);
   }
@@ -141,5 +145,20 @@ export class BuscarViajesPage implements OnInit {
       console.error('Error al buscar viajes:', error);
     }
   }
-  
+
+  mostrarTodosLosViajes() {
+    // Limpiar los parámetros de origen y destino
+    this.origen = null;
+    this.destino = null;
+
+    // Limpiar los campos de entrada
+    this.origenInput = '';
+    this.destinoInput = '';
+
+    // Navegar sin parámetros
+    this.router.navigate(['/buscar-viajes'], { queryParams: {} });
+
+    // Realizar la búsqueda sin filtros
+    this.buscarViajes();
+  }
 }

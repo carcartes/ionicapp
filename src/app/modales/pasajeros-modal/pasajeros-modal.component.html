@@ -1,0 +1,28 @@
+<ion-content>
+  <!-- Mensaje de selección de asientos -->
+  <ion-text class="heading" color="primary">
+    <h2>Asientos que quieres reservar</h2>
+  </ion-text>
+
+  <!-- Contador de asientos -->
+  <div class="passenger-counter">
+    <ion-button (click)="cambiarCantidad(-1)" [disabled]="cantidadAsientos <= 1" fill="clear">
+      <ion-icon name="remove-circle-outline"></ion-icon></ion-button>
+    <h1>{{ cantidadAsientos }}</h1>
+    <ion-button (click)="cambiarCantidad(1)" [disabled]="cantidadAsientos >= 4" fill="clear">
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Botones para salir -->
+    <ion-button shape="round" size="large" class="arrow-button" (click)="guardarYSalir()">
+      <ion-icon name="arrow-forward-outline" class="large-icon"></ion-icon>
+    </ion-button>
+
+    <!-- Botón para cerrar sin guardar -->
+    <ion-buttons slot="start">
+      <ion-icon name="close-outline" (click)="cerrarModal()" class="close-icon"></ion-icon>
+    </ion-buttons>
+    
+  
+</ion-content>

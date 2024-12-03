@@ -203,4 +203,12 @@ async eliminarViaje(index: number) {
     console.log('Sesión cerrada');
     this.router.navigate(['/login']); // Redirigir al login después de cerrar sesión
   }
+
+  ionViewWillEnter() {
+    // Recargar los datos cada vez que la vista va a entrar
+    if (this.isAuthenticated && this.usuarioId) {
+      this.cargarMisViajes(this.usuarioId); // Recargar los viajes reservados
+      this.cargarViajesComoConductor(this.usuarioId); // Recargar los viajes como conductor
+    }
+  }
 }

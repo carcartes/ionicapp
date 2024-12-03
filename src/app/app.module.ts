@@ -17,9 +17,14 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from '../environments/environment';
+import { OrigenModalComponent } from './modales/origen-modal/origen-modal.component'; 
+import { DestinoModalComponent } from './modales/destino-modal/destino-modal.component';
+import { PasajerosModalComponent } from './modales/pasajeros-modal/pasajeros-modal.component'; 
+import { FormsModule } from '@angular/forms';  
+
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, OrigenModalComponent, DestinoModalComponent, PasajerosModalComponent ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -27,6 +32,8 @@ import { environment } from '../environments/environment';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    FormsModule,  // Importa FormsModule aquí
+    
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
