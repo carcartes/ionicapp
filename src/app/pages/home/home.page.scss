@@ -89,3 +89,12 @@ ion-label{
   margin-left: 10px;
   
 }
+
+.truncate-text {
+  display: inline-block;
+  max-width: 150px; /* Cambia este valor a lo que necesites */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

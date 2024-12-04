@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -20,11 +21,12 @@ import { environment } from '../environments/environment';
 import { OrigenModalComponent } from './modales/origen-modal/origen-modal.component'; 
 import { DestinoModalComponent } from './modales/destino-modal/destino-modal.component';
 import { PasajerosModalComponent } from './modales/pasajeros-modal/pasajeros-modal.component'; 
+import { EditViajeModalComponent} from './modales/edit-viaje-modal/edit-viaje-modal.component'; 
 import { FormsModule } from '@angular/forms';  
 
 
 @NgModule({
-  declarations: [AppComponent, OrigenModalComponent, DestinoModalComponent, PasajerosModalComponent ],
+  declarations: [AppComponent, OrigenModalComponent, DestinoModalComponent, PasajerosModalComponent, EditViajeModalComponent ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),

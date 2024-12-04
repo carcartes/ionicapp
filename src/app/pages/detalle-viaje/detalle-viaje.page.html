@@ -50,36 +50,56 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="main-content" class="ion-padding"*ngIf="viaje && usuario">
+
+<ion-content id="main-content" class="ion-padding" *ngIf="viaje && usuario">
   <div class="trip-container">
 
-    <h2>{{ viaje.fecha }}</h2>
-    <!-- Ruta con puntos y texto al lado -->
+    <ion-buttons slot="start" class="btn-arrow-margin">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- Fecha del viaje -->
+    <h2 class="fecha-titulo">{{ fechaViaje }}</h2>
+
+    <!-- Ruta con puntos, texto y horas -->
     <div class="trip-route">
       <div class="route-point">
         <div class="point"></div>
-        <span class="route-text">{{ viaje.origen }}</span>
+        <span class="route-text">
+          <strong>{{ viaje.origen }}</strong>
+        </span>
+        <span class="route-time">{{ horaViaje }}</span>
       </div>
       <div class="line"></div>
       <div class="route-point">
         <div class="point"></div>
-        <span class="route-text">{{ viaje.destino }}</span>
+        <span class="route-text">
+          <strong>{{ viaje.destino }}</strong>
+        </span>
+        <span class="route-time">{{ horaLlegada }}</span>
       </div>
     </div>
+
     <div class="divider"></div>
-    <ion-card-content>
-      <p><strong>Precio:</strong> ${{ viaje.precio }}</p>
-      <p><strong>Pasajeros Disponibles:</strong> {{ viaje.pasajeros }}</p>
-      <p><strong>Descripción:</strong> {{ viaje.descripcion }}</p>
-      <div class="divider"></div>
-       <!-- Información del conductor -->
-       <div class="driver-info">
-        <img src="assets/pfp.png" alt="Conductor" class="driver-picture" />
-        <div class="driver-details">
-          <p><strong> {{ usuario.name }} {{ usuario.surname }}</strong></p>
-        </div>
+
+    <!-- Precio y número de pasajeros -->
+    <div class="info-bar">
+      <span class="precio">1 pasajero</span>
+      <span class="precio">${{ viaje.precio }}</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Información del conductor -->
+    <div class="driver-info">
+      <img src="assets/pfp.png" alt="Conductor" class="driver-picture" />
+      <div class="driver-details">
+        <p><strong>{{ usuario.name }} {{ usuario.surname }}</strong></p>
       </div>
-    </ion-card-content>
+    </div>
+
+    <ion-button expand="block" color="primary" (click)="reservarViaje()">Reservar</ion-button>
   </div>
-  <ion-button expand="block" color="primary" (click)="reservarViaje()">Reservar</ion-button>
 </ion-content>
+

@@ -65,15 +65,15 @@
         <!-- Campo de origen -->
         <ion-item button (click)="abrirOrigenModal()">
           <ion-icon class="custom-icon" name="ellipse-outline"></ion-icon>
-          <ion-label>{{ origenInput || 'De' }}</ion-label>
+          <ion-label class="truncate-text">{{ origenInput || 'De' }}</ion-label>
         </ion-item>
-  
+
         <!-- Campo de destino -->
         <ion-item button (click)="abrirDestinoModal()">
           <ion-icon class="custom-icon" name="ellipse-outline"></ion-icon>
-          <ion-label>{{ destinoInput || 'A' }}</ion-label>
+          <ion-label class="truncate-text">{{ destinoInput || 'A' }}</ion-label>
         </ion-item>
-  
+
         <!-- Campo de pasajeros -->
         <ion-item button (click)="abrirPasajerosModal()">
           <ion-icon class="custom-icon" name="person-outline"></ion-icon>

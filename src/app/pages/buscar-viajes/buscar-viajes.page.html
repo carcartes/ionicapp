@@ -57,12 +57,17 @@
 
   <!-- Card de origen y destino -->
   <ion-card>
-    <ion-card-content class="ion-text-center">
+    <ion-card-content class="ion-text-center" (click)="AbrirEditViajeModal()">
       <ion-text color="medium">
-        <h3>Origen: {{ origen || 'Vacio' }}</h3>
-        <h3>Destino: {{ destino || 'Vacio' }}</h3>
-      </ion-text>
-    </ion-card-content>
+        <!-- Origen y destino con flecha -->
+        <h3 class="input-buscar">
+          <span class="truncate-text">{{ origenInput || 'Origen' }}</span>
+          <ion-icon name="arrow-forward-outline" class="arrow-icon"></ion-icon>
+          <span class="truncate-text">{{ destinoInput || 'Destino' }}</span>
+        </h3>
+        
+      </ion-text> 
+      </ion-card-content>
   </ion-card>
 
   <!-- Botón para mostrar todos los viajes -->
@@ -102,7 +107,7 @@
 
         <!-- Fecha del viaje -->
         <div class="trip-date">
-          <strong>Fecha:</strong> {{ viaje.fecha }}
+           {{ fechaViaje }}
         </div>
 
         <!-- Línea divisoria -->

@@ -12,6 +12,8 @@ import {
 } from 'firebase/firestore';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/services/auth.service';
+import { ModalController } from '@ionic/angular';
+import { EditViajeModalComponent } from '../../modales/edit-viaje-modal/edit-viaje-modal.component';
 
 @Component({
   selector: 'app-buscar-viajes',
@@ -27,11 +29,15 @@ export class BuscarViajesPage implements OnInit {
   db: any;  // Referencia a Firestore
   isAuthenticated: boolean = false;
   driverName: string = '';
+  fechaViaje: string = ''; // Fecha formateada
+  horaViaje: string = '';  // Hora formateada
+  horaLlegada: string = '';
 
   constructor(
     private route: ActivatedRoute, 
     public authService: AuthService, 
-    private router: Router  // Agregamos Router
+    private router: Router,  // Agregamos Router
+    private modalController: ModalController
   ) {
     const app = initializeApp(environment.firebaseConfig);
     this.db = getFirestore(app);
@@ -71,7 +77,7 @@ export class BuscarViajesPage implements OnInit {
     const viajesRef = collection(this.db, 'viajes');
     
     let q;
-  
+    
     if (origenBusqueda && destinoBusqueda) {
       q = query(
         viajesRef, 
@@ -119,6 +125,9 @@ export class BuscarViajesPage implements OnInit {
             const conductorData = conductorDoc.data();
             console.log('Datos del conductor:', conductorData);
   
+            // Procesar la fecha y la hora
+            this.procesarFecha(data['fecha']); // Llamada al método procesarFecha
+  
             return { 
               id: documento.id, 
               ...data, 
@@ -145,6 +154,8 @@ export class BuscarViajesPage implements OnInit {
       console.error('Error al buscar viajes:', error);
     }
   }
+  
+  
 
   mostrarTodosLosViajes() {
     // Limpiar los parámetros de origen y destino
@@ -160,5 +171,26 @@ export class BuscarViajesPage implements OnInit {
 
     // Realizar la búsqueda sin filtros
     this.buscarViajes();
+  }
+
+  procesarFecha(fechaCompleta: string) {
+    const fecha = new Date(fechaCompleta);
+    const opcionesFecha: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+    const opcionesHora: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
+
+    this.fechaViaje = fecha.toLocaleDateString('es-ES', opcionesFecha); // "3 de diciembre de 2024"
+    this.horaViaje = fecha.toLocaleTimeString('es-ES', opcionesHora);  // "15:30"
+  }
+
+  async AbrirEditViajeModal() {
+    const modal = await this.modalController.create({
+      component: EditViajeModalComponent,
+      componentProps: { 
+        origenActual: this.origenInput,
+        destinoActual: this.destinoInput
+      },
+    });
+  
+    await modal.present();
   }
 }

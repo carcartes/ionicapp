@@ -112,20 +112,4 @@
       <ion-button expand="block" (click)="guardarCambios()">Guardar Cambios</ion-button>
     </ion-card-content>
   </ion-card>
-
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Reservas</ion-card-title>
-    </ion-card-header>
-    <ion-list>
-      <ion-item *ngFor="let reserva of reservas; let i = index">
-        <ion-label>
-          {{ reserva.viaje?.destino }} - {{ reserva.viaje?.origen }}
-        </ion-label>
-        <ion-button color="danger" slot="end" (click)="eliminarReserva(i)">
-          Eliminar
-        </ion-button>
-      </ion-item>
-    </ion-list>
-  </ion-card>
 </ion-content>
