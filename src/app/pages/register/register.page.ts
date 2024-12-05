@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular'; // Importa AlertController
+import * as emailjs from 'emailjs-com';
 
 @Component({
   selector: 'app-register',
@@ -17,6 +18,7 @@ export class RegisterPage {
   confirmPassword: string = '';
   phone: string = '';
   isAuthenticated: boolean = false;  // Inicialmente no autenticado
+  isLoading: boolean = false;  // Estado del botón (desactivado al inicio)
 
   constructor(
     private authService: AuthService, 
@@ -114,15 +116,49 @@ export class RegisterPage {
   async onRegister() {
     // Primero validamos todos los campos
     if (await this.validateFields()) {
-      // Lógica de registro, como llamar al servicio de registro
+      // Desactivar el botón mientras se procesa el registro
+      this.isLoading = true;
+  
+      // Lógica de registro
       this.authService.register(this.name, this.surname, this.email, this.dob, this.password, this.phone)
         .then(() => {
           this.presentAlert('Éxito', 'Registro exitoso');
+  
+          // Enviar correo de confirmación al usuario
+          this.sendConfirmationEmail(this.email);
+  
+          // Redirigir al usuario a la página /home
           this.router.navigate(['/home']);
         })
         .catch(error => {
           this.presentAlert('Error', 'Error en el registro: ' + error.message);
+        })
+        .finally(() => {
+          // Habilitar el botón después de que se haya procesado la reserva o se haya producido un error
+          this.isLoading = false;
         });
     }
   }
+  
+
+  // Método para enviar el correo de confirmación
+sendConfirmationEmail(userEmail: string) {
+  const message = `¡Hola ${this.name} ${this.surname}! Tu cuenta ha sido registrada exitosamente en TelevoApp. ¡Bienvenido!`;
+
+  emailjs.send(
+    'service_rboxxi7', // Tu ID de servicio en EmailJS
+    'template_w5po80v', // Tu plantilla en EmailJS
+    {
+      to_email: userEmail,
+      message: message,
+    },
+    'A8_cR57zcZlOcbDan' // Tu public key de EmailJS
+  )
+  .then((response) => {
+    console.log('Correo enviado al usuario con éxito:', response);
+  })
+  .catch((error) => {
+    console.error('Error al enviar el correo:', error);
+  });
+}
 }

@@ -15,10 +15,6 @@
         <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         <ion-label>Tus Viajes</ion-label>
       </ion-item>
-      <ion-item *ngIf="isAuthenticated" [routerLink]="['/mensajes']">
-        <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
-        <ion-label>Mensajes</ion-label>
-      </ion-item>
       <ion-item *ngIf="isAuthenticated" [routerLink]="['/perfil']">
         <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         <ion-label>Perfil</ion-label>
@@ -50,60 +46,28 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-content>
 
-<ion-content id="main-content" class="ion-padding" *ngIf="viaje && usuario">
-  <div class="trip-container">
+  
+  <div *ngIf="viaje && viaje.origen && viaje.destino" class="map-container">
+    <!-- Tarjeta con detalles del viaje -->
+    <ion-card class="details-card">
+      <ion-card-header>
+        <h6>{{ viaje.origen }} → {{ viaje.destino }}</h6>
+        <p>{{ viaje.fecha }}</p>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Descripción:</strong> {{ viaje.descripcion }}</p>
+        <p><strong>Precio:</strong> ${{ viaje.precio }}</p>
+        <p><strong>Pasajeros:</strong> {{ viaje.pasajeros }} de {{ viaje.pasajeros2 }}</p>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-buttons slot="start" class="btn-arrow-margin">
-      <ion-button (click)="goBack()">
-        <ion-icon name="arrow-back-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <!-- Fecha del viaje -->
-    <h2 class="fecha-titulo">{{ fechaViaje }}</h2>
-    <p class="pasajeros">{{ viaje.pasajeros }} asientos disponibles</p>
+    <!-- Mapa con la ruta -->
+    <div id="map" style="height: 100%;"></div>
+  </div>
 
-    <!-- Ruta con puntos, texto y horas -->
-    <div class="trip-route">
-      <div class="route-point">
-        <div class="point"></div>
-        <span class="route-text">
-          <strong>{{ viaje.origen }}</strong>
-        </span>
-        <span class="route-time">{{ horaViaje }}</span>
-      </div>
-      <div class="line"></div>
-      <div class="route-point">
-        <div class="point"></div>
-        <span class="route-text">
-          <strong>{{ viaje.destino }}</strong>
-        </span>
-        <span class="route-time">{{ horaLlegada }}</span>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- Precio y número de pasajeros -->
-    <div class="info-bar">
-      <span class="precio">1 pasajero</span>
-      <span class="precio">${{ viaje.precio }}</span>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- Información del conductor -->
-    <div class="driver-info">
-      <img src="assets/pfp.png" alt="Conductor" class="driver-picture" />
-      <div class="driver-details">
-        <p><strong>{{ usuario.name }} {{ usuario.surname }}</strong></p>
-      </div>
-    </div>
-
-    <ion-button expand="block" color="primary" (click)="reservarViaje()" [disabled]="isLoading">
-      Reservar
-    </ion-button>
-    
+  <div *ngIf="!viaje || !viaje.origen">
+    <p>No se encontraron detalles del viaje.</p>
   </div>
 </ion-content>
-

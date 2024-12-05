@@ -194,7 +194,16 @@ async eliminarViaje(index: number) {
     ]
   });
 
+  
+
   await alert.present();
+}
+
+
+verViaje(index: number) {
+  const viaje = this.viajesComoConductor[index];
+  const viajeId = viaje.id; // Obtener el ID del viaje
+  this.router.navigate(['/ver-viaje-conductor', viajeId]); // Redirigir al componente con el ID del viaje
 }
 
   // Método para cerrar sesión

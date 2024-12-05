@@ -3,6 +3,7 @@ import { getFirestore, collection, addDoc, doc, getDoc, query, where, getDocs, d
 import { getApp, initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment';
 import { updateDoc } from 'firebase/firestore';
+import emailjs from 'emailjs-com';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,8 @@ export class ViajeService {
   private db = getFirestore(initializeApp(environment.firebaseConfig)); // Configurar Firestore
 
   constructor() {}
+
+  
 
   // Métodos para guardar los datos del viaje
   setOrigen(origen: string) {
@@ -53,6 +56,26 @@ export class ViajeService {
     this.viajeData.descripcion = descripcion;
     console.log('Descripción establecida:', descripcion);
   }
+
+  async enviarCorreo(correoConductor: string, mensaje: string): Promise<void> {
+    const serviceId = 'service_rboxxi7'; // Lo obtienes desde EmailJS
+    const templateId = 'template_jhf0a4f'; // Lo obtienes desde EmailJS
+    const userId = 'A8_cR57zcZlOcbDan'; // Lo obtienes desde EmailJS
+
+    const templateParams = {
+      to_email: correoConductor,
+      message: mensaje,
+    };
+
+    try {
+      await emailjs.send(serviceId, templateId, templateParams, userId);
+      console.log('Correo enviado con éxito.');
+    } catch (error) {
+      console.error('Error al enviar el correo:', error);
+      throw new Error('No se pudo enviar el correo');
+    }
+  }
+
 
   // Método para publicar el viaje con los datos almacenados en Firestore
   async publicarViaje(usuarioId: string): Promise<any> {

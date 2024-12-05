@@ -50,15 +50,24 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="viaje">
+<ion-content *ngIf="viaje" class="ion-padding">
+
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>      
+    </ion-buttons>
+    <ion-title>Editar Viaje</ion-title>
+  </ion-toolbar>
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Detalles del Viaje</ion-card-title>
+      <ion-card-title class="card-title">Detalles del Viaje</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <!-- Origen  -->
+      <!-- Origen -->
       <ion-item>
-        <ion-label>Origen</ion-label>
+        <ion-label position="stacked">Origen</ion-label>
         <ion-input [(ngModel)]="viaje.origen" (ionInput)="obtenerSugerenciasOrigen($event)"></ion-input>
       </ion-item>
       <ion-list *ngIf="suggestionsOrigen.length > 0">
@@ -69,47 +78,46 @@
 
       <!-- Destino -->
       <ion-item>
-        <ion-label>Destino</ion-label>
+        <ion-label position="stacked">Destino</ion-label>
         <ion-input [(ngModel)]="viaje.destino" (ionInput)="obtenerSugerenciasDestino($event)"></ion-input>
       </ion-item>
       <ion-list *ngIf="suggestionsDestino.length > 0">
         <ion-item *ngFor="let suggestion of suggestionsDestino" (click)="seleccionarDestino(suggestion)">
           {{ suggestion.place_name }}
-        </ion-item>    
-        </ion-list>
+        </ion-item>
+      </ion-list>
 
-      <!-- Fecha editable -->
+      <!-- Fecha -->
       <ion-item>
-        <ion-label>Fecha</ion-label>
+        <ion-label position="stacked">Fecha</ion-label>
         <ion-datetime [(ngModel)]="viaje.fecha" [min]="minDate" [max]="maxDate"></ion-datetime>
       </ion-item>
 
-      <!-- Precio  -->
+      <!-- Precio -->
       <ion-item>
-        <ion-label>Precio</ion-label>
+        <ion-label position="stacked">Precio</ion-label>
         <ion-input type="number" [(ngModel)]="viaje.precio"></ion-input>
       </ion-item>
 
       <!-- Asientos disponibles -->
-    <ion-item>
-      <ion-label>Asientos Disponibles</ion-label>
-      <ion-select [(ngModel)]="viaje.pasajeros">
-        <ion-select-option *ngFor="let num of [1, 2, 3, 4]" [value]="num">
-          {{ num }}
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Asientos Disponibles</ion-label>
+        <ion-select [(ngModel)]="viaje.pasajeros">
+          <ion-select-option *ngFor="let num of [1, 2, 3, 4]" [value]="num">
+            {{ num }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
 
-
-          <!-- Descripción -->
-    <ion-item>
-      <ion-label>Descripción</ion-label>
-      <ion-textarea [(ngModel)]="viaje.descripcion"></ion-textarea>
-    </ion-item>
-
+      <!-- Descripción -->
+      <ion-item>
+        <ion-label position="stacked">Descripción</ion-label>
+        <ion-textarea [(ngModel)]="viaje.descripcion"></ion-textarea>
+      </ion-item>
 
       <!-- Botón para guardar cambios -->
       <ion-button expand="block" (click)="guardarCambios()">Guardar Cambios</ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>
+

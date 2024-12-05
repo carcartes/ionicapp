@@ -95,6 +95,11 @@ const routes: Routes = [
     path: 'viaje-edit/:id',
     loadChildren: () => import('./pages/viaje-edit/viaje-edit.module').then( m => m.ViajeEditPageModule)
   },
+  {
+    path: 'ver-viaje-conductor/:id',
+    loadChildren: () => import('./pages/ver-viaje-conductor/ver-viaje-conductor.module').then( m => m.VerViajeConductorPageModule)
+  },
+
 
 
 

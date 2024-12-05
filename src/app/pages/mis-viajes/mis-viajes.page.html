@@ -69,18 +69,21 @@
           <p class="trip-date">Fecha: {{ viaje.fecha }}</p>
           <p class="trip-seats">Asientos disponibles: {{ viaje.pasajeros }}</p>
         </ion-label>
-
+  
         <div class="button-group">
           <ion-button fill="outline" (click)="editarViaje(i)" class="edit-button">Editar</ion-button>
           <ion-button fill="outline" (click)="eliminarViaje(i)" class="delete-button">Eliminar</ion-button>
+          <ion-button fill="outline" (click)="verViaje(i)" class="view-button">Ver</ion-button>
         </div>
       </ion-item>
     </ion-list>
+  
     <!-- Mensaje cuando no hay viajes como conductor -->
-  <div *ngIf="viajesComoConductor.length === 0" class="no-trips-message">
-    <p>No tienes viajes como conductor.</p>
-  </div>
+    <div *ngIf="viajesComoConductor.length === 0" class="no-trips-message">
+      <p>No tienes viajes como conductor.</p>
+    </div>
   </ion-content>
+  
 
   <!-- Viajes Reservados -->
   <ion-content *ngIf="segmentModel === 'mis-viajes'">

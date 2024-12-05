@@ -4,6 +4,7 @@ import { ViajeService } from '../../services/viaje.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import * as emailjs from 'emailjs-com';
 
 @Component({
   selector: 'app-detalle-viaje',
@@ -18,6 +19,7 @@ export class DetalleViajePage implements OnInit {
   fechaViaje: string = ''; // Fecha formateada
   horaViaje: string = '';  // Hora formateada
   horaLlegada: string = '';
+  isLoading: boolean = false; // Inicialmente no está cargando
 
   constructor(
     private route: ActivatedRoute,
@@ -94,7 +96,7 @@ export class DetalleViajePage implements OnInit {
       }
   
       const distanciaKm = directionsData.routes[0].distance / 1000; // Convertir a kilómetros
-      const velocidadPromedio = 80; // Km/h
+      const velocidadPromedio = 50; // Km/h
       const tiempoHoras = distanciaKm / velocidadPromedio; // Tiempo en horas
   
       // Imprimir la distancia en km
@@ -168,41 +170,86 @@ export class DetalleViajePage implements OnInit {
     this.horaViaje = fecha.toLocaleTimeString('es-ES', opcionesHora);  // "15:30"
   }
 
-  async reservarViaje() {
-    if (this.viaje && this.isAuthenticated) {
-      const usuarioId = await this.authService.getUsuarioId();
-      if (this.viaje.usuario_id === usuarioId) {
-        const alert = await this.alertController.create({
-          header: 'Acción no permitida',
-          message: 'No puedes reservar tu propio viaje.',
-          buttons: ['OK']
-        });
-        await alert.present();
-        return;
-      }
 
-      if (!usuarioId || !this.viaje || !this.viaje.id) {
-        console.log('Datos inválidos para la reserva');
-        return;
-      }
-
-      try {
-        if (this.viaje.pasajeros > 0) {
-          await this.viajeService.reservarViaje(usuarioId, this.viaje);
-          const nuevosPasajeros = this.viaje.pasajeros - 1;
-          await this.viajeService.actualizarPasajeros(this.viaje.id, nuevosPasajeros);
-          this.presentAlert('Reserva exitosa', 'El viaje ha sido reservado con éxito.');
-          this.router.navigate(['/mis-viajes']);
-        } else {
-          this.presentAlert('Error', 'No hay más asientos disponibles en este viaje.');
+  
+    async reservarViaje() {
+      if (this.viaje && this.isAuthenticated) {
+        // Desactivar el botón durante el proceso de reserva
+        this.isLoading = true;
+  
+        const usuarioId = await this.authService.getUsuarioId();
+        if (this.viaje.usuario_id === usuarioId) {
+          const alert = await this.alertController.create({
+            header: 'Acción no permitida',
+            message: 'No puedes reservar tu propio viaje.',
+            buttons: ['OK'],
+          });
+          await alert.present();
+          this.isLoading = false; // Rehabilitar el botón
+          return;
         }
-      } catch (error) {
-        console.error('Error al reservar el viaje:', error);
+  
+        if (!usuarioId || !this.viaje || !this.viaje.id) {
+          console.log('Datos inválidos para la reserva');
+          this.isLoading = false; // Rehabilitar el botón
+          return;
+        }
+  
+        try {
+          if (this.viaje.pasajeros > 0) {
+            // Reservar el viaje
+            await this.viajeService.reservarViaje(usuarioId, this.viaje);
+            const nuevosPasajeros = this.viaje.pasajeros - 1;
+            await this.viajeService.actualizarPasajeros(this.viaje.id, nuevosPasajeros);
+  
+            // Obtener el nombre del pasajero
+            const usuario = await this.authService.getUserData(usuarioId);
+            const nombrePasajero = (usuario as { nombre?: string })?.nombre || 'Un pasajero';
+  
+            // Enviar correo al conductor
+            const correoConductor = this.usuario?.email;
+            const mensaje = `${nombrePasajero} ha reservado tu viaje desde ${this.viaje.origen} hasta ${this.viaje.destino}.
+              Fecha del viaje: ${this.fechaViaje}
+              Hora de salida: ${this.horaViaje}
+              Hora estimada de llegada: ${this.horaLlegada}`;
+  
+            if (correoConductor) {
+              try {
+                await emailjs.send(
+                  'service_rboxxi7',
+                  'template_jhf0a4f',
+                  {
+                    to_email: correoConductor,
+                    message: mensaje,
+                  },
+                  'A8_cR57zcZlOcbDan'
+                );
+                console.log('Correo enviado al conductor con éxito.');
+              } catch (error) {
+                console.error('Error al enviar el correo:', error);
+              }
+            } else {
+              console.error('El correo del conductor no está disponible.');
+            }
+  
+            // Mostrar mensaje de éxito
+            this.presentAlert('Reserva exitosa', 'El viaje ha sido reservado con éxito.');
+            this.router.navigate(['/mis-viajes']);
+          } else {
+            this.presentAlert('Error', 'No hay más asientos disponibles en este viaje.');
+          }
+        } catch (error) {
+          console.error('Error al reservar el viaje:', error);
+        } finally {
+          // Independientemente del resultado, habilitar el botón
+          this.isLoading = false;
+        }
+      } else {
+        console.log('Faltan datos para reservar el viaje o el usuario no está autenticado');
       }
-    } else {
-      console.log('Faltan datos para reservar el viaje o el usuario no está autenticado');
     }
-  }
+  
+  
 
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({

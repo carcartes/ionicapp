@@ -93,3 +93,15 @@ custom-margin-number{
 .custom-icon {
   font-size: 25px;
 }
+
+.button-group {
+  display: flex;
+  flex-direction: column; /* Orientación en columna */
+  gap: 10px; /* Espacio entre botones */
+  align-items: center; /* Centrar botones horizontalmente (opcional) */
+}
+
+ion-button {
+  width: 100%; /* Botones ocupan todo el ancho del contenedor */
+  max-width: 200px; /* Ancho máximo para evitar que sean demasiado grandes */
+}

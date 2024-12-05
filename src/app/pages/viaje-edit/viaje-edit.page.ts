@@ -119,7 +119,27 @@ export class ViajeEditPage implements OnInit {
   }
 
   async guardarCambios() {
-    const alert = await this.alertController.create({
+    if (!this.viaje.origen || !this.viaje.destino || this.viaje.precio === undefined || this.viaje.precio === null) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Por favor, completa todos los campos obligatorios: Origen, Destino y Precio.',
+        buttons: ['OK'],
+      });
+      await alert.present();
+      return;
+    }
+  
+    if (this.viaje.precio < 0) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'El precio no puede ser negativo.',
+        buttons: ['OK'],
+      });
+      await alert.present();
+      return;
+    }
+  
+    const confirmAlert = await this.alertController.create({
       header: 'Confirmar',
       message: '¿Estás seguro de que deseas guardar los cambios?',
       buttons: [
@@ -136,23 +156,14 @@ export class ViajeEditPage implements OnInit {
                 origen: this.viaje.origen,
                 destino: this.viaje.destino,
                 fecha: this.viaje.fecha,
-                pasajeros: this.viaje.pasajeros, // Actualiza pasajeros
+                pasajeros: this.viaje.pasajeros,
                 precio: this.viaje.precio,
-                descripcion: this.viaje.descripcion, // Incluye descripción
-                pasajeros2: this.viaje.pasajeros
+                descripcion: this.viaje.descripcion,
               };
               try {
-                // Validación adicional (opcional)
-                if (cambios.pasajeros < 1 || cambios.pasajeros > 4) {
-                  throw new Error('Los pasajeros deben estar entre 1 y 4.');
-                }
-                if (!cambios.origen || !cambios.destino) {
-                  throw new Error('Origen y destino no pueden estar vacíos.');
-                }
-  
                 await this.viajeService.actualizarViaje(this.viajeId, cambios);
                 console.log('Cambios guardados con éxito');
-                this.router.navigate(['/mis-viajes']); // Redirigir tras guardar
+                this.router.navigate(['/mis-viajes']);
               } catch (error) {
                 console.error('Error al guardar cambios:', error);
               }
@@ -164,8 +175,13 @@ export class ViajeEditPage implements OnInit {
       ],
     });
   
-    await alert.present();
+    await confirmAlert.present();
   }
+  
+  goBack() {
+    this.router.navigate(['/mis-viajes']);
+  }
+  
 
   async logout() {
     try {
